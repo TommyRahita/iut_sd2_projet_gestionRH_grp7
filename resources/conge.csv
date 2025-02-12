@@ -1,1 +1,1 @@
-id;nom;prenom;date_conge
+id;nom;prenom;date_debut_conge;date_fin_conge;nb_pris_conge

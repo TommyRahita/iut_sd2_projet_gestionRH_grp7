@@ -13,7 +13,7 @@ class SalaryManagementInterface extends JFrame {
        
    	try {
 	    // Charger l'image depuis le dossier 'resources' dans le projet
-		ImageIcon icon = new ImageIcon("resources\\pdpooo.png");
+		ImageIcon icon = new ImageIcon("resources\\icon.png");
 	    setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
 	} catch (Exception e) {
 	    System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());

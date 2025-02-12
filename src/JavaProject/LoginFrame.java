@@ -7,7 +7,14 @@ public class LoginFrame extends JFrame {
 //  Rajoutez le faite que si l'user + mdp sont bon dans le csv alors rentrer dans l'interface utilisateur ou manager
 	
     public LoginFrame() {
-        setTitle("SAM - SBE Asset Manager");
+    	try {
+            // Charger l'image depuis le dossier 'resources' dans le projet
+            ImageIcon icon = new ImageIcon("resources\\icon.png");
+            setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
+        }
+        setTitle("Logiciel de gestion");
         setSize(450, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

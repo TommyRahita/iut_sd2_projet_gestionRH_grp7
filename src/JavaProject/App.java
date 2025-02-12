@@ -56,7 +56,7 @@ public class App {
 	   public static void main(String[] args) {
 		   
 		    // ETAPE 1 : On recupere les données du csv
-		    List<Utilisateur> liste_utilisateur = func_recup_data("L:\\BUT\\SD\\Promo 2023\\ythollet\\SD 2\\SAE COO\\Utilisateurs.csv");
+		    List<Utilisateur> liste_utilisateur = func_recup_data("Utilisateurs.csv");
 		   
 		   
 		    
@@ -97,11 +97,15 @@ public class App {
 		          	liste_employe.add(new_employe); 
 		      }
 	   }
+	      // Tests
 	      for (Employe employe:liste_employe) {
 	    	  System.out.println(employe.nom);
 	    	  System.out.println(employe.statut);
 	      }
-	      
+	      for (Manager manager:liste_managers) {
+	    	  System.out.println(manager.nom);
+	    	  System.out.println(manager.statut);
+	      }
 	      
 	      
 		   	// ETAPE 3 : Ajouter un utilisateurON TESTE LES METHODES

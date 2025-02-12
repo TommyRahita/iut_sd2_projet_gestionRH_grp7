@@ -31,6 +31,10 @@ public class Utilisateur {
 		
 	}
 	
+	// Connexion
+	public void Connexion() {
+		
+	}
 	
 	
 }

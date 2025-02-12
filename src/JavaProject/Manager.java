@@ -56,9 +56,7 @@ public class Manager extends Utilisateur {
           } catch (IOException e) {
               e.printStackTrace();
           }
-      }
-	
-	
+      }	
 	
 	
 	

@@ -43,7 +43,7 @@ public class CongeRequest extends JFrame {
 
         // Panneau inférieur avec boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-        buttonPanel.setBackground(new Color(43, 60, 70));
+        buttonPanel.setBackground(new Color(29, 46, 56));
 
         JButton requestButton = new JButton("Demander");
         JButton backButton = new JButton("Retour");

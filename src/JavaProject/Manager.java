@@ -23,6 +23,12 @@ public class Manager extends Utilisateur {
 	}
 	
 	
+<<<<<<< HEAD
+=======
+
+	
+	
+>>>>>>> 3ccfb4692a806ac23f3ccbb3a859a411c04985ec
 	
 	// ---------------------- METHODE AJOUTER UTILISATEUR -----------------------//
 	public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {

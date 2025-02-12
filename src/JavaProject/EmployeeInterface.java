@@ -13,7 +13,6 @@ public class EmployeeInterface extends JFrame {
         } catch (Exception e) {
             System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
         }
-        // À régler, le message print d'erreur n'est pas lancé mais l'icône n'est quand même pas changée
 
         // Configuration de la fenêtre principale
         setTitle("Interface Employee");
@@ -35,18 +34,28 @@ public class EmployeeInterface extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // ---- Panneau contenant les boutons principaux ----
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 20)); // Grille avec 2 lignes pour 2 boutons
+        JPanel buttonPanel = new JPanel(new GridBagLayout()); // Utilisation de GridBagLayout pour centrer
         buttonPanel.setBackground(Color.WHITE); // Fond blanc pour le panneau central
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40)); // Ajout de marges pour l'aération
 
-        // Création et personnalisation des boutons
-        JButton enterWorkedHours = createRoundedButton("Saisissez votre nombre d'heures travaillées ce mois-ci");
-        enterWorkedHours.addActionListener(e -> openEnterWorkedHours());
-        buttonPanel.add(enterWorkedHours);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0; // Une seule colonne
+        gbc.gridy = 0; // Ligne initiale
+        gbc.insets = new Insets(10, 0, 10, 0); // Espacement vertical entre les boutons
+        gbc.anchor = GridBagConstraints.CENTER; // Centrage horizontal
 
+        // Ajout des boutons avec les contraintes
+        JButton enterWorkedHours = createRoundedButton("Saisissez votre nombre d'heures travaillées ce mois-ci");
+        buttonPanel.add(enterWorkedHours, gbc);
+
+        gbc.gridy++; // Ligne suivante
+        JButton congerequest = createRoundedButton("Demander des congés");
+        congerequest.addActionListener(e -> openCongesRequestInterface());
+        buttonPanel.add(congerequest, gbc);
+
+        gbc.gridy++; // Ligne suivante
         JButton deleteUserButton = createRoundedButton("Téléchargez votre fiche de paie");
-        deleteUserButton.addActionListener(e -> downloadBulPai());
-        buttonPanel.add(deleteUserButton);
+        buttonPanel.add(deleteUserButton, gbc);
 
         // ---- Panel contenant buttonPanel pour centrer et ajuster sa taille ----
         JPanel containerPanel = new JPanel(new GridBagLayout()); // Centrage du panneau
@@ -60,7 +69,6 @@ public class EmployeeInterface extends JFrame {
         bottomPanel.setBackground(new Color(43, 60, 70)); // Couleur de fond
 
         JButton logoutButton = createRoundedButton("Déconnexion");
-        logoutButton.addActionListener(e -> logoutAction());
         bottomPanel.add(logoutButton);
 
         JButton quitButton = createRoundedButton("Quitter");
@@ -74,28 +82,23 @@ public class EmployeeInterface extends JFrame {
         setVisible(true);
     }
 
-    // Méthode pour créer des boutons arrondis
+    // Méthode pour créer des boutons arrondis avec une taille uniforme
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(new RoundBorder(15)); // Bordure arrondie avec un rayon de 15 pixels
+        
+        // Taille préférée uniforme
+        Dimension buttonSize = new Dimension(400, 22); // Par exemple, largeur 400px, hauteur 40px
+        button.setPreferredSize(buttonSize);
+
         return button;
     }
 
-    // Méthodes pour ouvrir les interfaces secondaires
-    private void openEnterWorkedHours() {
-        new EnterWorkedHours(this);
-    }
-    
-    private void downloadBulPai() {
-    	JOptionPane.showMessageDialog(this, "Téléchargement à implémenter");
-    }
-
-    // Action pour le bouton déconnexion (à implémenter)
-    private void logoutAction() {
-        JOptionPane.showMessageDialog(this, "Déconnexion à implémenter");
+    private void openCongesRequestInterface() {
+        new CongeRequest();
     }
 
     public static void main(String[] args) {

@@ -16,7 +16,6 @@ public class ManagerInterface extends JFrame {
     	} catch (Exception e) {
     	    System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
     	}
-    	//à regler, le message print d'erreur n'est pas lancé mais l'icone n'est quand meme pas changé
 
         // Configuration de la fenêtre principale
         setTitle("Interface Manager");

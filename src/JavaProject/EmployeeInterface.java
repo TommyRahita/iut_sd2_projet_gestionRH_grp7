@@ -2,6 +2,7 @@ package JavaProject;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+
 import java.awt.*;
 
 public class EmployeeInterface extends JFrame {
@@ -34,45 +35,46 @@ public class EmployeeInterface extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // ---- Panneau contenant les boutons principaux ----
-        JPanel buttonPanel = new JPanel(new GridBagLayout()); // Utilisation de GridBagLayout pour centrer
-        buttonPanel.setBackground(Color.WHITE); // Fond blanc pour le panneau central
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40)); // Ajout de marges pour l'aération
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0; // Une seule colonne
-        gbc.gridy = 0; // Ligne initiale
-        gbc.insets = new Insets(10, 0, 10, 0); // Espacement vertical entre les boutons
-        gbc.anchor = GridBagConstraints.CENTER; // Centrage horizontal
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(3, 1, 10, 20)); // Grille pour organiser les boutons
+        buttonPanel.setBackground(new Color(255, 255, 255)); // Couleur de fond
+        buttonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 35, true));
 
         // Ajout des boutons avec les contraintes
         JButton enterWorkedHours = createRoundedButton("Saisissez votre nombre d'heures travaillées ce mois-ci");
-        buttonPanel.add(enterWorkedHours, gbc);
+        enterWorkedHours.addActionListener(e -> openEnterWorkedHours());
+        buttonPanel.add(enterWorkedHours);
 
-        gbc.gridy++; // Ligne suivante
         JButton congerequest = createRoundedButton("Demander des congés");
         congerequest.addActionListener(e -> openCongesRequestInterface());
-        buttonPanel.add(congerequest, gbc);
+        buttonPanel.add(congerequest);
 
-        gbc.gridy++; // Ligne suivante
         JButton deleteUserButton = createRoundedButton("Téléchargez votre fiche de paie");
-        buttonPanel.add(deleteUserButton, gbc);
-
-        // ---- Panel contenant buttonPanel pour centrer et ajuster sa taille ----
-        JPanel containerPanel = new JPanel(new GridBagLayout()); // Centrage du panneau
-        containerPanel.setBackground(new Color(29, 46, 56)); // Même couleur que le fond principal
-        containerPanel.add(buttonPanel); // Ajout du panneau blanc contenant les boutons
-
-        add(containerPanel, BorderLayout.CENTER);
+        deleteUserButton.addActionListener(e -> openDeleteUserButton());
+        buttonPanel.add(deleteUserButton);
+        
+        UIManager.put("ComboBox.selectionBackground", new Color(255, 255, 255)); // Jaune foncé/orange pour la sélection
+        UIManager.put("ComboBox.selectionForeground", Color.BLACK);
+        
+        // ---- Ajout du panneau centré pour les boutons ----
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        centerPanel.add(buttonPanel);
+        centerPanel.setBackground(new Color(29, 46, 56));
+        
+        add(centerPanel, BorderLayout.CENTER);
 
         // ---- Panneau inférieur avec Déconnexion & Quitter ----
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10)); // Aligné à droite
         bottomPanel.setBackground(new Color(43, 60, 70)); // Couleur de fond
 
         JButton logoutButton = createRoundedButton("Déconnexion");
+        logoutButton.addActionListener(e -> logoutAction());
+        //logoutButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         bottomPanel.add(logoutButton);
 
         JButton quitButton = createRoundedButton("Quitter");
         quitButton.addActionListener(e -> System.exit(0));
+        //quitButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         bottomPanel.add(quitButton);
 
         add(bottomPanel, BorderLayout.SOUTH);
@@ -89,19 +91,28 @@ public class EmployeeInterface extends JFrame {
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(new RoundBorder(15)); // Bordure arrondie avec un rayon de 15 pixels
-        
-        // Taille préférée uniforme
-        Dimension buttonSize = new Dimension(400, 22); // Par exemple, largeur 400px, hauteur 40px
-        button.setPreferredSize(buttonSize);
-
         return button;
     }
 
+    private void openEnterWorkedHours() {
+    	JOptionPane.showMessageDialog(this, "à implémenter");
+    }
+    
     private void openCongesRequestInterface() {
         new CongeRequest();
     }
+    
+    private void openDeleteUserButton() {
+    	JOptionPane.showMessageDialog(this, "à implémenter");
+    }
 
+    // Action pour le bouton déconnexion (à implémenter)
+    private void logoutAction() {
+        JOptionPane.showMessageDialog(this, "Déconnexion à implémenter");
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(EmployeeInterface::new);
     }
 }
+

@@ -106,7 +106,9 @@ public class App {
 	    	  System.out.println(manager.nom);
 	    	  System.out.println(manager.statut);
 	      }
-	      
+//	      Manager.ajouter_utilisateur("DUPONT", "Jean", "data analyst", 50, "motdepassedefou", "employe");
+
+	      Manager.supprimer_utilisateur("DUPONT", "Jean");
 	      
 		   	// ETAPE 3 : Ajouter un utilisateurON TESTE LES METHODES
    }

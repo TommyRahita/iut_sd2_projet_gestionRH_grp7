@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 
 public class App {
 	
@@ -54,6 +56,12 @@ public class App {
 
 	
 	   public static void main(String[] args) {
+		   
+//		   Ouvre la fenêtre de connexion 
+		   SwingUtilities.invokeLater(() -> {
+	            LoginFrame frame = new LoginFrame();
+	            frame.setVisible(true);
+	        });
 		   
 		    // ETAPE 1 : On recupere les données du csv
 		    List<Utilisateur> liste_utilisateur = func_recup_data("resources/Utilisateurs.csv");

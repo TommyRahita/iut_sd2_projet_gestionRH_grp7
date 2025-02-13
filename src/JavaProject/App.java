@@ -56,7 +56,7 @@ public class App {
 	   public static void main(String[] args) {
 		   
 		    // ETAPE 1 : On recupere les données du csv
-		    List<Utilisateur> liste_utilisateur = func_recup_data("Utilisateurs.csv");
+		    List<Utilisateur> liste_utilisateur = func_recup_data("resources/Utilisateurs.csv");
 		   
 		   
 		    

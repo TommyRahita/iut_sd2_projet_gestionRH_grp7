@@ -100,7 +100,7 @@ public class EmployeeInterface extends JFrame {
     }
     
     private void openCongesRequestInterface() {
-        new CongeRequest();
+        new CongeRequest(this);
     }
     
     private void openDeleteUserButton() {

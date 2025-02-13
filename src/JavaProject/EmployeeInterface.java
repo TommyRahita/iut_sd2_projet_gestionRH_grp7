@@ -89,8 +89,4 @@ public class EmployeeInterface extends JFrame {
             loginFrame.setVisible(true);
         });
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(EmployeeInterface::new);
-    }
 }

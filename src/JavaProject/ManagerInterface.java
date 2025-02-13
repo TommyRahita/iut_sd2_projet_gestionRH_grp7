@@ -110,10 +110,6 @@ public class ManagerInterface extends JFrame {
             loginFrame.setVisible(true);
         });
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(ManagerInterface::new);
-    }
 }
 
 class RoundBorder implements Border {

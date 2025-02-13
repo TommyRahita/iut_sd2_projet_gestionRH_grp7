@@ -77,14 +77,4 @@ public class LoginFrame extends JFrame {
         }
         JOptionPane.showMessageDialog(this, "Identifiants incorrects", "Erreur", JOptionPane.ERROR_MESSAGE);
     }
-
-    private void ouvrirInterfaceManager() {
-        JOptionPane.showMessageDialog(this, "Bienvenue dans l'espace Manager !");
-        // Logique pour ouvrir l’interface Manager
-    }
-
-    private void ouvrirInterfaceEmploye() {
-        JOptionPane.showMessageDialog(this, "Bienvenue dans l'espace Employé !");
-        // Logique pour ouvrir l’interface Employé
-    }
 }

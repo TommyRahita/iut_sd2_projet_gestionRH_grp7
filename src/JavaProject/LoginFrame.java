@@ -60,21 +60,29 @@ public class LoginFrame extends JFrame {
         add(panel);
     }
 
-    private void verifierIdentifiants(String email, String password) {
-        List<Utilisateur> utilisateurs = App.func_recup_data("resources/Utilisateurs.csv");
+    private void verifierIdentifiants(String email, String password) {	
+        List<Utilisateur> utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
 
         for (Utilisateur utilisateur : utilisateurs) {
             if (utilisateur.nom.equalsIgnoreCase(email) && utilisateur.mdp.equals(password)) {
                 JOptionPane.showMessageDialog(this, "Connexion réussie en tant que " + utilisateur.statut);
                 if (utilisateur.statut.equalsIgnoreCase("manager")) {
-                	SwingUtilities.invokeLater(ManagerInterface::new);
+                    SwingUtilities.invokeLater(ManagerInterface::new);
                 } else {
-                	SwingUtilities.invokeLater(EmployeeInterface::new);
+                    SwingUtilities.invokeLater(EmployeeInterface::new);
                 }
                 dispose(); // Fermer la fenêtre de connexion après authentification
                 return;
             }
         }
         JOptionPane.showMessageDialog(this, "Identifiants incorrects", "Erreur", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void main(String[] args) {
+        // Lancer l'application sur le thread de l'interface utilisateur (Event Dispatch Thread)
+        SwingUtilities.invokeLater(() -> {
+            LoginFrame loginFrame = new LoginFrame();
+            loginFrame.setVisible(true);
+        });
     }
 }

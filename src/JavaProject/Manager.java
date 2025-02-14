@@ -1,3 +1,5 @@
+package JavaProject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,7 +30,7 @@ public class Manager extends Utilisateur {
 	public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
 		String ligne;
 		int nb_lignes = 0;
-		String path_csv = "Ressources/Utilisateurs.csv";
+		String path_csv = "resources/Utilisateurs.csv";
 		
 		// Compter le nombre de lignes
 	    try (BufferedReader br = new BufferedReader(new FileReader(path_csv))) {

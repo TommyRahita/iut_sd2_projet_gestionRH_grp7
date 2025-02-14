@@ -1,8 +1,8 @@
 package JavaProject;
 
 import java.awt.*;
+import java.io.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 class AddUserInterface extends JFrame {
@@ -12,15 +12,15 @@ class AddUserInterface extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(29, 46, 56));
         setResizable(false);
-        
-    	try {
-    	    // Charger l'image depuis le dossier 'resources' dans le projet
-    		ImageIcon icon = new ImageIcon("resources\\icon.png");
-    	    setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
-    	} catch (Exception e) {
-    	    System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
-    	}
-    	
+
+        try {
+            // Charger l'image depuis le dossier 'resources' dans le projet
+            ImageIcon icon = new ImageIcon("resources\\icon.png");
+            setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
+        }
+
         // ---- Panneau principal ----
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridLayout(7, 2, 10, 10));
@@ -68,16 +68,36 @@ class AddUserInterface extends JFrame {
             String name = nameField.getText();
             String firstName = firstNameField.getText();
             String job = jobField.getText();
-            String leaveDays = leaveDaysField.getText();
+            String leaveDaysText = leaveDaysField.getText();
             String password = new String(passwordField.getPassword());
             String status = (String) statusComboBox.getSelectedItem();
 
-            JOptionPane.showMessageDialog(this,
-                    "Utilisateur ajouté :\nNom : " + name +
-                            "\nPrénom : " + firstName +
-                            "\nPoste : " + job +
-                            "\nJours de congés restants : " + leaveDays +
-                            "\nStatut : " + status);
+            try {
+                // Validation des champs
+                if (name.isEmpty() || firstName.isEmpty() || job.isEmpty() || leaveDaysText.isEmpty() || password.isEmpty() || status.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int leaveDays = Integer.parseInt(leaveDaysText);
+
+                // Appeler la méthode ajouter_utilisateur
+                ajouter_utilisateur(name, firstName, job, leaveDays, password, status);
+                JOptionPane.showMessageDialog(this, "Utilisateur ajouté avec succès !");
+
+                // Réinitialiser les champs
+                nameField.setText("");
+                firstNameField.setText("");
+                jobField.setText("");
+                leaveDaysField.setText("");
+                passwordField.setText("");
+                statusComboBox.setSelectedIndex(0);
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Le champ 'Jours de congés restants' doit être un nombre.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erreur lors de l'ajout de l'utilisateur : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         });
         buttonPanel.add(addButton);
 
@@ -124,5 +144,45 @@ class AddUserInterface extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(new RoundBorder(15));
         return button;
+    }
+
+    // Méthode pour ajouter un utilisateur dans le fichier CSV
+    public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
+        String ligne;
+        int nb_lignes = 0;
+        String path_csv = "resources/Utilisateurs.csv";
+
+        // Compter le nombre de lignes
+        try (BufferedReader br = new BufferedReader(new FileReader(path_csv))) {
+            // Lire et ignorer la première ligne (en-tête)
+            br.readLine();
+
+            // Lire chaque ligne du fichier
+            while ((ligne = br.readLine()) != null) {
+                nb_lignes++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajouter le nouvel utilisateur
+        try (FileWriter writer = new FileWriter(path_csv, true);
+             BufferedWriter bw = new BufferedWriter(writer);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            // Construire la ligne utilisateur
+            String nouvelleLigne = (nb_lignes + 1) + ";" +
+                                    nom + ";" +
+                                    prenom + ";" +
+                                    poste + ";" +
+                                    jours_conge_restants + ";" +
+                                    mdp + ";" +
+                                    statut;
+
+            out.println(nouvelleLigne); // Ajout direct avec un saut de ligne
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -48,6 +48,21 @@ public class ManagerInterface extends JFrame {
         JButton addUserButton = createRoundedButton("Ajouter un utilisateur");
         addUserButton.addActionListener(e -> openAddUserInterface());
         buttonPanel.add(addUserButton);
+        
+        JButton deleteUserButton = createRoundedButton("Supprimer un utilisateur");
+        deleteUserButton.addActionListener(e -> openDeleteUserInterface());
+        //deleteUserButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
+        buttonPanel.add(deleteUserButton);
+
+        JButton validateLeaveButton = createRoundedButton("Valider les congés");
+        validateLeaveButton.addActionListener(e -> openValidateLeaveInterface());
+        //validateLeaveButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
+        buttonPanel.add(validateLeaveButton);
+
+        JButton salaryManagementButton = createRoundedButton("Ouvrir le menu de management des salaires");
+        salaryManagementButton.addActionListener(e -> openSalaryManagementInterface());
+        //salaryManagementButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
+        buttonPanel.add(salaryManagementButton);
 
         UIManager.put("ComboBox.selectionBackground", Color.WHITE);
         UIManager.put("ComboBox.selectionForeground", Color.BLACK);
@@ -85,6 +100,18 @@ public class ManagerInterface extends JFrame {
     }
 
     private void openAddUserInterface() {
+        new AddUserInterface(this);
+    }
+    
+    private void openDeleteUserInterface() {
+        new AddUserInterface(this);
+    }
+    
+    private void openValidateLeaveInterface() {
+        new AddUserInterface(this);
+    }
+    
+    private void openSalaryManagementInterface() {
         new AddUserInterface(this);
     }
 

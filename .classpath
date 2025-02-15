@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-23">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-23">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/barcodes-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/barcodes-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/barcodes-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/commons-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/commons-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/commons-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/font-asian-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/forms-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/forms-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/forms-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/hyph-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/io-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/io-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/io-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/kernel-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/kernel-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/kernel-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/layout-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/layout-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/layout-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/pdfa-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/pdfa-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/pdfa-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/pdftest-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/pdftest-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/pdftest-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/sign-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/sign-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/sign-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/styled-xml-parser-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/styled-xml-parser-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/styled-xml-parser-7.2.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/svg-7.2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/svg-7.2.6-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/svg-7.2.6-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6.zip"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/slf4j-api-2.0.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/slf4j-simple-2.0.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

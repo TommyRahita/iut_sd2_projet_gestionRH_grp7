@@ -1,3 +1,3 @@
-idPaie;moisPaie;anneePaie;idUtilisateur;nom;prenom;poste;taux_horaire;nb_jour_travaille;nb_conge;salaire
-1;2;2025;8;rahita;tommy;Data Scientist;11,70;140;4;1591,20
-2;2;2025;8;rahita;tommy;Data Scientist;11,70;45;4;479,70
+idPaie;moisPaie;anneePaie;idUtilisateur;nom;prenom;poste;taux_horaire;nb_jour_travaille;nb_conge;salaire;primes;cotisations;impots
+1;2;2025;8;rahita;tommy;Data Scientist;11.70;140;4;1591.20;200;300;150
+2;2;2025;8;rahita;tommy;Data Scientist;11.70;45;4;479.70;50;100;50

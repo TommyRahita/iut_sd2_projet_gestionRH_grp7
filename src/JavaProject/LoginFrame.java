@@ -12,7 +12,7 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         try {
-            ImageIcon icon = new ImageIcon("resources\\icon.png");
+            ImageIcon icon = new ImageIcon("resources/icon.png");
             setIconImage(icon.getImage());
         } catch (Exception e) {
             System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
@@ -60,16 +60,17 @@ public class LoginFrame extends JFrame {
         add(panel);
     }
 
-    private void verifierIdentifiants(String email, String password) {	
+    private void verifierIdentifiants(String email, String password) {
         List<Utilisateur> utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
 
         for (Utilisateur utilisateur : utilisateurs) {
-            if (utilisateur.nom.equalsIgnoreCase(email) && utilisateur.mdp.equals(password)) {
+            String identifiant = utilisateur.prenom.toLowerCase() + "." + utilisateur.nom.toLowerCase();
+            if (identifiant.equalsIgnoreCase(email) && utilisateur.mdp.equals(password)) {
                 JOptionPane.showMessageDialog(this, "Connexion réussie en tant que " + utilisateur.statut);
                 if (utilisateur.statut.equalsIgnoreCase("manager")) {
-                    SwingUtilities.invokeLater(ManagerInterface::new);
+                    SwingUtilities.invokeLater(() -> new ManagerInterface(utilisateur.prenom , utilisateur.nom));
                 } else {
-                    SwingUtilities.invokeLater(EmployeeInterface::new);
+                    SwingUtilities.invokeLater(() -> new EmployeeInterface(utilisateur.prenom , utilisateur.nom));
                 }
                 dispose(); // Fermer la fenêtre de connexion après authentification
                 return;
@@ -79,7 +80,6 @@ public class LoginFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Lancer l'application sur le thread de l'interface utilisateur (Event Dispatch Thread)
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();
             loginFrame.setVisible(true);

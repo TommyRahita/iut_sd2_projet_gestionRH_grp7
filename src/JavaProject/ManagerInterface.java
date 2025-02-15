@@ -6,7 +6,16 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class ManagerInterface extends JFrame {
-    public ManagerInterface() {
+	private String managerFirstName ;
+    private String managerName;
+
+    public ManagerInterface(String managerFirstName, String managerName) {
+    	this.managerFirstName = managerFirstName ;
+        this.managerName = managerName;
+        initUI();
+    }
+
+    private void initUI() {
         try {
             ImageIcon icon = new ImageIcon("resources\\icon.png");
             setIconImage(icon.getImage());
@@ -23,7 +32,7 @@ public class ManagerInterface extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
 
-        JLabel nameLabel = new JLabel("Manager : *à implémenter*");
+        JLabel nameLabel = new JLabel("Manager : " + this.managerFirstName + " "  + this.managerName);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -39,18 +48,6 @@ public class ManagerInterface extends JFrame {
         JButton addUserButton = createRoundedButton("Ajouter un utilisateur");
         addUserButton.addActionListener(e -> openAddUserInterface());
         buttonPanel.add(addUserButton);
-
-        JButton deleteUserButton = createRoundedButton("Supprimer un utilisateur");
-        deleteUserButton.addActionListener(e -> openDeleteUserInterface());
-        buttonPanel.add(deleteUserButton);
-
-        JButton validateLeaveButton = createRoundedButton("Valider les congés");
-        validateLeaveButton.addActionListener(e -> openValidateLeaveInterface());
-        buttonPanel.add(validateLeaveButton);
-
-        JButton salaryManagementButton = createRoundedButton("Ouvrir le menu de management des salaires");
-        salaryManagementButton.addActionListener(e -> openSalaryManagementInterface());
-        buttonPanel.add(salaryManagementButton);
 
         UIManager.put("ComboBox.selectionBackground", Color.WHITE);
         UIManager.put("ComboBox.selectionForeground", Color.BLACK);
@@ -91,20 +88,8 @@ public class ManagerInterface extends JFrame {
         new AddUserInterface(this);
     }
 
-    private void openDeleteUserInterface() {
-        new DeleteUserInterface(this);
-    }
-
-    private void openValidateLeaveInterface() {
-        new ValidateLeaveInterface(this);
-    }
-
-    private void openSalaryManagementInterface() {
-        new SalaryManagementInterface(this);
-    }
-
     private void logoutAction() {
-        dispose(); // Ferme l'interface manager
+        dispose();
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();
             loginFrame.setVisible(true);

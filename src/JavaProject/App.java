@@ -16,7 +16,7 @@ public class App {
 		   
 		   
 		    // ETAPE 1 : On recupere les données du csv
-		    List<Utilisateur> liste_utilisateur = Utilisateur.func_recup_data("Ressources\\Utilisateurs.csv");
+		    List<Utilisateur> liste_utilisateur = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
 		   
 		   
 		    

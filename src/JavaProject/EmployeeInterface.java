@@ -5,9 +5,18 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class EmployeeInterface extends JFrame {
-    public EmployeeInterface() {
+	private String employeeFirstName ;
+    private String employeeName;
+
+    public EmployeeInterface(String employeeFirstName , String employeeName) {
+    	this.employeeFirstName = employeeFirstName ;
+        this.employeeName = employeeName;
+        initUI();
+    }
+
+    private void initUI() {
         try {
-            ImageIcon icon = new ImageIcon("resources\\icon.png");
+            ImageIcon icon = new ImageIcon("resources/icon.png");
             setIconImage(icon.getImage());
         } catch (Exception e) {
             System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
@@ -19,37 +28,31 @@ public class EmployeeInterface extends JFrame {
         setLayout(new BorderLayout());
         setResizable(false);
 
-        // Panneau supérieur avec le nom de l'employé
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
-        JLabel nameLabel = new JLabel("Employee : *à implémenter*");
+        JLabel nameLabel = new JLabel("Employee : " + this.employeeFirstName + " " + this.employeeName);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         topPanel.add(nameLabel);
         add(topPanel, BorderLayout.NORTH);
 
-        // Panneau central contenant les boutons
         JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 10, 20));
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 35, true));
 
-        // Bouton 1 : Saisir le nombre d'heures travaillées
         JButton enterWorkedHours = createRoundedButton("Saisissez votre nombre d'heures travaillées ce mois-ci");
         enterWorkedHours.addActionListener(e -> openEnterWorkedHours());
         buttonPanel.add(enterWorkedHours);
 
-        // Bouton 2 : Demander des congés
         JButton congeRequestButton = createRoundedButton("Demander des congés");
         congeRequestButton.addActionListener(e -> openCongesRequestInterface());
         buttonPanel.add(congeRequestButton);
 
-        // Bouton 3 : Télécharger la fiche de paie
         JButton downloadPaySlipButton = createRoundedButton("Téléchargez votre fiche de paie");
         downloadPaySlipButton.addActionListener(e -> downloadPaySlip());
         buttonPanel.add(downloadPaySlipButton);
 
-        // Configuration des UIManager pour les ComboBox (provenant de la version B)
         UIManager.put("ComboBox.selectionBackground", new Color(255, 255, 255));
         UIManager.put("ComboBox.selectionForeground", Color.BLACK);
 
@@ -58,7 +61,6 @@ public class EmployeeInterface extends JFrame {
         centerPanel.setBackground(new Color(29, 46, 56));
         add(centerPanel, BorderLayout.CENTER);
 
-        // Panneau inférieur avec les boutons Déconnexion et Quitter
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         bottomPanel.setBackground(new Color(43, 60, 70));
         JButton logoutButton = createRoundedButton("Déconnexion");
@@ -82,22 +84,18 @@ public class EmployeeInterface extends JFrame {
         return button;
     }
 
-    // Ouvre la fenêtre pour saisir le nombre d'heures travaillées (fonctionnalité de la version A)
     private void openEnterWorkedHours() {
         new EnterWorkedHours(this);
     }
-   
-    // Ouvre l'interface de demande de congés (fonctionnalité ajoutée dans la version B)
+    
     private void openCongesRequestInterface() {
         new CongeRequest(this);
     }
-   
-    // Affiche un message pour le téléchargement de la fiche de paie (stub)
+    
     private void downloadPaySlip() {
         JOptionPane.showMessageDialog(this, "Téléchargement à implémenter");
     }
-
-    // Déconnexion : ferme l'interface et ouvre la fenêtre de login (fonctionnalité de la version A)
+    
     private void logoutAction() {
         dispose();
         SwingUtilities.invokeLater(() -> {
@@ -105,8 +103,5 @@ public class EmployeeInterface extends JFrame {
             loginFrame.setVisible(true);
         });
     }
-   
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(EmployeeInterface::new);
-    }
+    
 }

@@ -75,7 +75,7 @@ public class Manager extends Utilisateur {
 	// ---------------------- METHODE SUPPRIMER UTILISATEUR -----------------------//
 	public static void supprimer_utilisateur(String nom, String prenom) {
 		String ligne;
-		String path_csv = "Ressources/Utilisateurs.csv";
+		String path_csv = "resources/Utilisateurs.csv";
 		File fichier_original = new File(path_csv);
         File new_file = new File("temp_utilisateur"); // Fichier temporaire
 
@@ -130,8 +130,8 @@ public class Manager extends Utilisateur {
 	
 	// ---------------------- METHODE CALCULER SALAIRE -----------------------//
 	public static float calculer_salaire(String nom, String prenom) {
-		String path_th = "Ressources/taux_horraire_poste.csv";
-		String path_utilisateurs = "Ressources/Utilisateurs.csv";
+		String path_th = "resources/taux_horraire_poste.csv";
+		String path_utilisateurs = "resources/Utilisateurs.csv";
 		String ligne;
 		boolean utilisateur_trouve = false;
 		// On lit le fichier utilisateur

@@ -21,6 +21,7 @@ public class Utilisateur {
 	
 	// Constructeur 1
 	public Utilisateur(int id, String nom, String prenom, String poste,	int jours_conge_restants, String mdp, String statut) {
+		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.poste = poste;

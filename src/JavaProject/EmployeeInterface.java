@@ -5,12 +5,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class EmployeeInterface extends JFrame {
-	private String employeeFirstName ;
-    private String employeeName;
+    private Utilisateur employee;
 
-    public EmployeeInterface(String employeeFirstName , String employeeName) {
-    	this.employeeFirstName = employeeFirstName ;
-        this.employeeName = employeeName;
+    public EmployeeInterface(Utilisateur employee) {
+        this.employee = employee;
         initUI();
     }
 
@@ -30,7 +28,7 @@ public class EmployeeInterface extends JFrame {
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
-        JLabel nameLabel = new JLabel("Employee : " + this.employeeFirstName + " " + this.employeeName);
+        JLabel nameLabel = new JLabel("Employee : " + employee.prenom + " " + employee.nom);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -85,11 +83,11 @@ public class EmployeeInterface extends JFrame {
     }
 
     private void openEnterWorkedHours() {
-        new EnterWorkedHours(this);
+        new EnterWorkedHours(this, employee);
     }
     
     private void openCongesRequestInterface() {
-        new CongeRequest(this);
+        new CongeRequest(this, employee);
     }
     
     private void downloadPaySlip() {
@@ -103,5 +101,4 @@ public class EmployeeInterface extends JFrame {
             loginFrame.setVisible(true);
         });
     }
-    
 }

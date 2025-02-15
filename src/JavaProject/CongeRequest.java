@@ -12,9 +12,12 @@ import java.util.*;
 
 public class CongeRequest extends JFrame {
     private JFrame parent;
-
-    public CongeRequest(JFrame parent) {
+    private Utilisateur utilisateur;
+    
+    public CongeRequest(JFrame parent, Utilisateur utilisateur) {
         this.parent = parent;
+        this.utilisateur = utilisateur;
+        
         if (this.parent != null) {
             this.parent.setVisible(false);
         }
@@ -217,6 +220,6 @@ public class CongeRequest extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CongeRequest(null)); // Test sans parent
+        SwingUtilities.invokeLater(() -> new CongeRequest(null,null)); // Test sans parent
     }
 }

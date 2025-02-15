@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class LoginFrame extends JFrame {
-    private JTextField txtEmail;
+    private JTextField txtId;
     private JPasswordField txtPassword;
 
     public LoginFrame() {
@@ -33,9 +33,9 @@ public class LoginFrame extends JFrame {
         lblTitle.setBounds(100, 20, 250, 20);
         panel.add(lblTitle);
 
-        txtEmail = new JTextField();
-        txtEmail.setBounds(100, 60, 250, 30);
-        panel.add(txtEmail);
+        txtId = new JTextField();
+        txtId.setBounds(100, 60, 250, 30);
+        panel.add(txtId);
 
         txtPassword = new JPasswordField();
         txtPassword.setBounds(100, 100, 250, 30);
@@ -47,36 +47,35 @@ public class LoginFrame extends JFrame {
         btnLogin.setForeground(Color.BLACK);
         panel.add(btnLogin);
 
-        // Action lors du clic sur Connexion
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String email = txtEmail.getText().trim();
+                String id = txtId.getText().trim();
                 String password = new String(txtPassword.getPassword()).trim();
-                verifierIdentifiants(email, password);
+                verifierIdentifiants(id, password);
             }
         });
 
         add(panel);
     }
 
-    private void verifierIdentifiants(String email, String password) {
+    private void verifierIdentifiants(String id, String password) {
         List<Utilisateur> utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
 
         for (Utilisateur utilisateur : utilisateurs) {
             String identifiant = utilisateur.prenom.toLowerCase() + "." + utilisateur.nom.toLowerCase();
-            if (identifiant.equalsIgnoreCase(email) && utilisateur.mdp.equals(password)) {
+            if (identifiant.equalsIgnoreCase(id) && utilisateur.mdp.equals(password)) {
                 JOptionPane.showMessageDialog(this, "Connexion réussie en tant que " + utilisateur.statut);
                 if (utilisateur.statut.equalsIgnoreCase("manager")) {
-                    SwingUtilities.invokeLater(() -> new ManagerInterface(utilisateur.prenom , utilisateur.nom));
+                    SwingUtilities.invokeLater(() -> new ManagerInterface(utilisateur));
                 } else {
-                    SwingUtilities.invokeLater(() -> new EmployeeInterface(utilisateur.prenom , utilisateur.nom));
+                    SwingUtilities.invokeLater(() -> new EmployeeInterface(utilisateur));
                 }
-                dispose(); // Fermer la fenêtre de connexion après authentification
+                dispose(); 
                 return;
             }
         }
-        JOptionPane.showMessageDialog(this, "Identifiants incorrects", "Erreur", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 
     public static void main(String[] args) {

@@ -41,8 +41,20 @@
 	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/svg-7.2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/svg-7.2.6-javadoc.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6/svg-7.2.6-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/tommy/Downloads/iText-Core-7.2.6.zip"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/barcodes-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/commons-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/font-asian-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/forms-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/hyph-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/io-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/kernel-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/layout-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/pdfa-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/pdftest-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/sign-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/styled-xml-parser-7.2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/iText7-Core-7.2.5-only-jars/svg-7.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/slf4j-api-2.0.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/slf4j-simple-2.0.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/tommy/Downloads/slf4j-simple-1.7.36.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

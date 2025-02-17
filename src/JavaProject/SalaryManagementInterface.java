@@ -92,10 +92,9 @@ public class SalaryManagementInterface extends JFrame {
                 return;
             }
 
-            double salaireNet = manager.calculer_salaire(selectedUser);
-
+            double[] salaireNet = manager.calculer_salaire(selectedUser);
             // Mise à jour du label du salaire avec un bon format
-            salaryLabel.setText(String.format("Salaire Net : %.2f €", salaireNet));
+            salaryLabel.setText("Salaire Net : "+ String.valueOf(salaireNet[4])+" €");
             salaryLabel.repaint();
             salaryLabel.revalidate();
         });

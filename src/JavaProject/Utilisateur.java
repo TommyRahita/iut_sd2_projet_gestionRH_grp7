@@ -21,7 +21,6 @@ public class Utilisateur {
 	
 	// Constructeur 1
 	public Utilisateur(int id, String nom, String prenom, String poste,	int jours_conge_restants, String mdp, String statut) {
-		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.poste = poste;
@@ -37,10 +36,7 @@ public class Utilisateur {
 	}
 	
 	public static List<Utilisateur> func_recup_data(String chemin_fichier) {
-		
-	    
 	    String ligne;
-	    
 	    // Creation des listes d'utilisateurs
 	    List<Utilisateur> liste_utilisateur = new ArrayList<>();
 
@@ -75,6 +71,56 @@ public class Utilisateur {
 	    
 	    return liste_utilisateur;
 	}
+	
+	
+	// ---------------------- METHODE CALCULER SALAIRE -----------------------//
+	public static float calculer_salaire(String nom, String prenom) {
+		String path_th = "Ressources/taux_horraire_poste.csv";
+		String path_utilisateurs = "Ressources/Utilisateurs.csv";
+		String ligne;
+		boolean utilisateur_trouve = false;
+		// On lit le fichier utilisateur
+		 try (BufferedReader br_utilisateurs = new BufferedReader(new FileReader(path_utilisateurs))) {
+			 // Ignorer la première ligne
+			 br_utilisateurs.readLine();
+			 
+				  while((ligne = br_utilisateurs.readLine()) != null) {
+					  // On sépare la ligne en fonction des colonnes
+					  String[] colonne_utilisateur = ligne.split(";");
+					  String nom_utilisateur = colonne_utilisateur[1];
+					  String prenom_utilisateur = colonne_utilisateur[2];
+					  String poste_utilisateur =  colonne_utilisateur[3];
+					  // Si la personne pour qui on veut calculer le salaire est trouvée, on récupere le nom de son poste
+					  if (nom_utilisateur.equals(nom) && prenom_utilisateur.equals(prenom)) {
+						  // Si l'employé existe dans la base de données, on cherche son poste (qui nous donnera son salaire a l'heure)
+						  System.out.println("utilisateur trouvé");
+						  try (BufferedReader br_th = new BufferedReader(new FileReader(path_th))){
+							  br_th.readLine();
+							  while ((ligne = br_th.readLine()) != null){
+								  String[] colonne_th = ligne.split(";");
+								  String poste_th = colonne_th[0];
+								  float taux_horraire = Float.parseFloat(colonne_th[1]) ;
+								  // Si le poste de l'utilisateur est dans le fichier taux_horraire.csv, on récupere le taux horraire correspondant
+								  if (poste_utilisateur.equals(poste_th)) {
+									  return taux_horraire;
+								  }
+							  }
+						  }
+						  break;
+					  }
+				  }
+
+
+				  
+			  }
+     	catch (IOException e) {
+            e.printStackTrace();
+           
+        }
+		 return -1;
+		
+	}
+	
 	
 	
 

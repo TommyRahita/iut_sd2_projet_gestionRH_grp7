@@ -33,47 +33,51 @@ public class Manager extends Utilisateur {
      * On suppose que le fichier paie.csv a la structure suivante :
      * idPaie;moisPaie;anneePaie;idUtilisateur;nom;prenom;poste;taux_horaire;nb_jour_travaille;nb_conge;salaire;primes;cotisations;impots
      *
+     * @param parent       La fenêtre parent pour afficher un message si aucune paie n'est trouvée.
      * @param selectedUser Le nom complet de l'utilisateur (prenom + " " + nom)
-     * @return Un tableau de double contenant :
-     *         [0] salaireBrut, [1] primes, [2] cotisations, [3] impots, [4] salaireNet,
-     *         [5] mois (en valeur numérique), [6] année (en valeur numérique)
+     * @return Un tableau de double contenant les informations salariales ou null si aucune paie trouvée.
      */
-    public static double[] calculer_salaire(String selectedUser) {
+    public static double[] calculer_salaire(JFrame parent, String selectedUser) {
         String path_paie = "resources/paie.csv";
         double salaireBrut = 0, primes = 0, cotisations = 0, impots = 0;
-        String moisPaie = "", anneePaie = "";
-        
+        String moisPaie = "0", anneePaie = "0";
+        boolean found = false; // Pour vérifier si une paie existe
+
         try (BufferedReader br = new BufferedReader(new FileReader(path_paie))) {
             String ligne;
-            // Lecture ligne par ligne
             while ((ligne = br.readLine()) != null) {
                 String[] colonne = ligne.split(";");
-                // On vérifie que le nom complet (colonne[5] + " " + colonne[4]) correspond à l'utilisateur sélectionné
-                System.out.println(colonne[5] + " " + colonne[4]);
+                if (colonne.length < 14) continue; // Ignore les lignes incomplètes
+
                 if ((colonne[5] + " " + colonne[4]).equalsIgnoreCase(selectedUser)) {
-                    // Extraction du mois et de l'année (supposés être aux index 1 et 2)
+                    found = true;
                     moisPaie = colonne[1];
                     anneePaie = colonne[2];
-                    System.out.println("Mois de paie : " + moisPaie);
-                    System.out.println("Année de paie : " + anneePaie);
-                    
-                    salaireBrut += Double.parseDouble(colonne[10].replace(",", "."));
-                    primes += Double.parseDouble(colonne[11].replace(",", "."));
-                    cotisations += Double.parseDouble(colonne[12].replace(",", "."));
-                    impots += Double.parseDouble(colonne[13].replace(",", "."));
-                    System.out.println("Hello");
+
+                    salaireBrut += safeParseDouble(colonne[10]);
+                    primes += safeParseDouble(colonne[11]);
+                    cotisations += safeParseDouble(colonne[12]);
+                    impots += safeParseDouble(colonne[13]);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(parent, 
+                "Il n'y a pas de paie pour le mois en cours pour " + selectedUser, 
+                "Alerte", JOptionPane.WARNING_MESSAGE);
+            return null; // Retourne `null` pour éviter une erreur lors du calcul du salaire net
+        }
+
         double salaireNet = salaireBrut + primes - cotisations - impots;
-        double mois = Double.parseDouble(moisPaie);
-        double annee = Double.parseDouble(anneePaie);
-        System.out.println("Salaire net : " + salaireNet);
-        
+        double mois = safeParseDouble(moisPaie);
+        double annee = safeParseDouble(anneePaie);
+
         return new double[]{salaireBrut, primes, cotisations, impots, salaireNet, mois, annee};
     }
+
 
     // ---------------------- GÉNÉRER FICHE DE PAIE -----------------------//
     /**
@@ -89,7 +93,11 @@ public class Manager extends Utilisateur {
             return;
         }
 
-        double[] salaireDetails = calculer_salaire(selectedUser);
+        double[] salaireDetails = calculer_salaire(parent, selectedUser);
+        if (salaireDetails == null) {
+            return; // Arrête la fonction si aucune paie n'est trouvée
+        }
+
         double salaireBrut = salaireDetails[0];
         double primes = salaireDetails[1];
         double cotisations = salaireDetails[2];
@@ -166,8 +174,7 @@ public class Manager extends Utilisateur {
             JOptionPane.showMessageDialog(parent, "Erreur lors de la génération du PDF.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    // ---------------------- Méthodes pour la mise en forme des cellules ----------------------//
+ // ---------------------- MÉTHODES POUR LA MISE EN FORME DES CELLULES ----------------------//
     private static Cell createHeaderCell(String text, DeviceRgb bgColor, DeviceRgb textColor) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -195,4 +202,14 @@ public class Manager extends Utilisateur {
                 .setTextAlignment(TextAlignment.RIGHT)
                 .setBorder(new SolidBorder(1));
     }
+ // ---------------------- MÉTHODE POUR SÉCURISER LA CONVERSION EN DOUBLE ----------------------//
+    private static double safeParseDouble(String value) {
+        try {
+            return value == null || value.isEmpty() ? 0.0 : Double.parseDouble(value.replace(",", "."));
+        } catch (NumberFormatException e) {
+            System.err.println("Erreur de conversion en double : " + value);
+            return 0.0; // Retourne 0 pour éviter les crashs
+        }
+    }
+
 }

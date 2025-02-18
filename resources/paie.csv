@@ -1,3 +1,7 @@
-idPaie;moisPaie;anneePaie;idUtilisateur;nom;prenom;poste;taux_horaire;nb_jour_travaille;nb_conge;salaire;primes;cotisations;impots
-1;2;2025;8;rahita;tommy;Data Scientist;11.70;140;4;1591.20;200;300;150
-2;2;2025;8;rahita;tommy;Data Scientist;11.70;45;4;479.70;50;100;50
+idPaie;moisPaie;anneePaie;idUtilisateur;nom;prenom;poste;taux_horaire;nb_heure_travaille;nb_conge;salaire;primes;cotisations;impots
+1;2;2025;0;Lemoine;Paul;Data Engineer;9,70;140;12;1358,00;200,00;190,00;170,00
+2;2;2025;0;Leroy;Isabelle;Data Analyst;10,50;130;18;1365,00;290,00;200,00;190,00
+3;2;2025;0;Dupont;Jean;Manager;12,00;120;24;1440,00;300,00;129,00;200,00
+4;2;2025;0;rahita;tommy;Data Scientist;11,70;140;4;1638,00;129,00;200,00;100,00
+5;2;2025;0;Dupont;Jean;Manager;12,00;12;24;144,00;12,00;12,00;12,00
+6;2;2025;0;rahita;tommy;Data Scientist;11,70;129;4;1509,30;30,00;290,00;123,00

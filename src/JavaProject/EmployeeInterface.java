@@ -34,7 +34,7 @@ public class EmployeeInterface extends JFrame {
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
-        JLabel nameLabel = new JLabel("Employee : " + employee.prenom + " " + employee.nom);
+        JLabel nameLabel = new JLabel("Employé : " + employee.prenom + " " + employee.nom);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -53,8 +53,8 @@ public class EmployeeInterface extends JFrame {
         congeRequestButton.addActionListener(e -> openCongesRequestInterface());
         buttonPanel.add(congeRequestButton);
 
-        JButton downloadPaySlipButton = createRoundedButton("Téléchargez votre fiche de paie");
-        downloadPaySlipButton.addActionListener(e -> downloadPaySlip());
+        JButton downloadPaySlipButton = createRoundedButton("Télécharger votre fiche de paie");
+        downloadPaySlipButton.addActionListener(e -> openPaySlipSelectionDialog());
         buttonPanel.add(downloadPaySlipButton);
 
         UIManager.put("ComboBox.selectionBackground", new Color(255, 255, 255));
@@ -97,29 +97,84 @@ public class EmployeeInterface extends JFrame {
     }
     
     /**
-     * Télécharge la dernière fiche de paie PDF de l'utilisateur.
+     * Ouvre une boîte de dialogue pour choisir le mois et l'année avant de télécharger la fiche de paie.
+     */
+    private void openPaySlipSelectionDialog() {
+        new PaySlipSelectionDialog(this, employee);
+    }
+
+    private void logoutAction() {
+        dispose();
+        SwingUtilities.invokeLater(() -> {
+            LoginFrame loginFrame = new LoginFrame();
+            loginFrame.setVisible(true);
+        });
+    }
+}
+
+/**
+ * Classe pour afficher une boîte de dialogue permettant de choisir le mois et l'année d'une fiche de paie.
+ */
+class PaySlipSelectionDialog extends JDialog {
+    private JComboBox<Integer> monthComboBox, yearComboBox;
+    private Utilisateur employee;
+    private JFrame parent;
+
+    public PaySlipSelectionDialog(JFrame parent, Utilisateur employee) {
+        super(parent, "Sélectionner une fiche de paie", true);
+        this.parent = parent;
+        this.employee = employee;
+
+        setSize(300, 200);
+        setLayout(new GridLayout(3, 2, 10, 10));
+        setLocationRelativeTo(parent);
+
+        add(new JLabel("Mois :"));
+        Integer[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        monthComboBox = new JComboBox<>(months);
+        add(monthComboBox);
+
+        add(new JLabel("Année :"));
+        Integer[] years = {2023, 2024, 2025, 2026, 2027};
+        yearComboBox = new JComboBox<>(years);
+        add(yearComboBox);
+
+        JButton confirmButton = new JButton("Télécharger");
+        confirmButton.addActionListener(e -> downloadPaySlip());
+        add(confirmButton);
+
+        JButton cancelButton = new JButton("Annuler");
+        cancelButton.addActionListener(e -> dispose());
+        add(cancelButton);
+
+        setVisible(true);
+    }
+
+    /**
+     * Télécharge la fiche de paie en fonction du mois et de l'année sélectionnés.
      */
     private void downloadPaySlip() {
-        // 1) Récupère le fichier PDF le plus récent correspondant à l'employé
-        File lastPaySlip = findLastPaySlipFile(employee.prenom, employee.nom);
-        if (lastPaySlip == null) {
+        int selectedMonth = (int) monthComboBox.getSelectedItem();
+        int selectedYear = (int) yearComboBox.getSelectedItem();
+
+        File paySlipFile = findPaySlipFile(employee.prenom, employee.nom, selectedMonth, selectedYear);
+        if (paySlipFile == null) {
             JOptionPane.showMessageDialog(this,
-                    "Aucune fiche de paie trouvée pour " + employee.prenom + " " + employee.nom,
+                    "Aucune fiche de paie trouvée pour " + employee.prenom + " " + employee.nom +
+                            " en " + selectedMonth + "/" + selectedYear,
                     "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 2) Proposer à l'utilisateur de l'enregistrer
         JFileChooser fileChooser = new JFileChooser();
-        // Nom par défaut du fichier
-        fileChooser.setSelectedFile(new File(employee.prenom + "_" + employee.nom + "_fiche_paie.pdf"));
+        fileChooser.setSelectedFile(new File(employee.prenom + "_" + employee.nom + "_" +
+                selectedMonth + "_" + selectedYear + "_fiche_paie.pdf"));
 
         int userChoice = fileChooser.showSaveDialog(this);
         if (userChoice == JFileChooser.APPROVE_OPTION) {
             File destinationFile = fileChooser.getSelectedFile();
             try {
-                // 3) Copier la fiche de paie vers l'emplacement choisi
-                Files.copy(lastPaySlip.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(paySlipFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 JOptionPane.showMessageDialog(this,
                         "Fiche de paie téléchargée avec succès.\n" + destinationFile.getAbsolutePath(),
                         "Succès", JOptionPane.INFORMATION_MESSAGE);
@@ -133,42 +188,19 @@ public class EmployeeInterface extends JFrame {
     }
 
     /**
-     * Recherche la dernière fiche de paie PDF correspondant au prénom + nom de l'utilisateur.
-     * @param prenom Le prénom de l'utilisateur
-     * @param nom Le nom de l'utilisateur
-     * @return Le fichier le plus récent ou null si aucun fichier trouvé
+     * Recherche une fiche de paie spécifique en fonction du prénom, nom, mois et année.
      */
-    private File findLastPaySlipFile(String prenom, String nom) {
+    private File findPaySlipFile(String prenom, String nom, int month, int year) {
         File dir = new File("resources/fiches_paie");
         if (!dir.exists() || !dir.isDirectory()) {
             return null;
         }
 
-        // On suppose que le fichier PDF contient prenom_nom dans son nom, et se termine par "_fiche_paie.pdf"
-        File[] matchingFiles = dir.listFiles((d, filename) -> {
-            String lowerFile = filename.toLowerCase();
-            String lowerPrenom = prenom.toLowerCase();
-            String lowerNom = nom.toLowerCase();
-            // Condition : le fichier contient "prenom_nom" et finit par "_fiche_paie.pdf"
-            return lowerFile.contains(lowerPrenom + "_" + lowerNom) && lowerFile.endsWith("_fiche_paie.pdf");
-        });
+        String expectedFileName = prenom.toLowerCase() + "_" + nom.toLowerCase() +
+                "_" + String.format("%02d", month) + "-" + year + "_fiche_paie.pdf";
 
-        if (matchingFiles == null || matchingFiles.length == 0) {
-            return null;
-        }
+        File[] matchingFiles = dir.listFiles((d, filename) -> filename.equalsIgnoreCase(expectedFileName));
 
-        // Trier par date de modification décroissante (le plus récent en premier)
-        Arrays.sort(matchingFiles, Comparator.comparingLong(File::lastModified).reversed());
-
-        // matchingFiles[0] est donc le plus récent
-        return matchingFiles[0];
-    }
-
-    private void logoutAction() {
-        dispose();
-        SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
-            loginFrame.setVisible(true);
-        });
+        return (matchingFiles != null && matchingFiles.length > 0) ? matchingFiles[0] : null;
     }
 }

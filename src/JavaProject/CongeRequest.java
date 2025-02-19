@@ -12,9 +12,13 @@ import java.util.*;
 
 public class CongeRequest extends JFrame {
     private JFrame parent;
+    private Utilisateur utilisateur;
+    
 
-    public CongeRequest(JFrame parent) {
+    public CongeRequest(JFrame parent, Utilisateur utilisateur) {
         this.parent = parent;
+        this.utilisateur = utilisateur;
+
         if (this.parent != null) {
             this.parent.setVisible(false);
         }
@@ -85,7 +89,6 @@ public class CongeRequest extends JFrame {
         requestButton.addActionListener(e -> {
             String startDate = startDateField.getText();
             String endDate = endDateField.getText();
-            String onrecupidici = "1"; // Déclaration ici, valeur 1
 
             // Vérification des champs vides
             if (startDate.isEmpty() || endDate.isEmpty()) {
@@ -99,11 +102,18 @@ public class CongeRequest extends JFrame {
                 return;
             }
 
-            // Vérification si la date de fin est antérieure à la date de début
+            // Vérification si les dates sont postérieures à aujourd'hui
+            LocalDate today = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dateDebut = LocalDate.parse(startDate, formatter);
             LocalDate dateFin = LocalDate.parse(endDate, formatter);
 
+            if (!dateDebut.isAfter(today) || !dateFin.isAfter(today)) {
+                JOptionPane.showMessageDialog(this, "Les dates doivent être postérieures à la date d'aujourd'hui.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Vérification si la date de fin est antérieure à la date de début
             if (dateFin.isBefore(dateDebut)) {
                 JOptionPane.showMessageDialog(this, "La date de fin ne peut pas être antérieure à la date de début.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -119,9 +129,11 @@ public class CongeRequest extends JFrame {
                 JOptionPane.YES_NO_OPTION
             );
 
+            String onrecupidici = (utilisateur.nom + " " + utilisateur.prenom);
+            
             if (response == JOptionPane.YES_OPTION) {
                 try {
-                    enregistrerConge(onrecupidici, startDate, endDate);
+                    enregistrerConge(startDate, endDate);
                     JOptionPane.showMessageDialog(this, "Demande enregistrée avec succès !");
                     if (parent != null) {
                         parent.setVisible(true);
@@ -142,19 +154,26 @@ public class CongeRequest extends JFrame {
         setVisible(true);
     }
 
-    private void enregistrerConge(String idConge, String dateDebutStr, String dateFinStr) throws IOException {
+    private void enregistrerConge(String dateDebutStr, String dateFinStr) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dateDebut = LocalDate.parse(dateDebutStr, formatter);
         LocalDate dateFin = LocalDate.parse(dateFinStr, formatter);
 
         String nom = "";
         String prenom = "";
+        String idUtilisateur = "";  // Variable pour stocker l'ID de l'utilisateur
 
+        // La variable onrecupidici est formée par la concaténation du prénom et du nom
+        String onrecupidici = (utilisateur.nom + " " + utilisateur.prenom);
+
+        // Lire le fichier Utilisateurs.csv pour obtenir l'ID de l'utilisateur
         try (BufferedReader br = new BufferedReader(new FileReader("resources\\Utilisateurs.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(";");
-                if (parts.length > 0 && parts[0].equals(idConge)) {
+                // Vérifiez que la concaténation des colonnes 2 et 3 (nom et prénom) correspond à onrecupidici
+                if (parts.length > 2 && (parts[1] + " " + parts[2]).equals(onrecupidici)) {
+                    idUtilisateur = parts[0]; // L'ID de l'utilisateur est supposé être dans la première colonne
                     nom = parts[1];
                     prenom = parts[2];
                     break; // On arrête dès qu'on trouve la ligne correspondante
@@ -165,11 +184,18 @@ public class CongeRequest extends JFrame {
             return; // On arrête si la lecture du fichier échoue
         }
 
+        // Si l'utilisateur n'a pas été trouvé, affichez un message d'erreur
+        if (idUtilisateur.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Utilisateur non trouvé dans le fichier Utilisateurs.csv.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         long nbJoursOuvres = calculerJoursOuvres(dateDebut, dateFin);
 
+        // Ajouter la demande de congé dans le fichier conge.csv avec l'ID de l'utilisateur
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources\\conge.csv", true))) {
-            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s\n",
-                    idConge, nom, prenom, dateDebutStr, dateFinStr, nbJoursOuvres, "En attente"));
+            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s;%s;%s;\n",
+                    idUtilisateur, nom, prenom, dateDebutStr, dateFinStr, nbJoursOuvres, "En attente", "", "N"));
         }
     }
 
@@ -193,7 +219,6 @@ public class CongeRequest extends JFrame {
         return nbJours;
     }
 
-
     // Méthode pour créer des boutons arrondis avec une taille uniforme
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
@@ -207,7 +232,7 @@ public class CongeRequest extends JFrame {
     // Méthode pour vérifier si une date est valide (format JJ/MM/AAAA)
     private boolean isValidDate(String dateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setLenient(false); // Désactive le mode tolérant pour les dates
+        sdf.setLenient(false); // Désactive le mode tol
         try {
             sdf.parse(dateStr); // Essaye de parser la date
             return true;
@@ -217,6 +242,6 @@ public class CongeRequest extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CongeRequest(null)); // Test sans parent
+        SwingUtilities.invokeLater(() -> new CongeRequest(null,null)); // Test sans parent
     }
 }

@@ -102,31 +102,38 @@ public class ValidateLeaveInterface extends JFrame {
     }
 
     // Charger les données du fichier conge.csv
+ // Charger les données du fichier conge.csv
     private void loadCongeData(DefaultTableModel tableModel) {
         try (BufferedReader br = new BufferedReader(new FileReader("resources\\conge.csv"))) {
             String line;
+
+            // Ignorer la première ligne (en-têtes)
+            if ((line = br.readLine()) != null) {
+                // La première ligne est l'en-tête, donc on ne fait rien ici
+            }
+
+            // Lire les lignes restantes
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(";");
-                if (data.length >= 9 && !data[6].equals("Validé") && !data[6].equals("Rejeté")) {  // Ignorer les demandes validées ou rejetées
-                	                // Ajouter une nouvelle ligne dans le modèle de la table
-                	                Object[] row = {
-                	                    data[0], // ID
-                	                    data[1], // Nom
-                	                    data[2], // Prénom
-                	                    data[3], // Date de début
-                	                    data[4], // Date de fin
-                	                    data[5], // Jours ouvrés
-                	                    data[6], // Statut
-                	                    createActionButton(data[0]) // Bouton pour valider ou rejeter
-                	                };
-                	                tableModel.addRow(row);
-                	            }
-                	        }
-                	    } catch (IOException e) {
-                	        JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier conge.csv: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-                	    }
-                	}
-
+                if (data.length >= 9 && !data[6].equals("Validé") && !data[6].equals("Rejeté")) {  
+                    // Ajouter une nouvelle ligne dans le modèle de la table
+                    Object[] row = {
+                        data[0], // ID
+                        data[1], // Nom
+                        data[2], // Prénom
+                        data[3], // Date de début
+                        data[4], // Date de fin
+                        data[5], // Jours ouvrés
+                        data[6], // Statut
+                        createActionButton(data[0]) // Bouton pour valider ou rejeter
+                    };
+                    tableModel.addRow(row);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier conge.csv: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     // Méthode pour créer un bouton d'action (pour valider ou rejeter un congé)
     private JButton createActionButton(String idConge) {

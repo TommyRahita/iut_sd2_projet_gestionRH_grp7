@@ -55,7 +55,7 @@ class AddUserInterface extends JFrame {
         formPanel.add(passwordField);
 
         JLabel statusLabel = createStyledLabel("Statut :");
-        JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"Manager", "Employé"});
+        JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"Manager", "Employe"});
         formPanel.add(statusLabel);
         formPanel.add(statusComboBox);
 

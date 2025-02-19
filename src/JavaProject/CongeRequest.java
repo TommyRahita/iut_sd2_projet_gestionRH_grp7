@@ -13,11 +13,11 @@ import java.util.*;
 public class CongeRequest extends JFrame {
     private JFrame parent;
     private Utilisateur utilisateur;
-    
+
     public CongeRequest(JFrame parent, Utilisateur utilisateur) {
         this.parent = parent;
         this.utilisateur = utilisateur;
-        
+
         if (this.parent != null) {
             this.parent.setVisible(false);
         }
@@ -102,11 +102,18 @@ public class CongeRequest extends JFrame {
                 return;
             }
 
-            // Vérification si la date de fin est antérieure à la date de début
+            // Vérification si les dates sont postérieures à aujourd'hui
+            LocalDate today = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dateDebut = LocalDate.parse(startDate, formatter);
             LocalDate dateFin = LocalDate.parse(endDate, formatter);
 
+            if (!dateDebut.isAfter(today) || !dateFin.isAfter(today)) {
+                JOptionPane.showMessageDialog(this, "Les dates doivent être postérieures à la date d'aujourd'hui.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Vérification si la date de fin est antérieure à la date de début
             if (dateFin.isBefore(dateDebut)) {
                 JOptionPane.showMessageDialog(this, "La date de fin ne peut pas être antérieure à la date de début.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -171,7 +178,7 @@ public class CongeRequest extends JFrame {
         long nbJoursOuvres = calculerJoursOuvres(dateDebut, dateFin);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources\\conge.csv", true))) {
-            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s\n",
+            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s;N\n",
                     idConge, nom, prenom, dateDebutStr, dateFinStr, nbJoursOuvres, "En attente"));
         }
     }
@@ -196,7 +203,6 @@ public class CongeRequest extends JFrame {
         return nbJours;
     }
 
-
     // Méthode pour créer des boutons arrondis avec une taille uniforme
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
@@ -210,7 +216,7 @@ public class CongeRequest extends JFrame {
     // Méthode pour vérifier si une date est valide (format JJ/MM/AAAA)
     private boolean isValidDate(String dateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setLenient(false); // Désactive le mode tolérant pour les dates
+        sdf.setLenient(false); // Désactive le mode tol
         try {
             sdf.parse(dateStr); // Essaye de parser la date
             return true;

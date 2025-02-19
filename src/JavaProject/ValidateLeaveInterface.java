@@ -1,172 +1,200 @@
 package JavaProject;
 
-import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+import java.awt.event.*;
 
-// Interface de validation des congés
-class ValidateLeaveInterface extends JFrame {
-	   public ValidateLeaveInterface(JFrame parent) {
-	       setTitle("Valider les Congés");
-	       setSize(800, 500);
-	       setLayout(new BorderLayout());
-	       getContentPane().setBackground(new Color(29, 46, 56));
-	       
-	    	try {
-	    	    // Charger l'image depuis le dossier 'resources' dans le projet
-	    		ImageIcon icon = new ImageIcon("resources\\icon.png");
-	    	    setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
-	    	} catch (Exception e) {
-	    	    System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
-	    	}
+public class ValidateLeaveInterface extends JFrame {
+    private JFrame parent;
 
-	       // ---- Panneau principal ----
-	       JPanel formPanel = new JPanel();
-	       formPanel.setLayout(new GridBagLayout()); // Utilisation de GridBagLayout pour le centrage
-	       formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-	       formPanel.setBackground(new Color(43, 60, 70));
-	       setResizable(false);
+    public ValidateLeaveInterface(JFrame parent) {
+        this.parent = parent;
 
-	       GridBagConstraints gbc = new GridBagConstraints();
-	       gbc.gridx = 0;
-	       gbc.gridy = 0;
-	       gbc.insets = new Insets(10, 10, 10, 10);
-	       gbc.anchor = GridBagConstraints.CENTER;
+        if (this.parent != null) {
+            this.parent.setVisible(false);
+        }
 
-	       // Choix multiples : Sélection d'un utilisateur
-	       JLabel choiceLabel1 = createStyledLabel("Veuillez choisir un utilisateur");
-	       formPanel.add(choiceLabel1, gbc);
+        setTitle("Validation des demandes de congés");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setResizable(false);
 
-	       gbc.gridy++;
-	       JComboBox<String> choiceBox1 = new JComboBox<>(new String[]{"à implémenter", "TEST 1 2 1 2", "Lallalala"});
-	       choiceBox1.setPreferredSize(new Dimension(200, 30));
-	       choiceBox1.setBackground(new Color(255, 204, 0));
-	       choiceBox1.setForeground(Color.BLACK);
-	       formPanel.add(choiceBox1, gbc);
+        // Panneau principal
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(29, 46, 56));
 
-	       // ---- Panneau des boutons (Accepter et Refuser) ----
-	       JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-	       buttonPanel.setBackground(new Color(43, 60, 70));
+        // Créer un modèle de table
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("ID");
+        tableModel.addColumn("Nom");
+        tableModel.addColumn("Prénom");
+        tableModel.addColumn("Date de début");
+        tableModel.addColumn("Date de fin");
+        tableModel.addColumn("Jours ouvrés");
+        tableModel.addColumn("Statut");
+        tableModel.addColumn("Action");
 
-	       // Bouton "Accepter"
-	       JButton acceptButton = createRoundedButton("Accepter");
-	       acceptButton.addActionListener(e -> {
-	           JOptionPane.showMessageDialog(this, "Congé accepté.");
-	       });
-	       buttonPanel.add(acceptButton);
+        JTable table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-	       // Bouton "Refuser"
-	       JButton rejectButton = createRoundedButton("Refuser");
-	       rejectButton.addActionListener(e -> {
-	           new RefuseLeaveInterface(this); // L'interface de refus
-	       });
-	       buttonPanel.add(rejectButton);
+        // Charger les données depuis le fichier CSV
+        loadCongeData(tableModel);
 
-	       // Ajouter le panneau des boutons sous la liste déroulante
-	       gbc.gridy++;
-	       formPanel.add(buttonPanel, gbc);
+        // Panneau des boutons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        buttonPanel.setBackground(new Color(29, 46, 56));
 
-	       // ---- Panneau du bouton "Retour" ----
-	       JPanel returnButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	       returnButtonPanel.setBackground(new Color(43, 60, 70));
+        JButton validateButton = createRoundedButton("Valider");
+        JButton rejectButton = createRoundedButton("Rejeter");
+        JButton backButton = createRoundedButton("Retour");
 
-	       JButton returnButton = createRoundedButton("Retour");
-	       returnButton.addActionListener(e -> {
-	           parent.setVisible(true); // Rendre l'interface principale visible
-	           dispose();
-	       });
-	       returnButtonPanel.add(returnButton);
+        // Action de validation
+        validateButton.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                String idConge = (String) tableModel.getValueAt(selectedRow, 0);
+                String statut = "Validé";
+                tableModel.setValueAt(statut, selectedRow, 6); // Mettre à jour le statut
+                updateCongeStatus(idConge, statut);
+                JOptionPane.showMessageDialog(this, "Congé validé avec succès.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une demande.");
+            }
+        });
 
-	       add(formPanel, BorderLayout.CENTER);
-	       add(returnButtonPanel, BorderLayout.SOUTH);
-	       setLocationRelativeTo(null);
-	       setVisible(true);
-	       parent.setVisible(false);
-	   }
+        // Action de rejet
+        rejectButton.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                String idConge = (String) tableModel.getValueAt(selectedRow, 0);
+                String statut = "Rejeté";
+                tableModel.setValueAt(statut, selectedRow, 6); // Mettre à jour le statut
+                updateCongeStatus(idConge, statut);
+                JOptionPane.showMessageDialog(this, "Congé rejeté.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner une demande.");
+            }
+        });
 
-	   private JLabel createStyledLabel(String text) {
-	       JLabel label = new JLabel(text);
-	       label.setFont(new Font("Arial", Font.BOLD, 14));
-	       label.setForeground(Color.WHITE);
-	       return label;
-	   }
+        // Action de retour
+        backButton.addActionListener(e -> {
+            if (parent != null) {
+                parent.setVisible(true); // Rendre la fenêtre parent visible
+            }
+            dispose(); // Fermer la fenêtre actuelle
+        });
 
-	   private JButton createRoundedButton(String text) {
-	       JButton button = new JButton(text);
-	       button.setBackground(new Color(255, 204, 0));
-	       button.setForeground(Color.BLACK);
-	       button.setFocusPainted(false);
-	       button.setBorder(new LineBorder(new Color(255, 204, 0), 4, true));
-	       return button;
-	   }
-	}
+        buttonPanel.add(validateButton);
+        buttonPanel.add(rejectButton);
+        buttonPanel.add(backButton);
 
-// Interface pour préciser le motif du refus
-class RefuseLeaveInterface extends JFrame {
-   public RefuseLeaveInterface(JFrame parent) {
-       setTitle("Motif du Refus");
-       setSize(400, 250);
-       setLayout(new BorderLayout());
-       getContentPane().setBackground(new Color(29, 46, 56));
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-       // ---- Panneau principal ----
-       JPanel formPanel = new JPanel();
-       formPanel.setLayout(new GridLayout(3, 1, 10, 10)); // Grille pour organiser les champs
-       formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-       formPanel.setBackground(new Color(43, 60, 70));
+        add(mainPanel);
 
-       // Label et champ de texte pour le motif du refus
-       JLabel reasonLabel = createStyledLabel("Motif du refus");
-       JTextArea reasonTextArea = new JTextArea(5, 20);
-       formPanel.add(reasonLabel);
-       formPanel.add(reasonTextArea);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
 
-       // Bouton "Envoyer"
-       JButton sendButton = createRoundedButton("Envoyer");
-       sendButton.addActionListener(e -> {
-           String reason = reasonTextArea.getText();
-           if (!reason.isEmpty()) {
-               JOptionPane.showMessageDialog(this, "Motif du refus envoyé :\n" + reason);
-               new ValidateLeaveInterface(parent);
-               dispose();
-           } else {
-               JOptionPane.showMessageDialog(this, "Veuillez entrer un motif.");
-           }
-       });
-       formPanel.add(sendButton);
+    // Charger les données du fichier conge.csv
+    private void loadCongeData(DefaultTableModel tableModel) {
+        try (BufferedReader br = new BufferedReader(new FileReader("resources\\conge.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(";");
+                if (data.length >= 9 && !data[6].equals("Validé") && !data[6].equals("Rejeté")) {  // Ignorer les demandes validées ou rejetées
+                	                // Ajouter une nouvelle ligne dans le modèle de la table
+                	                Object[] row = {
+                	                    data[0], // ID
+                	                    data[1], // Nom
+                	                    data[2], // Prénom
+                	                    data[3], // Date de début
+                	                    data[4], // Date de fin
+                	                    data[5], // Jours ouvrés
+                	                    data[6], // Statut
+                	                    createActionButton(data[0]) // Bouton pour valider ou rejeter
+                	                };
+                	                tableModel.addRow(row);
+                	            }
+                	        }
+                	    } catch (IOException e) {
+                	        JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier conge.csv: " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+                	    }
+                	}
 
-       // ---- Panneau du bouton "Retour" ----
-       JPanel returnButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-       returnButtonPanel.setBackground(new Color(43, 60, 70));
 
-       JButton returnButton = createRoundedButton("Retour");
-       returnButton.addActionListener(e -> {
-           parent.setVisible(true); // Rendre l'interface de validation des congés visible
-           dispose(); // Fermer cette fenêtre
-       });
-       returnButtonPanel.add(returnButton);
+    // Méthode pour créer un bouton d'action (pour valider ou rejeter un congé)
+    private JButton createActionButton(String idConge) {
+        JButton button = new JButton("Action");
+        button.addActionListener(e -> {
+            String[] options = {"Valider", "Rejeter"};
+            int choice = JOptionPane.showOptionDialog(
+                    this,
+                    "Choisir l'action à effectuer",
+                    "Action",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+            if (choice == 0) {
+                updateCongeStatus(idConge, "Validé");
+                JOptionPane.showMessageDialog(this, "Congé validé.");
+            } else if (choice == 1) {
+                updateCongeStatus(idConge, "Rejeté");
+                JOptionPane.showMessageDialog(this, "Congé rejeté.");
+            }
+        });
+        return button;
+    }
 
-       // Ajouter les panneaux à la fenêtre principale
-       add(formPanel, BorderLayout.CENTER);
-       add(returnButtonPanel, BorderLayout.SOUTH);
-       setLocationRelativeTo(null);
-       setVisible(true);
-       parent.setVisible(false);
-   }
+    // Mise à jour du statut du congé dans le fichier conge.csv
+    private void updateCongeStatus(String idConge, String statut) {
+        try {
+            File inputFile = new File("resources\\conge.csv");
+            File tempFile = new File("resources\\conge_temp.csv");
 
-   private JLabel createStyledLabel(String text) {
-       JLabel label = new JLabel(text);
-       label.setFont(new Font("Arial", Font.BOLD, 14));
-       label.setForeground(Color.WHITE);
-       return label;
-   }
+            try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(";");
+                    if (data[0].equals(idConge)) {
+                        data[6] = statut; // Mettre à jour le statut
+                    }
+                    writer.write(String.join(";", data));
+                    writer.newLine();
+                }
+            }
 
-   private JButton createRoundedButton(String text) {
-       JButton button = new JButton(text);
-       button.setBackground(new Color(255, 204, 0));
-       button.setForeground(Color.BLACK);
-       button.setFocusPainted(false);
-       button.setBorder(new LineBorder(new Color(255, 204, 0), 4, true));
-       return button;
-   }
+            // Remplacer le fichier original par le fichier temporaire
+            if (inputFile.delete()) {
+                if (!tempFile.renameTo(inputFile)) {
+                    JOptionPane.showMessageDialog(this, "Erreur lors de la mise à jour du fichier des congés.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Erreur lors de la mise à jour du statut du congé : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Méthode pour créer des boutons arrondis
+    private JButton createRoundedButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(new Color(255, 204, 0)); // Couleur jaune
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
+        button.setBorder(new RoundBorder(15)); // Bordure arrondie
+        return button;
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ValidateLeaveInterface(null)); // Test sans parent
+    }
 }

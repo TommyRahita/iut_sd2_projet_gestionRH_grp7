@@ -1,11 +1,13 @@
-id;nom;prenom;date_debut_conge;date_fin_conge;nb_pris_conge;statut;received
-1;Dupont;Jean;14/02/2025;14/02/2025;1;En attente;N
-2;Bernard;Marie;12/12/2025;30/01/2026;36;En attente;N
-0;rahita;tommy;15/02/2025;20/02/2025;4;En attente;N
-4;Durand;Luc;15/02/2025;20/02/2025;4;En attente;N
-5;Petit;Claire;11/01/2025;16/01/2025;6;En attente;N
-6;Robert;Sophie;21/01/2025;26/01/2025;6;En attente;N
-7;Morel;Pierre;22/01/2025;27/01/2025;6;En attente;N
-8;Leroy;Isabelle;23/01/2025;28/01/2025;6;En attente;N
-9;Fournier;Antoine;24/01/2025;29/01/2025;6;En attente;N
-10;Blanc;Camille;25/01/2025;30/01/2025;6;En attente;N
+id;nom;prenom;date_debut_conge;date_fin_conge;nb_pris_conge;statut;motif_de_refus;received
+1;Dupont;Jean;14/02/2025;14/02/2025;1;En attente;;N
+2;Bernard;Marie;12/12/2025;30/01/2026;36;En attente;;N
+0;rahita;tommy;15/02/2025;20/02/2025;4;En attente;;N
+4;Durand;Luc;15/02/2025;20/02/2025;4;En attente;;N
+5;Petit;Claire;11/01/2025;16/01/2025;6;En attente;;N
+6;Robert;Sophie;21/01/2025;26/01/2025;6;En attente;;N
+7;Morel;Pierre;22/01/2025;27/01/2025;6;En attente;;N
+8;Leroy;Isabelle;23/01/2025;28/01/2025;6;En attente;;N
+9;Fournier;Antoine;24/01/2025;29/01/2025;6;En attente;;N
+10;Blanc;Camille;25/01/2025;30/01/2025;6;En attente;;N
+1;Dupont;Jean;19/02/2025;19/02/2026;262;En attente;;N
+1;Dupont;Jean;20/02/2025;20/02/2025;1;En attente;;N

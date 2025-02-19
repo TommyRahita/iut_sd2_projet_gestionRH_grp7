@@ -177,11 +177,13 @@ public class CongeRequest extends JFrame {
 
         long nbJoursOuvres = calculerJoursOuvres(dateDebut, dateFin);
 
+        // Ajouter la valeur "N" dans la 9ème colonne
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources\\conge.csv", true))) {
-            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s;N\n",
-                    idConge, nom, prenom, dateDebutStr, dateFinStr, nbJoursOuvres, "En attente"));
+            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s;%s;%s;\n",
+                    idConge, nom, prenom, dateDebutStr, dateFinStr, nbJoursOuvres, "En attente", "", "N"));
         }
     }
+
 
     private long calculerJoursOuvres(LocalDate dateDebut, LocalDate dateFin) {
         long nbJours = 0;

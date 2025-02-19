@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class EmployeeInterface extends JFrame {
     private Utilisateur employee;
@@ -32,6 +30,7 @@ public class EmployeeInterface extends JFrame {
         setLayout(new BorderLayout());
         setResizable(false);
 
+        // Panel du haut avec nom de l'employé
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
         JLabel nameLabel = new JLabel("Employé : " + employee.prenom + " " + employee.nom);
@@ -41,13 +40,10 @@ public class EmployeeInterface extends JFrame {
         topPanel.add(nameLabel);
         add(topPanel, BorderLayout.NORTH);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 10, 20));
+        // Panel central avec les boutons
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 20)); // On passe de 3 à 2 lignes
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 35, true));
-
-        JButton enterWorkedHours = createRoundedButton("Saisissez votre nombre d'heures travaillées ce mois-ci");
-        enterWorkedHours.addActionListener(e -> openEnterWorkedHours());
-        buttonPanel.add(enterWorkedHours);
 
         JButton congeRequestButton = createRoundedButton("Demander des congés");
         congeRequestButton.addActionListener(e -> openCongesRequestInterface());
@@ -65,14 +61,18 @@ public class EmployeeInterface extends JFrame {
         centerPanel.setBackground(new Color(29, 46, 56));
         add(centerPanel, BorderLayout.CENTER);
 
+        // Panel du bas avec les boutons Déconnexion et Quitter
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         bottomPanel.setBackground(new Color(43, 60, 70));
+
         JButton logoutButton = createRoundedButton("Déconnexion");
         logoutButton.addActionListener(e -> logoutAction());
         bottomPanel.add(logoutButton);
+
         JButton quitButton = createRoundedButton("Quitter");
         quitButton.addActionListener(e -> System.exit(0));
         bottomPanel.add(quitButton);
+
         add(bottomPanel, BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
@@ -88,14 +88,10 @@ public class EmployeeInterface extends JFrame {
         return button;
     }
 
-    private void openEnterWorkedHours() {
-        new EnterWorkedHours(this, employee);
-    }
-    
     private void openCongesRequestInterface() {
         new CongeRequest(this, employee);
     }
-    
+
     /**
      * Ouvre une boîte de dialogue pour choisir le mois et l'année avant de télécharger la fiche de paie.
      */
@@ -111,6 +107,7 @@ public class EmployeeInterface extends JFrame {
         });
     }
 }
+
 
 /**
  * Classe pour afficher une boîte de dialogue permettant de choisir le mois et l'année d'une fiche de paie.

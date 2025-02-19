@@ -82,7 +82,8 @@ class AddUserInterface extends JFrame {
                 int leaveDays = Integer.parseInt(leaveDaysText);
 
                 // Appeler la méthode ajouter_utilisateur
-                ajouter_utilisateur(name, firstName, job, leaveDays, password, status);
+                Utilisateur new_user = new Utilisateur(name, firstName, job, leaveDays, password, status);
+                Utilisateur.ajouter_utilisateur(new_user);
                 JOptionPane.showMessageDialog(this, "Utilisateur ajouté avec succès !");
 
                 // Réinitialiser les champs
@@ -146,43 +147,5 @@ class AddUserInterface extends JFrame {
         return button;
     }
 
-    // Méthode pour ajouter un utilisateur dans le fichier CSV
-    public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
-        String ligne;
-        int nb_lignes = 0;
-        String path_csv = "resources/Utilisateurs.csv";
 
-        // Compter le nombre de lignes
-        try (BufferedReader br = new BufferedReader(new FileReader(path_csv))) {
-            // Lire et ignorer la première ligne (en-tête)
-            br.readLine();
-
-            // Lire chaque ligne du fichier
-            while ((ligne = br.readLine()) != null) {
-                nb_lignes++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Ajouter le nouvel utilisateur
-        try (FileWriter writer = new FileWriter(path_csv, true);
-             BufferedWriter bw = new BufferedWriter(writer);
-             PrintWriter out = new PrintWriter(bw)) {
-
-            // Construire la ligne utilisateur
-            String nouvelleLigne = (nb_lignes + 1) + ";" +
-                                    nom + ";" +
-                                    prenom + ";" +
-                                    poste + ";" +
-                                    jours_conge_restants + ";" +
-                                    mdp + ";" +
-                                    statut;
-
-            out.println(nouvelleLigne); // Ajout direct avec un saut de ligne
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

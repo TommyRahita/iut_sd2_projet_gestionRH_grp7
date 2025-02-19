@@ -3,163 +3,138 @@ package JavaProject;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+
 import java.awt.*;
 
-/**
- * Interface graphique pour les managers.
- * Permet la gestion des utilisateurs, la validation des congés et la gestion des salaires.
- */
 public class ManagerInterface extends JFrame {
-    private Utilisateur manager;
+    public ManagerInterface() {
+    	
+    	try {
+    	    // Charger l'image depuis le dossier 'resources' dans le projet
+    		ImageIcon icon = new ImageIcon("resources\\icon.png");
+    	    setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
+    	} catch (Exception e) {
+    	    System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
+    	}
 
-    /**
-     * Constructeur de l'interface manager.
-     * @param manager L'utilisateur manager connecté.
-     */
-    public ManagerInterface(Utilisateur manager) {
-        this.manager = manager;
-        initUI();
-    }
-
-    /**
-     * Initialise l'interface utilisateur.
-     */
-    private void initUI() {
-        try {
-            ImageIcon icon = new ImageIcon("resources\\icon.png");
-            setIconImage(icon.getImage());
-        } catch (Exception e) {
-            System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
-        }
-
+        // Configuration de la fenêtre principale
         setTitle("Interface Manager");
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout()); // Utilisation de BorderLayout pour organiser les composants
         setResizable(false);
+        
+        // ---- Panneau supérieur avec le nom du Manager ----
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Aligné à droite
+        topPanel.setBackground(new Color(43, 60, 70)); // Couleur de fond du haut
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        topPanel.setBackground(new Color(43, 60, 70));
-
-        JLabel nameLabel = new JLabel("Manager : " + manager.prenom + " " + manager.nom);
-        nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        nameLabel.setForeground(Color.WHITE);
-        nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JLabel nameLabel = new JLabel("Manager : *à implémenter*");
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Style du texte
+        nameLabel.setForeground(Color.WHITE); // Texte en blanc pour plus de contraste
+        nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Marges autour du texte
 
         topPanel.add(nameLabel);
         add(topPanel, BorderLayout.NORTH);
 
+        // ---- Panneau contenant les boutons principaux ----
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(4, 1, 10, 20));
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.setBorder(new LineBorder(Color.WHITE, 35, true));
+        buttonPanel.setLayout(new GridLayout(4, 1, 10, 20)); // Grille pour organiser les boutons
+        buttonPanel.setBackground(new Color(255, 255, 255)); // Couleur de fond
+        buttonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 35, true));
 
+        // Création et personnalisation des boutons
         JButton addUserButton = createRoundedButton("Ajouter un utilisateur");
         addUserButton.addActionListener(e -> openAddUserInterface());
+        //addUserButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         buttonPanel.add(addUserButton);
-
+        
         JButton deleteUserButton = createRoundedButton("Supprimer un utilisateur");
         deleteUserButton.addActionListener(e -> openDeleteUserInterface());
+        //deleteUserButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         buttonPanel.add(deleteUserButton);
 
         JButton validateLeaveButton = createRoundedButton("Valider les congés");
         validateLeaveButton.addActionListener(e -> openValidateLeaveInterface());
+        //validateLeaveButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         buttonPanel.add(validateLeaveButton);
 
         JButton salaryManagementButton = createRoundedButton("Ouvrir le menu de management des salaires");
         salaryManagementButton.addActionListener(e -> openSalaryManagementInterface());
+        //salaryManagementButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         buttonPanel.add(salaryManagementButton);
-
-        UIManager.put("ComboBox.selectionBackground", Color.WHITE);
+        
+        UIManager.put("ComboBox.selectionBackground", new Color(255, 255, 255)); // Jaune foncé/orange pour la sélection
         UIManager.put("ComboBox.selectionForeground", Color.BLACK);
-
+        
+        // ---- Ajout du panneau centré pour les boutons ----
         JPanel centerPanel = new JPanel(new GridBagLayout());
         centerPanel.add(buttonPanel);
         centerPanel.setBackground(new Color(29, 46, 56));
 
         add(centerPanel, BorderLayout.CENTER);
 
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
-        bottomPanel.setBackground(new Color(43, 60, 70));
+        // ---- Panneau inférieur avec Déconnexion & Quitter ----
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10)); // Aligné à droite
+        bottomPanel.setBackground(new Color(43, 60, 70)); // Couleur de fond
 
         JButton logoutButton = createRoundedButton("Déconnexion");
         logoutButton.addActionListener(e -> logoutAction());
+        //logoutButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         bottomPanel.add(logoutButton);
 
         JButton quitButton = createRoundedButton("Quitter");
         quitButton.addActionListener(e -> System.exit(0));
+        //quitButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
         bottomPanel.add(quitButton);
 
         add(bottomPanel, BorderLayout.SOUTH);
 
-        setLocationRelativeTo(null);
+        // Rendre la fenêtre visible
+        setLocationRelativeTo(null); // Centrer la fenêtre
         setVisible(true);
     }
 
-    /**
-     * Crée un bouton stylisé avec des bords arrondis.
-     * @param text Texte du bouton.
-     * @return Bouton stylisé.
-     */
+    // Méthode pour créer des boutons arrondis
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        button.setBorder(new RoundBorder(15));
+        button.setBorder(new RoundBorder(15)); // Bordure arrondie avec un rayon de 15 pixels
         return button;
     }
 
-    /**
-     * Ouvre l'interface d'ajout d'utilisateur.
-     */
+    // Méthodes pour ouvrir les interfaces secondaires
     private void openAddUserInterface() {
         new AddUserInterface(this);
     }
-    
-    /**
-     * Ouvre l'interface de suppression d'utilisateur.
-     */
+
     private void openDeleteUserInterface() {
         new DeleteUserInterface(this);
     }
-    
-    /**
-     * Ouvre l'interface de validation des congés.
-     */
+
     private void openValidateLeaveInterface() {
         new ValidateLeaveInterface(this);
     }
-    
-    /**
-     * Ouvre l'interface de gestion des salaires.
-     */
+
     private void openSalaryManagementInterface() {
         new SalaryManagementInterface(this);
     }
 
-    /**
-     * Action de déconnexion : ferme la fenêtre et ouvre l'écran de connexion.
-     */
+    // Action pour le bouton déconnexion (à implémenter)
     private void logoutAction() {
-        dispose();
-        SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
-            loginFrame.setVisible(true);
-        });
+        JOptionPane.showMessageDialog(this, "Déconnexion à implémenter");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ManagerInterface::new);
     }
 }
 
-/**
- * Classe permettant de dessiner une bordure arrondie pour les boutons.
- */
+// Classe pour créer des bordures arrondies
 class RoundBorder implements Border {
     private int radius;
 
-    /**
-     * Constructeur de la bordure arrondie.
-     * @param radius Rayon d'arrondi des coins.
-     */
     public RoundBorder(int radius) {
         this.radius = radius;
     }

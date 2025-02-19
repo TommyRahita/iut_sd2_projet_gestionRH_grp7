@@ -80,9 +80,9 @@ public class LoginFrame extends JFrame {
             if (identifiant.equalsIgnoreCase(id) && utilisateur.mdp.equals(password)) {
                 JOptionPane.showMessageDialog(this, "Connexion réussie en tant que " + utilisateur.statut);
                 if (utilisateur.statut.equalsIgnoreCase("manager")) {
-                    SwingUtilities.invokeLater(() -> new ManagerInterface(utilisateur));
+                    SwingUtilities.invokeLater(() -> new ManagerInterface());
                 } else {
-                    SwingUtilities.invokeLater(() -> new EmployeeInterface(utilisateur));
+                    SwingUtilities.invokeLater(() -> new EmployeeInterface());
                 }
                 dispose(); 
                 return;

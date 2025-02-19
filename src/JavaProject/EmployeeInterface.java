@@ -171,7 +171,6 @@ public class EmployeeInterface extends JFrame {
                             }
 
 
-<<<<<<< HEAD
 
 /**
  * Classe pour afficher une boîte de dialogue permettant de choisir le mois et l'année d'une fiche de paie.

@@ -1,5 +1,11 @@
 package JavaProject;
 
+import javax.swing.*;
+import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 /**
@@ -36,13 +42,68 @@ public class Employe extends Utilisateur {
      * @return True si les identifiants sont corrects, sinon False.
      */
     public Boolean se_connecter_employe(String id_saisi, String mdp_saisi, List<Employe> liste_employe) {
-        Boolean verif = false;
         for (Employe employe : liste_employe) {
             if (id_saisi.equals(employe.id)) {
-                verif = true;
-                return verif;
+                return true;
             }
         }
-        return verif;
+        return false;
+    }
+    
+    // ---------------- Méthodes de téléchargement de fiche de paie ---------------- //
+    
+    /**
+     * Recherche une fiche de paie spécifique pour cet employé en fonction du mois et de l'année.
+     * @param month Mois de la fiche de paie.
+     * @param year Année de la fiche de paie.
+     * @return Un objet File correspondant à la fiche de paie si trouvé, sinon null.
+     */
+    public File findPaySlipFile(int month, int year) {
+        File dir = new File("resources/fiches_paie");
+        if (!dir.exists() || !dir.isDirectory()) {
+            return null;
+        }
+        String expectedFileName = this.prenom.toLowerCase() + "_" + this.nom.toLowerCase() + "_" +
+                String.format("%02d", month) + "-" + year + "_fiche_paie.pdf";
+        File[] matchingFiles = dir.listFiles((d, filename) -> filename.equalsIgnoreCase(expectedFileName));
+        return (matchingFiles != null && matchingFiles.length > 0) ? matchingFiles[0] : null;
+    }
+    
+    /**
+     * Télécharge la fiche de paie de cet employé pour le mois et l'année spécifiés.
+     * Affiche une boîte de dialogue pour sélectionner l'emplacement de sauvegarde.
+     * @param parent Composant parent pour les boîtes de dialogue.
+     * @param month Mois de la fiche de paie.
+     * @param year Année de la fiche de paie.
+     */
+    public void downloadPaySlip(Component parent, int month, int year) {
+        File paySlipFile = findPaySlipFile(month, year);
+        if (paySlipFile == null) {
+            JOptionPane.showMessageDialog(parent,
+                    "Aucune fiche de paie trouvée pour " + this.prenom + " " + this.nom +
+                            " en " + month + "/" + year,
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setSelectedFile(new File(this.prenom + "_" + this.nom + "_" +
+                month + "_" + year + "_fiche_paie.pdf"));
+        
+        int userChoice = fileChooser.showSaveDialog(parent);
+        if (userChoice == JFileChooser.APPROVE_OPTION) {
+            File destinationFile = fileChooser.getSelectedFile();
+            try {
+                Files.copy(paySlipFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                JOptionPane.showMessageDialog(parent,
+                        "Fiche de paie téléchargée avec succès.\n" + destinationFile.getAbsolutePath(),
+                        "Succès", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(parent,
+                        "Erreur lors du téléchargement de la fiche de paie : " + ex.getMessage(),
+                        "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

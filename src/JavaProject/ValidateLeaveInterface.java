@@ -200,8 +200,4 @@ public class ValidateLeaveInterface extends JFrame {
         button.setBorder(new RoundBorder(15)); // Bordure arrondie
         return button;
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ValidateLeaveInterface(null)); // Test sans parent
-    }
 }

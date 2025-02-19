@@ -2,7 +2,6 @@ package JavaProject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -63,19 +62,15 @@ public class SalaryManagementInterface extends JFrame {
         choiceBox1 = new JComboBox<>(comboBoxModel);
         formPanel.add(choiceBox1, gbc);
 
-        chargerUtilisateurs();
-
-        choiceBox1.addActionListener(e -> {
-            String selectedUser = (String) choiceBox1.getSelectedItem();
-            if (selectedUser != null) {
-                System.out.println("Utilisateur sélectionné : " + selectedUser);
-            }
-        });
+        // Charger tous les utilisateurs via Manager
+        utilisateurs = Manager.chargerUtilisateurs();
+        Manager.mettreAJourListe(comboBoxModel, utilisateurs);
 
         searchField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                filtrerUtilisateurs(searchField.getText().trim());
+                List<String> resultats = Manager.filtrerUtilisateurs(utilisateurs, searchField.getText().trim());
+                Manager.mettreAJourListe(comboBoxModel, resultats);
             }
         });
 
@@ -90,7 +85,6 @@ public class SalaryManagementInterface extends JFrame {
         salaryLabel.setBackground(new Color(29, 46, 56));
         salaryLabel.setHorizontalAlignment(SwingConstants.CENTER);
         salaryLabel.setPreferredSize(new Dimension(300, 40));
-
         salaryPanel.add(salaryLabel);
         formPanel.add(salaryPanel, gbc);
 
@@ -99,8 +93,8 @@ public class SalaryManagementInterface extends JFrame {
         buttonPanel.setBackground(new Color(43, 60, 70));
 
         JButton calculateSalaryButton = createStyledButton("Calculer le salaire");
-        calculateSalaryButton.addActionListener(e -> calculerSalaire());
-
+        calculateSalaryButton.addActionListener(e -> 
+                Manager.calculerSalaireUI(this, manager, (String) choiceBox1.getSelectedItem(), salaryLabel));
         JButton generatePayslipButton = createStyledButton("Gérer la paie");
         generatePayslipButton.addActionListener(e -> ouvrirInterfaceSaisie());
 
@@ -117,7 +111,6 @@ public class SalaryManagementInterface extends JFrame {
             parent.setVisible(true);
             dispose();
         });
-
         backButtonPanel.add(backButton);
         formPanel.add(backButtonPanel, gbc);
 
@@ -125,71 +118,14 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Charge tous les utilisateurs au démarrage.
-     */
-    private void chargerUtilisateurs() {
-        utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv")
-                .stream()
-                .map(user -> user.prenom + " " + user.nom)
-                .collect(Collectors.toList());
-
-        mettreAJourListe(utilisateurs);
-    }
-
-    /**
-     * Filtre la liste des utilisateurs en fonction du texte saisi.
-     * @param recherche Texte de recherche.
-     */
-    private void filtrerUtilisateurs(String recherche) {
-        List<String> resultats = utilisateurs.stream()
-                .filter(nom -> nom.toLowerCase().contains(recherche.toLowerCase()))
-                .limit(5)
-                .collect(Collectors.toList());
-
-        mettreAJourListe(resultats);
-    }
-
-    /**
-     * Met à jour la liste déroulante avec les utilisateurs filtrés.
-     * @param utilisateursFiltrés Liste des utilisateurs filtrés.
-     */
-    private void mettreAJourListe(List<String> utilisateursFiltrés) {
-        comboBoxModel.removeAllElements();
-        utilisateursFiltrés.forEach(comboBoxModel::addElement);
-    }
-
-    /**
-     * Calcule et affiche le salaire de l'utilisateur sélectionné.
-     */
-    private void calculerSalaire() {
-        String selectedUser = (String) choiceBox1.getSelectedItem();
-
-        if (selectedUser == null || selectedUser.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        double[] salaireDetails = manager.calculer_salaire(this, selectedUser);
-        if (salaireDetails == null) {
-            return;
-        }
-
-        salaryLabel.setText("Salaire Net : " + String.format("%.2f €", salaireDetails[4]));
-        salaryLabel.repaint();
-        salaryLabel.revalidate();
-    }
-
-    /**
-     * Ouvre l'interface de gestion de la paie pour l'utilisateur sélectionné.
+     * Ouvre l'interface de saisie de la paie pour l'utilisateur sélectionné.
      */
     private void ouvrirInterfaceSaisie() {
         String selectedUser = (String) choiceBox1.getSelectedItem();
-
         if (selectedUser == null || selectedUser.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         new PayrollEntryInterface(this, selectedUser);
     }
 

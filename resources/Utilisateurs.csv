@@ -11,4 +11,3 @@ id;nom;prenom;poste;jours_conge_restants;mdp;statut
 10;Blanc;Camille;Manager;5;m3;manager
 11;rahita;tommy;Data Scientist;4;mdp;Manager
 12;rahita;tommy;Data Scientist;4;mdpe;Employé
-13;qq;aa;Data Analyst;45;mdp;Manager

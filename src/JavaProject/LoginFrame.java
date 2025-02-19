@@ -4,12 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
-/**
- * Classe LoginFrame représentant l'interface de connexion pour l'application.
- * Cette classe permet aux utilisateurs de saisir leurs identifiants et de se connecter.
- */
 public class LoginFrame extends JFrame {
     private JTextField txtId;
     private JPasswordField txtPassword;
@@ -60,35 +55,27 @@ public class LoginFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String id = txtId.getText().trim();
                 String password = new String(txtPassword.getPassword()).trim();
-                verifierIdentifiants(id, password);
+                // Utilisation de la méthode validerIdentifiant de la classe Utilisateur
+                Utilisateur utilisateur = Utilisateur.validerIdentifiant(id, password);
+                if (utilisateur != null) {
+                    JOptionPane.showMessageDialog(LoginFrame.this, "Connexion réussie en tant que " + utilisateur.statut);
+                    if (utilisateur.statut.equalsIgnoreCase("manager")) {
+                        SwingUtilities.invokeLater(() -> new ManagerInterface(utilisateur));
+                    } else {
+                        // Créer une instance d'Employe à partir de l'objet Utilisateur
+                        Employe emp = new Employe(utilisateur.id, utilisateur.nom, utilisateur.prenom,
+                                                  utilisateur.poste, utilisateur.jours_conge_restants,
+                                                  utilisateur.mdp, utilisateur.statut);
+                        SwingUtilities.invokeLater(() -> new EmployeeInterface(emp));
+                    }
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(LoginFrame.this, "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
         add(panel);
-    }
-
-    /**
-     * Vérifie les identifiants de l'utilisateur en les comparant avec les données enregistrées.
-     * @param id L'identifiant saisi par l'utilisateur.
-     * @param password Le mot de passe saisi par l'utilisateur.
-     */
-    private void verifierIdentifiants(String id, String password) {
-        List<Utilisateur> utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
-
-        for (Utilisateur utilisateur : utilisateurs) {
-            String identifiant = utilisateur.prenom.toLowerCase() + "." + utilisateur.nom.toLowerCase();
-            if (identifiant.equalsIgnoreCase(id) && utilisateur.mdp.equals(password)) {
-                JOptionPane.showMessageDialog(this, "Connexion réussie en tant que " + utilisateur.statut);
-                if (utilisateur.statut.equalsIgnoreCase("manager")) {
-                    SwingUtilities.invokeLater(() -> new ManagerInterface());
-                } else {
-                    SwingUtilities.invokeLater(() -> new EmployeeInterface());
-                }
-                dispose(); 
-                return;
-            }
-        }
-        JOptionPane.showMessageDialog(this, "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 
     /**

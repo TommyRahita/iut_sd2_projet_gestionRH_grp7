@@ -4,6 +4,10 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Classe EmployeeInterface.
+ * Gère employeeinterface dans le système.
+ */
 public class EmployeeInterface extends JFrame {
     private Employe employee;
 

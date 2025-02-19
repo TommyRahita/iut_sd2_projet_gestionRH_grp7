@@ -10,6 +10,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Classe CongeRequest.
+ * Gère congerequest dans le système.
+ */
 public class CongeRequest extends JFrame {
     private JFrame parent;
     private Utilisateur utilisateur;
@@ -241,6 +245,11 @@ public class CongeRequest extends JFrame {
         }
     }
 
+/**
+ * Méthode main.
+ * Description de la méthode.
+ * @param args Description du paramètre.
+ */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new CongeRequest(null,null)); // Test sans parent
     }

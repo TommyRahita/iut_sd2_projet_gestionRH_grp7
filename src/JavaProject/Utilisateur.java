@@ -9,6 +9,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe Utilisateur.
+ * Gère utilisateur dans le système.
+ */
 public class Utilisateur {
 
     // Attributs
@@ -46,6 +50,11 @@ public class Utilisateur {
     }
 
     // Méthode pour ajouter un utilisateur dans le fichier CSV
+/**
+ * Méthode ajouter_utilisateur.
+ * Description de la méthode.
+ * @param utilisateur Description du paramètre.
+ */
     public static void ajouter_utilisateur(Utilisateur utilisateur) {
         String ligne;
         int nb_lignes = 0;
@@ -122,6 +131,13 @@ public class Utilisateur {
      * @param password Le mot de passe saisi.
      * @return L'objet Utilisateur correspondant ou null.
      */
+/**
+ * Méthode validerIdentifiant.
+ * Description de la méthode.
+ * @param id Description du paramètre.
+ * @param password Description du paramètre.
+ * @return Utilisateur Description du retour.
+ */
     public static Utilisateur validerIdentifiant(String id, String password) {
         List<Utilisateur> utilisateurs = func_recup_data("resources/Utilisateurs.csv");
 
@@ -135,6 +151,13 @@ public class Utilisateur {
     }
 
     // ---------------------- METHODE CALCULER SALAIRE -----------------------//
+/**
+ * Méthode calculer_salaire.
+ * Description de la méthode.
+ * @param nom Description du paramètre.
+ * @param prenom Description du paramètre.
+ * @return float Description du retour.
+ */
     public static float calculer_salaire(String nom, String prenom) {
         String path_th = "Ressources/taux_horraire_poste.csv";
         String path_utilisateurs = "Ressources/Utilisateurs.csv";

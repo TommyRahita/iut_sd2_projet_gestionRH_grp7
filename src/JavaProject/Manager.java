@@ -27,6 +27,10 @@ import com.itextpdf.layout.properties.UnitValue;
  * récupérer le taux horaire d’un poste, récupérer les informations d’un utilisateur,
  * ainsi que des méthodes de gestion de la liste des utilisateurs pour l'interface de salaires.
  */
+/**
+ * Classe Manager.
+ * Gère manager dans le système.
+ */
 public class Manager extends Utilisateur {
 
     // ---------------------- CONSTRUCTEURS -----------------------//
@@ -40,6 +44,16 @@ public class Manager extends Utilisateur {
     
     // ---------------------- GESTION DES UTILISATEURS -----------------------//
     
+/**
+ * Méthode ajouter_utilisateur.
+ * Description de la méthode.
+ * @param nom Description du paramètre.
+ * @param prenom Description du paramètre.
+ * @param poste Description du paramètre.
+ * @param jours_conge_restants Description du paramètre.
+ * @param mdp Description du paramètre.
+ * @param statut Description du paramètre.
+ */
     public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         String ligne;
         int nb_lignes = 0;
@@ -107,6 +121,11 @@ public class Manager extends Utilisateur {
      * Supprime un utilisateur du fichier CSV en fonction de son nom complet.
      * @param selectedUser Le nom complet de l'utilisateur à supprimer.
      */
+/**
+ * Méthode deleteUserFromCSV.
+ * Description de la méthode.
+ * @param selectedUser Description du paramètre.
+ */
     public static void deleteUserFromCSV(String selectedUser) {
         String filePath = "resources/Utilisateurs.csv"; // Chemin vers le fichier CSV
         ArrayList<String> updatedLines = new ArrayList<>();
@@ -185,6 +204,12 @@ public class Manager extends Utilisateur {
         return new double[]{salaireBrut, primes, cotisations, impots, salaireNet, mois, annee};
     }
 
+/**
+ * Méthode genererFichePaie.
+ * Description de la méthode.
+ * @param parent Description du paramètre.
+ * @param selectedUser Description du paramètre.
+ */
     public static void genererFichePaie(JFrame parent, String selectedUser) {
         if (selectedUser == null || selectedUser.isEmpty()) {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -338,6 +363,12 @@ public class Manager extends Utilisateur {
      * @param comboBoxModel Le modèle du JComboBox.
      * @param utilisateursFiltrés La liste d'utilisateurs à afficher.
      */
+/**
+ * Méthode mettreAJourListe.
+ * Description de la méthode.
+ * @param comboBoxModel Description du paramètre.
+ * @param utilisateursFiltrés Description du paramètre.
+ */
     public static void mettreAJourListe(DefaultComboBoxModel<String> comboBoxModel, List<String> utilisateursFiltrés) {
         comboBoxModel.removeAllElements();
         utilisateursFiltrés.forEach(comboBoxModel::addElement);
@@ -350,6 +381,14 @@ public class Manager extends Utilisateur {
      * @param selectedUser L'utilisateur sélectionné (nom complet).
      * @param salaryLabel Le label à mettre à jour avec le salaire net.
      */
+/**
+ * Méthode calculerSalaireUI.
+ * Description de la méthode.
+ * @param parent Description du paramètre.
+ * @param manager Description du paramètre.
+ * @param selectedUser Description du paramètre.
+ * @param salaryLabel Description du paramètre.
+ */
     public static void calculerSalaireUI(JFrame parent, Manager manager, String selectedUser, JLabel salaryLabel) {
         if (selectedUser == null || selectedUser.isEmpty()) {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -370,6 +409,11 @@ public class Manager extends Utilisateur {
      * Retourne le prochain ID de paie à utiliser en scannant le fichier "paie.csv".
      * @return Le prochain ID de paie disponible.
      */
+/**
+ * Méthode getNextPaieId.
+ * Description de la méthode.
+ * @return int Description du retour.
+ */
     public static int getNextPaieId() {
         int maxId = 0;
         File file = new File("resources/paie.csv");
@@ -454,6 +498,12 @@ public class Manager extends Utilisateur {
      * @param poste Le poste de l'utilisateur.
      * @return Le taux horaire en euros ou 0.0 en cas d'erreur.
      */
+/**
+ * Méthode getTauxHoraire.
+ * Description de la méthode.
+ * @param poste Description du paramètre.
+ * @return double Description du retour.
+ */
     public static double getTauxHoraire(String poste) {
         String path = "resources/taux_horraire_poste.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -477,6 +527,12 @@ public class Manager extends Utilisateur {
      * @param selectedUser Le nom complet de l'utilisateur (prenom + " " + nom)
      * @return Un objet Utilisateur contenant ses informations ou un utilisateur par défaut en cas d'absence.
      */
+/**
+ * Méthode getUtilisateurInfo.
+ * Description de la méthode.
+ * @param selectedUser Description du paramètre.
+ * @return Utilisateur Description du retour.
+ */
     public static Utilisateur getUtilisateurInfo(String selectedUser) {
         List<Utilisateur> users = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
         return users.stream()

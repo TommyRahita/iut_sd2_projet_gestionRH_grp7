@@ -9,12 +9,21 @@ import java.util.List;
 /**
  * Classe principale de l'application.
  */
+/**
+ * Classe App.
+ * Gère app dans le système.
+ */
 public class App {
     
     /**
      * Point d'entrée de l'application.
      * @param args Arguments de la ligne de commande (non utilisés).
      */
+/**
+ * Méthode main.
+ * Description de la méthode.
+ * @param args Description du paramètre.
+ */
     public static void main(String[] args) {
         // ETAPE 1 : Récupération des données du fichier CSV
         List<Utilisateur> liste_utilisateur = Utilisateur.func_recup_data("resources/Utilisateurs.csv");

@@ -5,6 +5,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.time.LocalDate;
 
+/**
+ * Classe PayrollEntryInterface.
+ * Gère payrollentryinterface dans le système.
+ */
 public class PayrollEntryInterface extends JFrame {
     private JTextField heuresTravailField, primesField, cotisationsField, impotsField;
     private JLabel userInfoLabel, salaireBrutLabel, salaireNetLabel;

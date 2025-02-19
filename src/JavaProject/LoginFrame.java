@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Classe LoginFrame.
+ * Gère loginframe dans le système.
+ */
 public class LoginFrame extends JFrame {
     private JTextField txtId;
     private JPasswordField txtPassword;
@@ -52,6 +56,11 @@ public class LoginFrame extends JFrame {
 
         btnLogin.addActionListener(new ActionListener() {
             @Override
+/**
+ * Méthode actionPerformed.
+ * Description de la méthode.
+ * @param e Description du paramètre.
+ */
             public void actionPerformed(ActionEvent e) {
                 String id = txtId.getText().trim();
                 String password = new String(txtPassword.getPassword()).trim();
@@ -82,6 +91,11 @@ public class LoginFrame extends JFrame {
      * Méthode principale pour lancer l'application de connexion.
      * @param args Arguments de la ligne de commande (non utilisés).
      */
+/**
+ * Méthode main.
+ * Description de la méthode.
+ * @param args Description du paramètre.
+ */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();

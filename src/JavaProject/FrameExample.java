@@ -24,6 +24,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+/**
+ * Classe FrameExample.
+ * Gère frameexample dans le système.
+ */
 public class FrameExample extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -32,8 +36,17 @@ public class FrameExample extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+/**
+ * Méthode main.
+ * Description de la méthode.
+ * @param args Description du paramètre.
+ */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+/**
+ * Méthode run.
+ * Description de la méthode.
+ */
 			public void run() {
 				try {
 					FrameExample frame = new FrameExample();
@@ -87,11 +100,21 @@ public class FrameExample extends JFrame {
 
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
+/**
+ * Méthode mousePressed.
+ * Description de la méthode.
+ * @param e Description du paramètre.
+ */
 			public void mousePressed(MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
 			}
+/**
+ * Méthode mouseReleased.
+ * Description de la méthode.
+ * @param e Description du paramètre.
+ */
 			public void mouseReleased(MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					showMenu(e);

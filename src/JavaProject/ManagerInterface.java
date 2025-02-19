@@ -9,6 +9,10 @@ import java.awt.*;
  * Interface graphique pour les managers.
  * Permet la gestion des utilisateurs, la validation des congés et la gestion des salaires.
  */
+/**
+ * Classe ManagerInterface.
+ * Gère managerinterface dans le système.
+ */
 public class ManagerInterface extends JFrame {
     private Utilisateur manager;
 

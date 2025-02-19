@@ -11,6 +11,10 @@ import java.util.stream.Collectors;
  * Interface graphique pour la gestion des salaires.
  * Permet de sélectionner un utilisateur, calculer son salaire et gérer la paie.
  */
+/**
+ * Classe SalaryManagementInterface.
+ * Gère salarymanagementinterface dans le système.
+ */
 public class SalaryManagementInterface extends JFrame {
     private Manager manager;
     private JComboBox<String> choiceBox1;
@@ -68,6 +72,11 @@ public class SalaryManagementInterface extends JFrame {
 
         searchField.addKeyListener(new KeyAdapter() {
             @Override
+/**
+ * Méthode keyReleased.
+ * Description de la méthode.
+ * @param e Description du paramètre.
+ */
             public void keyReleased(KeyEvent e) {
                 List<String> resultats = Manager.filtrerUtilisateurs(utilisateurs, searchField.getText().trim());
                 Manager.mettreAJourListe(comboBoxModel, resultats);

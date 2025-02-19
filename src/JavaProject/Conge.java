@@ -1,6 +1,10 @@
 package JavaProject;
 
 import java.util.Date;
+/**
+ * Classe Conge.
+ * Gère conge dans le système.
+ */
 public class Conge {
 	Date date_debut;
 	Date date_fin;

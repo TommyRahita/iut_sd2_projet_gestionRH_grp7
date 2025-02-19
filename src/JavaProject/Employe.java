@@ -11,6 +11,10 @@ import java.util.List;
 /**
  * Classe représentant un employé, hérite de la classe Utilisateur.
  */
+/**
+ * Classe Employe.
+ * Gère employe dans le système.
+ */
 public class Employe extends Utilisateur {
     
     /**
@@ -41,6 +45,14 @@ public class Employe extends Utilisateur {
      * @param liste_employe Liste des employés existants.
      * @return True si les identifiants sont corrects, sinon False.
      */
+/**
+ * Méthode se_connecter_employe.
+ * Description de la méthode.
+ * @param id_saisi Description du paramètre.
+ * @param mdp_saisi Description du paramètre.
+ * @param liste_employe Description du paramètre.
+ * @return Boolean Description du retour.
+ */
     public Boolean se_connecter_employe(String id_saisi, String mdp_saisi, List<Employe> liste_employe) {
         for (Employe employe : liste_employe) {
             if (id_saisi.equals(employe.id)) {
@@ -58,6 +70,13 @@ public class Employe extends Utilisateur {
      * @param year Année de la fiche de paie.
      * @return Un objet File correspondant à la fiche de paie si trouvé, sinon null.
      */
+/**
+ * Méthode findPaySlipFile.
+ * Description de la méthode.
+ * @param month Description du paramètre.
+ * @param year Description du paramètre.
+ * @return File Description du retour.
+ */
     public File findPaySlipFile(int month, int year) {
         File dir = new File("resources/fiches_paie");
         if (!dir.exists() || !dir.isDirectory()) {
@@ -76,6 +95,13 @@ public class Employe extends Utilisateur {
      * @param month Mois de la fiche de paie.
      * @param year Année de la fiche de paie.
      */
+/**
+ * Méthode downloadPaySlip.
+ * Description de la méthode.
+ * @param parent Description du paramètre.
+ * @param month Description du paramètre.
+ * @param year Description du paramètre.
+ */
     public void downloadPaySlip(Component parent, int month, int year) {
         File paySlipFile = findPaySlipFile(month, year);
         if (paySlipFile == null) {

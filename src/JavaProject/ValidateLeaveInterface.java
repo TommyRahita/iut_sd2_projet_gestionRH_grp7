@@ -7,6 +7,10 @@ import java.io.*;
 import java.util.*;
 import java.awt.event.*;
 
+/**
+ * Classe ValidateLeaveInterface.
+ * Gère validateleaveinterface dans le système.
+ */
 public class ValidateLeaveInterface extends JFrame {
     private JFrame parent;
 

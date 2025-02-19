@@ -1,5 +1,9 @@
 package JavaProject;
 
+/**
+ * Classe Salaire.
+ * Gère salaire dans le système.
+ */
 public class Salaire {
 	
 	String mois_salaire; 

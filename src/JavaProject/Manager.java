@@ -16,15 +16,81 @@ import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.properties.UnitValue;
 
+/**
+ * Classe Manager héritant de la classe Utilisateur.
+ * Cette classe permet la gestion des utilisateurs, notamment l'ajout d'un nouvel utilisateur.
+ */
 public class Manager extends Utilisateur {
 
     // ---------------------- CONSTRUCTEURS -----------------------//
+    /**
+     * Constructeur avec paramètres pour créer un manager.
+     * 
+     * @param id Identifiant de l'utilisateur
+     * @param nom Nom de l'utilisateur
+     * @param prenom Prénom de l'utilisateur
+     * @param poste Poste occupé par l'utilisateur
+     * @param jours_conge_restants Nombre de jours de congés restants
+     * @param mdp Mot de passe de l'utilisateur
+     * @param statut Statut de l'utilisateur (Manager ou Employé)
+     */
     public Manager(int id, String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         super(id, nom, prenom, poste, jours_conge_restants, mdp, statut);
     }
 
+    /**
+     * Constructeur sans paramètres pour initialiser un manager par défaut.
+     */
     public Manager() {
         super();
+    }
+    
+    /**
+     * Ajoute un nouvel utilisateur au fichier CSV contenant la liste des utilisateurs.
+     * 
+     * @param nom Nom du nouvel utilisateur
+     * @param prenom Prénom du nouvel utilisateur
+     * @param poste Poste du nouvel utilisateur
+     * @param jours_conge_restants Nombre de jours de congé restants
+     * @param mdp Mot de passe du nouvel utilisateur
+     * @param statut Statut du nouvel utilisateur (Manager ou Employé)
+     */
+    public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
+        String ligne;
+        int nb_lignes = 0;
+        String path_csv = "resources/Utilisateurs.csv";
+
+        // Compter le nombre de lignes pour générer un ID utilisateur unique
+        try (BufferedReader br = new BufferedReader(new FileReader(path_csv))) {
+            // Lire et ignorer la première ligne (en-tête)
+            br.readLine();
+
+            // Lire chaque ligne du fichier et compter le nombre d'entrées
+            while ((ligne = br.readLine()) != null) {
+                nb_lignes++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajouter le nouvel utilisateur au fichier CSV
+        try (FileWriter writer = new FileWriter(path_csv, true);
+             BufferedWriter bw = new BufferedWriter(writer);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            // Construire la ligne utilisateur avec un nouvel ID incrémenté
+            String nouvelleLigne = (nb_lignes + 1) + ";" +
+                                    nom + ";" +
+                                    prenom + ";" +
+                                    poste + ";" +
+                                    jours_conge_restants + ";" +
+                                    mdp + ";" +
+                                    statut;
+
+            out.println(nouvelleLigne); // Ajout direct avec un saut de ligne
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // ---------------------- CALCULER SALAIRE -----------------------//
@@ -174,7 +240,14 @@ public class Manager extends Utilisateur {
             JOptionPane.showMessageDialog(parent, "Erreur lors de la génération du PDF.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
- // ---------------------- MÉTHODES POUR LA MISE EN FORME DES CELLULES ----------------------//
+    /**
+     * Crée une cellule d'en-tête avec un texte centré, un fond coloré et une bordure.
+     *
+     * @param text      Le texte à afficher dans la cellule.
+     * @param bgColor   La couleur de fond de la cellule.
+     * @param textColor La couleur du texte.
+     * @return Une cellule formatée pour l'en-tête du tableau.
+     */
     private static Cell createHeaderCell(String text, DeviceRgb bgColor, DeviceRgb textColor) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -186,6 +259,12 @@ public class Manager extends Utilisateur {
                 .setBorder(new SolidBorder(1));
     }
 
+    /**
+     * Crée une cellule pour le corps du tableau avec un texte aligné à droite.
+     *
+     * @param text Le texte à afficher dans la cellule.
+     * @return Une cellule formatée pour le corps du tableau.
+     */
     private static Cell createBodyCell(String text) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -194,6 +273,12 @@ public class Manager extends Utilisateur {
                 .setBorder(new SolidBorder(1));
     }
 
+    /**
+     * Crée une cellule pour le pied de page du tableau avec un texte en gras et aligné à droite.
+     *
+     * @param text Le texte à afficher dans la cellule.
+     * @return Une cellule formatée pour le pied de page du tableau.
+     */
     private static Cell createFooterCell(String text) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -202,7 +287,15 @@ public class Manager extends Utilisateur {
                 .setTextAlignment(TextAlignment.RIGHT)
                 .setBorder(new SolidBorder(1));
     }
- // ---------------------- MÉTHODE POUR SÉCURISER LA CONVERSION EN DOUBLE ----------------------//
+
+    /**
+     * Convertit une chaîne de caractères en double de manière sécurisée.
+     * Si la conversion échoue ou si la valeur est null/vide, retourne 0.0.
+     * Remplace les virgules par des points pour éviter les erreurs de formatage.
+     *
+     * @param value La chaîne à convertir en double.
+     * @return La valeur convertie en double, ou 0.0 en cas d'erreur.
+     */
     private static double safeParseDouble(String value) {
         try {
             return value == null || value.isEmpty() ? 0.0 : Double.parseDouble(value.replace(",", "."));
@@ -211,5 +304,6 @@ public class Manager extends Utilisateur {
             return 0.0; // Retourne 0 pour éviter les crashs
         }
     }
+
 
 }

@@ -5,7 +5,16 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+/**
+ * Classe représentant l'interface graphique pour ajouter un nouvel utilisateur.
+ */
 class AddUserInterface extends JFrame {
+    
+    /**
+     * Constructeur de la classe AddUserInterface.
+     * 
+     * @param parent La fenêtre précédente.
+     */
     public AddUserInterface(JFrame parent) {
         setTitle("Ajouter un utilisateur");
         setSize(800, 500);
@@ -21,13 +30,12 @@ class AddUserInterface extends JFrame {
             System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
         }
 
-        // ---- Panneau principal ----
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(7, 2, 10, 10));
+        // Création du panneau principal contenant le formulaire
+        JPanel formPanel = new JPanel(new GridLayout(7, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         formPanel.setBackground(new Color(43, 60, 70));
 
-        // Champs pour les informations utilisateur
+        // Ajout des champs pour saisir les informations utilisateur
         JLabel nameLabel = createStyledLabel("Nom :");
         JTextField nameField = createStyledTextField();
         formPanel.add(nameLabel);
@@ -59,12 +67,14 @@ class AddUserInterface extends JFrame {
         formPanel.add(statusLabel);
         formPanel.add(statusComboBox);
 
-        // ---- Panneau des boutons ----
+        // Création du panneau contenant les boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(43, 60, 70));
 
+        // Bouton pour ajouter l'utilisateur
         JButton addButton = createRoundedButton("Ajouter");
         addButton.addActionListener(e -> {
+            // Récupération des valeurs des champs
             String name = nameField.getText();
             String firstName = firstNameField.getText();
             String job = jobField.getText();
@@ -73,7 +83,7 @@ class AddUserInterface extends JFrame {
             String status = (String) statusComboBox.getSelectedItem();
 
             try {
-                // Validation des champs
+                // Vérification que tous les champs sont remplis
                 if (name.isEmpty() || firstName.isEmpty() || job.isEmpty() || leaveDaysText.isEmpty() || password.isEmpty() || status.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -81,18 +91,17 @@ class AddUserInterface extends JFrame {
 
                 int leaveDays = Integer.parseInt(leaveDaysText);
 
-                // Appeler la méthode ajouter_utilisateur
-                ajouter_utilisateur(name, firstName, job, leaveDays, password, status);
+                // Ajout de l'utilisateur via la classe Manager
+                Manager.ajouter_utilisateur(name, firstName, job, leaveDays, password, status);
                 JOptionPane.showMessageDialog(this, "Utilisateur ajouté avec succès !");
 
-                // Réinitialiser les champs
+                // Réinitialisation des champs
                 nameField.setText("");
                 firstNameField.setText("");
                 jobField.setText("");
                 leaveDaysField.setText("");
                 passwordField.setText("");
                 statusComboBox.setSelectedIndex(0);
-
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Le champ 'Jours de congés restants' doit être un nombre.", "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
@@ -101,6 +110,7 @@ class AddUserInterface extends JFrame {
         });
         buttonPanel.add(addButton);
 
+        // Bouton de retour à la fenêtre précédente
         JButton backButton = createRoundedButton("Retour");
         backButton.addActionListener(e -> {
             parent.setVisible(true);
@@ -115,7 +125,12 @@ class AddUserInterface extends JFrame {
         parent.setVisible(false);
     }
 
-    // Méthodes pour styliser les composants
+    /**
+     * Crée un label stylisé avec une police et une couleur définies.
+     * 
+     * @param text Le texte du label.
+     * @return Un objet JLabel stylisé.
+     */
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 14));
@@ -123,6 +138,11 @@ class AddUserInterface extends JFrame {
         return label;
     }
 
+    /**
+     * Crée un champ de texte stylisé avec une couleur de fond et une bordure.
+     * 
+     * @return Un objet JTextField stylisé.
+     */
     private JTextField createStyledTextField() {
         JTextField textField = new JTextField();
         textField.setBackground(Color.LIGHT_GRAY);
@@ -131,12 +151,23 @@ class AddUserInterface extends JFrame {
         return textField;
     }
 
+    /**
+     * Applique un style spécifique à un champ de mot de passe.
+     * 
+     * @param passwordField Le champ de mot de passe à styliser.
+     */
     private void stylePasswordField(JPasswordField passwordField) {
         passwordField.setBackground(Color.LIGHT_GRAY);
         passwordField.setForeground(Color.BLACK);
         passwordField.setBorder(new LineBorder(Color.GRAY, 1, true));
     }
 
+    /**
+     * Crée un bouton arrondi avec une couleur de fond personnalisée.
+     * 
+     * @param text Le texte affiché sur le bouton.
+     * @return Un objet JButton stylisé avec des bordures arrondies.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
@@ -144,45 +175,5 @@ class AddUserInterface extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(new RoundBorder(15));
         return button;
-    }
-
-    // Méthode pour ajouter un utilisateur dans le fichier CSV
-    public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
-        String ligne;
-        int nb_lignes = 0;
-        String path_csv = "resources/Utilisateurs.csv";
-
-        // Compter le nombre de lignes
-        try (BufferedReader br = new BufferedReader(new FileReader(path_csv))) {
-            // Lire et ignorer la première ligne (en-tête)
-            br.readLine();
-
-            // Lire chaque ligne du fichier
-            while ((ligne = br.readLine()) != null) {
-                nb_lignes++;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Ajouter le nouvel utilisateur
-        try (FileWriter writer = new FileWriter(path_csv, true);
-             BufferedWriter bw = new BufferedWriter(writer);
-             PrintWriter out = new PrintWriter(bw)) {
-
-            // Construire la ligne utilisateur
-            String nouvelleLigne = (nb_lignes + 1) + ";" +
-                                    nom + ";" +
-                                    prenom + ";" +
-                                    poste + ";" +
-                                    jours_conge_restants + ";" +
-                                    mdp + ";" +
-                                    statut;
-
-            out.println(nouvelleLigne); // Ajout direct avec un saut de ligne
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

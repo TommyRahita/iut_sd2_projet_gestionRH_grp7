@@ -6,10 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Classe LoginFrame représentant l'interface de connexion pour l'application.
+ * Cette classe permet aux utilisateurs de saisir leurs identifiants et de se connecter.
+ */
 public class LoginFrame extends JFrame {
     private JTextField txtId;
     private JPasswordField txtPassword;
 
+    /**
+     * Constructeur de la classe LoginFrame.
+     * Initialise les composants de l'interface graphique.
+     */
     public LoginFrame() {
         try {
             ImageIcon icon = new ImageIcon("resources/icon.png");
@@ -59,6 +67,11 @@ public class LoginFrame extends JFrame {
         add(panel);
     }
 
+    /**
+     * Vérifie les identifiants de l'utilisateur en les comparant avec les données enregistrées.
+     * @param id L'identifiant saisi par l'utilisateur.
+     * @param password Le mot de passe saisi par l'utilisateur.
+     */
     private void verifierIdentifiants(String id, String password) {
         List<Utilisateur> utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
 
@@ -78,6 +91,10 @@ public class LoginFrame extends JFrame {
         JOptionPane.showMessageDialog(this, "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Méthode principale pour lancer l'application de connexion.
+     * @param args Arguments de la ligne de commande (non utilisés).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LoginFrame loginFrame = new LoginFrame();

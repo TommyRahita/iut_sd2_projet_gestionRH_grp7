@@ -5,14 +5,25 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Interface graphique pour les managers.
+ * Permet la gestion des utilisateurs, la validation des congés et la gestion des salaires.
+ */
 public class ManagerInterface extends JFrame {
     private Utilisateur manager;
 
+    /**
+     * Constructeur de l'interface manager.
+     * @param manager L'utilisateur manager connecté.
+     */
     public ManagerInterface(Utilisateur manager) {
         this.manager = manager;
         initUI();
     }
 
+    /**
+     * Initialise l'interface utilisateur.
+     */
     private void initUI() {
         try {
             ImageIcon icon = new ImageIcon("resources\\icon.png");
@@ -85,6 +96,11 @@ public class ManagerInterface extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Crée un bouton stylisé avec des bords arrondis.
+     * @param text Texte du bouton.
+     * @return Bouton stylisé.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
@@ -94,22 +110,37 @@ public class ManagerInterface extends JFrame {
         return button;
     }
 
+    /**
+     * Ouvre l'interface d'ajout d'utilisateur.
+     */
     private void openAddUserInterface() {
         new AddUserInterface(this);
     }
     
+    /**
+     * Ouvre l'interface de suppression d'utilisateur.
+     */
     private void openDeleteUserInterface() {
         new DeleteUserInterface(this);
     }
     
+    /**
+     * Ouvre l'interface de validation des congés.
+     */
     private void openValidateLeaveInterface() {
         new ValidateLeaveInterface(this);
     }
     
+    /**
+     * Ouvre l'interface de gestion des salaires.
+     */
     private void openSalaryManagementInterface() {
         new SalaryManagementInterface(this);
     }
 
+    /**
+     * Action de déconnexion : ferme la fenêtre et ouvre l'écran de connexion.
+     */
     private void logoutAction() {
         dispose();
         SwingUtilities.invokeLater(() -> {
@@ -119,9 +150,16 @@ public class ManagerInterface extends JFrame {
     }
 }
 
+/**
+ * Classe permettant de dessiner une bordure arrondie pour les boutons.
+ */
 class RoundBorder implements Border {
     private int radius;
 
+    /**
+     * Constructeur de la bordure arrondie.
+     * @param radius Rayon d'arrondi des coins.
+     */
     public RoundBorder(int radius) {
         this.radius = radius;
     }

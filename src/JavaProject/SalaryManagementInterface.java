@@ -8,14 +8,22 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Interface graphique pour la gestion des salaires.
+ * Permet de sélectionner un utilisateur, calculer son salaire et gérer la paie.
+ */
 public class SalaryManagementInterface extends JFrame {
     private Manager manager;
     private JComboBox<String> choiceBox1;
     private DefaultComboBoxModel<String> comboBoxModel;
     private JTextField searchField;
     private JLabel salaryLabel;
-    private List<String> utilisateurs; // Liste des utilisateurs chargés
+    private List<String> utilisateurs;
 
+    /**
+     * Constructeur de l'interface de gestion des salaires.
+     * @param parent La fenêtre parente qui a ouvert cette interface.
+     */
     public SalaryManagementInterface(JFrame parent) {
         this.manager = new Manager();
         setTitle("Menu de Management des Salaires");
@@ -28,6 +36,10 @@ public class SalaryManagementInterface extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Initialise l'interface utilisateur.
+     * @param parent La fenêtre parente.
+     */
     private void setupUI(JFrame parent) {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -42,21 +54,17 @@ public class SalaryManagementInterface extends JFrame {
         choiceLabel1.setForeground(Color.WHITE);
         formPanel.add(choiceLabel1, gbc);
 
-        // Champ de recherche
         gbc.gridy++;
         searchField = new JTextField(20);
         formPanel.add(searchField, gbc);
 
-        // Liste déroulante des utilisateurs
         gbc.gridy++;
         comboBoxModel = new DefaultComboBoxModel<>();
         choiceBox1 = new JComboBox<>(comboBoxModel);
         formPanel.add(choiceBox1, gbc);
 
-        // Charger la liste des utilisateurs au démarrage
         chargerUtilisateurs();
 
-        // Ajout d'un écouteur d'événement pour la sélection dans la liste
         choiceBox1.addActionListener(e -> {
             String selectedUser = (String) choiceBox1.getSelectedItem();
             if (selectedUser != null) {
@@ -64,7 +72,6 @@ public class SalaryManagementInterface extends JFrame {
             }
         });
 
-        // Ajout de la recherche dynamique avec vérification de correspondance
         searchField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -72,7 +79,6 @@ public class SalaryManagementInterface extends JFrame {
             }
         });
 
-        // PANEL POUR LE SALAIRE
         gbc.gridy++;
         JPanel salaryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         salaryPanel.setBackground(new Color(43, 60, 70));
@@ -88,7 +94,6 @@ public class SalaryManagementInterface extends JFrame {
         salaryPanel.add(salaryLabel);
         formPanel.add(salaryPanel, gbc);
 
-        // PANEL POUR LES BOUTONS PRINCIPAUX
         gbc.gridy++;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(43, 60, 70));
@@ -103,7 +108,6 @@ public class SalaryManagementInterface extends JFrame {
         buttonPanel.add(generatePayslipButton);
         formPanel.add(buttonPanel, gbc);
 
-        // PANEL POUR LE BOUTON RETOUR (MÊME STYLE)
         gbc.gridy++;
         JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         backButtonPanel.setBackground(new Color(43, 60, 70));
@@ -121,7 +125,7 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Charge tous les utilisateurs dès le début
+     * Charge tous les utilisateurs au démarrage.
      */
     private void chargerUtilisateurs() {
         utilisateurs = Utilisateur.func_recup_data("resources/Utilisateurs.csv")
@@ -133,7 +137,8 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Filtrer la liste des employés en fonction de la recherche
+     * Filtre la liste des utilisateurs en fonction du texte saisi.
+     * @param recherche Texte de recherche.
      */
     private void filtrerUtilisateurs(String recherche) {
         List<String> resultats = utilisateurs.stream()
@@ -145,7 +150,8 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Met à jour la liste déroulante avec les utilisateurs filtrés
+     * Met à jour la liste déroulante avec les utilisateurs filtrés.
+     * @param utilisateursFiltrés Liste des utilisateurs filtrés.
      */
     private void mettreAJourListe(List<String> utilisateursFiltrés) {
         comboBoxModel.removeAllElements();
@@ -153,7 +159,7 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Calculer le salaire et afficher le résultat
+     * Calcule et affiche le salaire de l'utilisateur sélectionné.
      */
     private void calculerSalaire() {
         String selectedUser = (String) choiceBox1.getSelectedItem();
@@ -174,7 +180,7 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Ouvrir l'interface de saisie de la paie
+     * Ouvre l'interface de gestion de la paie pour l'utilisateur sélectionné.
      */
     private void ouvrirInterfaceSaisie() {
         String selectedUser = (String) choiceBox1.getSelectedItem();
@@ -188,11 +194,13 @@ public class SalaryManagementInterface extends JFrame {
     }
 
     /**
-     * Créer un bouton stylisé avec le même design que les autres
+     * Crée un bouton stylisé.
+     * @param text Texte du bouton.
+     * @return Bouton stylisé.
      */
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setBackground(new Color(255, 204, 0)); // Jaune
+        button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));

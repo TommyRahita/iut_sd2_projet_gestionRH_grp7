@@ -7,6 +7,9 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Classe représentant l'interface de saisie de la paie d'un employé.
+ */
 public class PayrollEntryInterface extends JFrame {
     private JTextField heuresTravailField, primesField, cotisationsField, impotsField;
     private JLabel userInfoLabel, salaireBrutLabel, salaireNetLabel;
@@ -15,6 +18,11 @@ public class PayrollEntryInterface extends JFrame {
     private double tauxHoraire;
     private JFrame parent; // Stocke la fenêtre précédente
 
+    /**
+     * Constructeur de l'interface de saisie de la paie.
+     * @param parent La fenêtre précédente.
+     * @param selectedUser L'utilisateur sélectionné pour la saisie de la paie.
+     */
     public PayrollEntryInterface(JFrame parent, String selectedUser) {
         this.parent = parent;
         this.selectedUser = selectedUser;
@@ -108,6 +116,9 @@ public class PayrollEntryInterface extends JFrame {
         if (parent != null) parent.setVisible(false);
     }
 
+    /**
+     * Enregistre les données de paie saisies par l'utilisateur.
+     */
     private void enregistrerPaie() {
         try {
             int heuresTravail = Integer.parseInt(heuresTravailField.getText().trim());
@@ -153,6 +164,10 @@ public class PayrollEntryInterface extends JFrame {
         }
     }
 
+    /**
+     * Récupère le prochain ID de paie à enregistrer.
+     * @return Le prochain ID de paie disponible.
+     */
     private int getNextPaieId() {
         int maxId = 0;
         File file = new File("resources/paie.csv");
@@ -205,7 +220,9 @@ public class PayrollEntryInterface extends JFrame {
     }
     
     /**
-     * Récupère les informations d'un utilisateur à partir du fichier CSV.
+     * Récupère le taux horaire correspondant à un poste donné.
+     * @param poste Le poste de l'utilisateur.
+     * @return Le taux horaire en euros.
      */
     private Utilisateur getUtilisateurInfo(String selectedUser) {
         List<Utilisateur> users = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
@@ -214,7 +231,12 @@ public class PayrollEntryInterface extends JFrame {
                 .findFirst()
                 .orElse(new Utilisateur(0, "Inconnu", "Inconnu", "Aucun", 0, "", ""));
     }
-
+    
+    /**
+     * Récupère les informations d'un utilisateur à partir de son nom.
+     * @param selectedUser Le nom de l'utilisateur sélectionné.
+     * @return Un objet Utilisateur contenant ses informations.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
@@ -222,7 +244,12 @@ public class PayrollEntryInterface extends JFrame {
         return button;
     }
     
- // Méthodes pour styliser les composants
+    
+    /**
+     * Crée un label stylisé avec une police et une couleur définies.
+     * @param text Le texte du label.
+     * @return Un objet JLabel stylisé.
+     */
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 14));
@@ -230,6 +257,10 @@ public class PayrollEntryInterface extends JFrame {
         return label;
     }
 
+    /**
+     * Crée un champ de texte stylisé avec une couleur de fond et une bordure.
+     * @return Un objet JTextField stylisé.
+     */
     private JTextField createStyledTextField() {
         JTextField textField = new JTextField();
         textField.setBackground(Color.LIGHT_GRAY);

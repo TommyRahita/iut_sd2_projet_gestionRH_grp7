@@ -8,14 +8,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * Interface graphique pour les employés.
+ * Permet de demander des congés et de télécharger les fiches de paie.
+ */
 public class EmployeeInterface extends JFrame {
     private Utilisateur employee;
 
+    /**
+     * Constructeur de la classe EmployeeInterface.
+     * @param employee L'utilisateur connecté à l'interface.
+     */
     public EmployeeInterface(Utilisateur employee) {
         this.employee = employee;
         initUI();
     }
 
+    /**
+     * Initialise l'interface employé.
+     */
     private void initUI() {
         try {
             ImageIcon icon = new ImageIcon("resources/icon.png");
@@ -41,7 +52,7 @@ public class EmployeeInterface extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Panel central avec les boutons
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 20)); // On passe de 3 à 2 lignes
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 20));
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 35, true));
 
@@ -79,6 +90,11 @@ public class EmployeeInterface extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Crée un bouton arrondi personnalisé.
+     * @param text Le texte du bouton.
+     * @return Un bouton personnalisé.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
@@ -88,6 +104,9 @@ public class EmployeeInterface extends JFrame {
         return button;
     }
 
+    /**
+     * Ouvre l'interface de demande de congés.
+     */
     private void openCongesRequestInterface() {
         new CongeRequest(this, employee);
     }
@@ -99,6 +118,9 @@ public class EmployeeInterface extends JFrame {
         new PaySlipSelectionDialog(this, employee);
     }
 
+    /**
+     * Action de déconnexion de l'utilisateur.
+     */
     private void logoutAction() {
         dispose();
         SwingUtilities.invokeLater(() -> {
@@ -107,6 +129,7 @@ public class EmployeeInterface extends JFrame {
         });
     }
 }
+
 
 
 /**

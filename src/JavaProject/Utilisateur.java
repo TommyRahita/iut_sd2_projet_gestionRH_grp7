@@ -21,6 +21,17 @@ public class Utilisateur {
 	
 	// Constructeur 1
 	public Utilisateur(int id, String nom, String prenom, String poste,	int jours_conge_restants, String mdp, String statut) {
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.poste = poste;
+		this.jours_conge_restants = jours_conge_restants;
+		this.mdp = mdp;
+		this.statut = statut;
+	
+	}
+	// Constructeur 2
+	public Utilisateur(String nom, String prenom, String poste,	int jours_conge_restants, String mdp, String statut) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.poste = poste;
@@ -34,6 +45,46 @@ public class Utilisateur {
 	public Utilisateur() {
 		
 	}
+
+	// Méthode pour ajouter un utilisateur dans le fichier CSV
+    public static void ajouter_utilisateur(Utilisateur utilisateur) {
+        String ligne;
+        int nb_lignes = 0;
+        String path_csv = "resources/Utilisateurs.csv";
+
+        // Compter le nombre de lignes
+        try (BufferedReader br = new BufferedReader(new FileReader(path_csv))) {
+            // Lire et ignorer la première ligne (en-tête)
+            br.readLine();
+
+            // Lire chaque ligne du fichier
+            while ((ligne = br.readLine()) != null) {
+                nb_lignes++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Ajouter le nouvel utilisateur
+        try (FileWriter writer = new FileWriter(path_csv, true);
+             BufferedWriter bw = new BufferedWriter(writer);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            // Construire la ligne utilisateur
+            String nouvelleLigne = (nb_lignes + 1) + ";" +
+                                    utilisateur.nom + ";" +
+                                    utilisateur.prenom + ";" +
+                                    utilisateur.poste + ";" +
+                                    utilisateur.jours_conge_restants + ";" +
+                                    utilisateur.mdp + ";" +
+                                    utilisateur.statut;
+
+            out.println(nouvelleLigne); // Ajout direct avec un saut de ligne
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	public static List<Utilisateur> func_recup_data(String chemin_fichier) {
 	    String ligne;

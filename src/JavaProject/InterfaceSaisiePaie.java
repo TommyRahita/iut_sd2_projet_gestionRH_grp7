@@ -8,6 +8,14 @@ import java.awt.*;
  * Classe InterfaceSaisiePaie.
  * Gère l'interface de saisie de la paie dans le système.
  */
+
+/**
+ * Classe InterfaceSaisiePaie.
+ * Cette classe gère les fonctionnalités liées à interfacesaisiepaie dans le système.
+ *
+ * @author Groupe 7
+ * @version 1.0
+ */
 public class InterfaceSaisiePaie extends JFrame {
     private JTextField heuresTravailField, primesField, cotisationsField, impotsField;
     private JLabel userInfoLabel, salaireBrutLabel, salaireNetLabel;

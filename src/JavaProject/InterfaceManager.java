@@ -6,18 +6,21 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
- * Interface graphique pour les gestionnaires.
- * Permet la gestion des utilisateurs, la validation des congés et la gestion des salaires.
- */
-/**
  * Classe InterfaceManager.
- * Gère gestionnaireinterface dans le système.
+ * <p>
+ * Cette classe gère les fonctionnalités liées à l'interface du gestionnaire dans le système.
+ * Elle permet notamment la gestion des utilisateurs, la validation des congés et la gestion des salaires.
+ * </p>
+ * 
+ * @author Groupe 7
+ * @version 1.0
  */
 public class InterfaceManager extends JFrame {
     private Utilisateur gestionnaire;
 
     /**
-     * Constructeur de l'interface gestionnaire.
+     * Constructeur de l'interface du gestionnaire.
+     *
      * @param gestionnaire L'utilisateur gestionnaire connecté.
      */
     public InterfaceManager(Utilisateur gestionnaire) {
@@ -102,8 +105,9 @@ public class InterfaceManager extends JFrame {
 
     /**
      * Crée un bouton stylisé avec des bords arrondis.
+     *
      * @param text Texte du bouton.
-     * @return Bouton stylisé.
+     * @return Un JButton stylisé.
      */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
@@ -148,7 +152,7 @@ public class InterfaceManager extends JFrame {
     private void logoutAction() {
         dispose();
         SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
+            InterfaceConnexion loginFrame = new InterfaceConnexion();
             loginFrame.setVisible(true);
         });
     }

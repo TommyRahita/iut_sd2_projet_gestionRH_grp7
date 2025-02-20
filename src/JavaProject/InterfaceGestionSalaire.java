@@ -1,6 +1,7 @@
 package JavaProject;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -8,12 +9,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Interface graphique pour la gestion des salaires.
- * Permet de sélectionner un utilisateur, calculer son salaire et gérer la paie.
- */
-/**
  * Classe InterfaceGestionSalaire.
- * Gère salairemanagementinterface dans le système.
+ * <p>
+ * Cette classe gère les fonctionnalités liées à l'interface de gestion des salaires dans le système.
+ * Elle permet de sélectionner un utilisateur, de calculer son salaire et de gérer la paie.
+ * </p>
+ *
+ * @author Groupe 7
+ * @version 1.0
  */
 public class InterfaceGestionSalaire extends JFrame {
     private Manager gestionnaire;
@@ -25,6 +28,7 @@ public class InterfaceGestionSalaire extends JFrame {
 
     /**
      * Constructeur de l'interface de gestion des salaires.
+     *
      * @param parent La fenêtre parente qui a ouvert cette interface.
      */
     public InterfaceGestionSalaire(JFrame parent) {
@@ -41,6 +45,7 @@ public class InterfaceGestionSalaire extends JFrame {
 
     /**
      * Initialise l'interface utilisateur.
+     *
      * @param parent La fenêtre parente.
      */
     private void setupUI(JFrame parent) {
@@ -71,12 +76,16 @@ public class InterfaceGestionSalaire extends JFrame {
         Manager.mettreAJourListe(comboBoxModel, utilisateurs);
 
         searchField.addKeyListener(new KeyAdapter() {
+            /**
+             * Méthode keyReleased.
+             * <p>
+             * Filtre la liste des utilisateurs en fonction du texte saisi dans le champ de recherche.
+             * Met à jour le modèle de la JComboBox avec les résultats filtrés.
+             * </p>
+             *
+             * @param e Événement déclencheur lors du relâchement d'une touche.
+             */
             @Override
-/**
- * Méthode keyReleased.
- * Description de la méthode.
- * @param e Description du paramètre.
- */
             public void keyReleased(KeyEvent e) {
                 List<String> resultats = Manager.filtrerUtilisateurs(utilisateurs, searchField.getText().trim());
                 Manager.mettreAJourListe(comboBoxModel, resultats);
@@ -102,7 +111,7 @@ public class InterfaceGestionSalaire extends JFrame {
         buttonPanel.setBackground(new Color(43, 60, 70));
 
         JButton calculerSalaireButton = createStyledButton("Calculer le salaire");
-        calculerSalaireButton.addActionListener(e -> 
+        calculerSalaireButton.addActionListener(e ->
                 Manager.calculerSalaireUI(this, gestionnaire, (String) choiceBox1.getSelectedItem(), salaireLabel));
         JButton generatePayslipButton = createStyledButton("Gérer la paie");
         generatePayslipButton.addActionListener(e -> ouvrirInterfaceSaisie());
@@ -140,8 +149,9 @@ public class InterfaceGestionSalaire extends JFrame {
 
     /**
      * Crée un bouton stylisé.
+     *
      * @param text Texte du bouton.
-     * @return Bouton stylisé.
+     * @return Un bouton stylisé.
      */
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);

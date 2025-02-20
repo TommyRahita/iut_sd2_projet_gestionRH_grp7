@@ -11,6 +11,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+
+/**
+ * Classe InterfaceValidationConge.
+ * Cette classe gère les fonctionnalités liées à interfacevalidationconge dans le système.
+ *
+ * @author Groupe 7
+ * @version 1.0
+ */
 public class InterfaceValidationConge extends JFrame {
     private JFrame parent;
 

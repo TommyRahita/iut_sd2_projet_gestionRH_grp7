@@ -1,17 +1,26 @@
-/**
- * Classe extends.
- * Cette classe est responsable de la gestion de extends.
- *
- * @author Équipe Projet Gestion RH
- * @version 1.0
- */
 package JavaProject;
 
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.awt.*;
 
+/**
+ * Classe SupprimerUtilisateurInterface.
+ * <p>
+ * Cette classe gère les fonctionnalités liées à l'interface de suppression d'un utilisateur dans le système.
+ * Elle permet de sélectionner un utilisateur depuis une liste déroulante et de le supprimer après confirmation.
+ * </p>
+ * 
+ * @author Groupe 7
+ * @version 1.0
+ */
 class SupprimerUtilisateurInterface extends JFrame {
+    
+    /**
+     * Constructeur de l'interface de suppression d'utilisateur.
+     *
+     * @param parent La fenêtre parente qui a ouvert cette interface.
+     */
     public SupprimerUtilisateurInterface(JFrame parent) {
         setTitle("Supprimer un utilisateur");
         setSize(800, 500);
@@ -27,8 +36,7 @@ class SupprimerUtilisateurInterface extends JFrame {
         }
         
         // ---- Panneau principal ----
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridBagLayout());
+        JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         formPanel.setBackground(new Color(43, 60, 70));
         setResizable(false);
@@ -94,7 +102,12 @@ class SupprimerUtilisateurInterface extends JFrame {
         parent.setVisible(false);
     }
 
-    // Méthode pour styliser les labels
+    /**
+     * Crée un JLabel stylisé avec le texte spécifié.
+     *
+     * @param text Le texte à afficher.
+     * @return Un JLabel stylisé.
+     */
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 14));
@@ -102,7 +115,12 @@ class SupprimerUtilisateurInterface extends JFrame {
         return label;
     }
 
-    // Méthode pour créer des boutons arrondis
+    /**
+     * Crée un bouton arrondi avec le texte spécifié.
+     *
+     * @param text Le texte du bouton.
+     * @return Un JButton stylisé.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));

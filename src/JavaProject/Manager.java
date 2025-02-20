@@ -23,33 +23,58 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.properties.UnitValue;
 
 /**
- * Classe Manager héritant de la classe Utilisateur.
- * Cette classe centralise la gestion des utilisateurs, de la paie et des congés.
- * Elle inclut désormais les méthodes pour ajouter un utilisateur, calculer le taux horaire d’un poste (calculer_salaire),
- * ainsi que toutes les méthodes de gestion (CSV, génération de fiche de paie, gestion des congés…).
+ * Classe Manager.
+ * <p>
+ * Cette classe gère l'ensemble des fonctionnalités relatives à la gestion des utilisateurs, de la paie et des congés
+ * dans le système. Elle étend la classe Utilisateur et fournit des méthodes pour ajouter des utilisateurs, calculer
+ * le taux horaire en fonction du poste, générer des fiches de paie, et gérer les congés ainsi que les opérations
+ * associées (lecture/écriture sur fichiers CSV, génération de PDF, etc.).
+ * </p>
+ * 
+ * @author Groupe 7
+ * @version 1.0
  */
 public class Manager extends Utilisateur {
 
     // ---------------------- CONSTRUCTEURS -----------------------//
+
+    /**
+     * Constructeur complet de la classe Manager.
+     *
+     * @param id                  L'identifiant du manager.
+     * @param nom                 Le nom du manager.
+     * @param prenom              Le prénom du manager.
+     * @param poste               Le poste occupé.
+     * @param jours_conge_restants Le nombre de jours de congé restants.
+     * @param mdp                 Le mot de passe.
+     * @param statut              Le statut (par exemple "gestionnaire" ou "employé").
+     */
     public Manager(int id, String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         super(id, nom, prenom, poste, jours_conge_restants, mdp, statut);
     }
 
+    /**
+     * Constructeur par défaut de la classe Manager.
+     */
     public Manager() {
         super();
     }
     
     // ---------------------- MÉTHODES AJOUTER UTILISATEUR -----------------------//
-    
+
     /**
-     * Ajoute un nouvel utilisateur dans le fichier CSV à partir des informations fournies.
-     * (Méthode déplacée de Utilisateur vers Manager)
-     * @param nom Nom de l'utilisateur.
-     * @param prenom Prénom de l'utilisateur.
-     * @param poste Poste de l'utilisateur.
-     * @param jours_conge_restants Nombre de jours de congé restants.
-     * @param mdp Mot de passe.
-     * @param statut Statut (par exemple "gestionnaire" ou "employé").
+     * Ajoute un nouvel utilisateur dans le fichier CSV en utilisant les informations fournies.
+     * <p>
+     * Cette méthode lit d'abord le fichier CSV pour déterminer le nombre de lignes existantes, puis
+     * ajoute une nouvelle ligne correspondant aux informations de l'utilisateur.
+     * </p>
+     *
+     * @param nom                 Le nom de l'utilisateur.
+     * @param prenom              Le prénom de l'utilisateur.
+     * @param poste               Le poste de l'utilisateur.
+     * @param jours_conge_restants Le nombre de jours de congé restants pour l'utilisateur.
+     * @param mdp                 Le mot de passe de l'utilisateur.
+     * @param statut              Le statut de l'utilisateur (ex : "gestionnaire", "employé").
      */
     public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         String path_csv = "resources/Utilisateurs.csv";
@@ -78,15 +103,18 @@ public class Manager extends Utilisateur {
         }
     }
     
-    // ---------------------- MÉTHODE CALCULER SALAIRE (float) -----------------------//
-    
+    // ---------------------- MÉTHODE CALCULER SALAIRE -----------------------//
+
     /**
-     * Calcule et retourne le taux horaire en fonction du poste d'un utilisateur donné.
-     * Cette méthode lit les fichiers CSV pour récupérer le taux horaire associé au poste.
-     * (Méthode déplacée de Utilisateur vers Manager)
-     * @param nom Nom de l'utilisateur.
-     * @param prenom Prénom de l'utilisateur.
-     * @return Le taux horaire en float, ou -1 en cas d'erreur.
+     * Calcule et retourne le taux horaire en fonction du poste de l'utilisateur identifié par son nom et prénom.
+     * <p>
+     * La méthode parcourt le fichier CSV des utilisateurs afin d'identifier l'utilisateur concerné et lit
+     * ensuite le fichier CSV des taux horaires pour trouver le taux correspondant au poste de cet utilisateur.
+     * </p>
+     *
+     * @param nom    Le nom de l'utilisateur.
+     * @param prenom Le prénom de l'utilisateur.
+     * @return Le taux horaire en float, ou -1 en cas d'erreur ou si le poste n'est pas trouvé.
      */
     public static float calculer_salaire(String nom, String prenom) {
         String path_th = "Ressources/taux_horraire_poste.csv";
@@ -121,19 +149,37 @@ public class Manager extends Utilisateur {
     }
     
     // ---------------------- AUTRES MÉTHODES DE GESTION DES UTILISATEURS -----------------------//
-    
+
+    /**
+     * Récupère la liste des utilisateurs à partir du fichier CSV.
+     *
+     * @return Une liste de chaînes représentant les noms complets des utilisateurs.
+     */
     public static List<String> chargerUtilisateurs() {
         return Utilisateur.func_recup_data("resources/Utilisateurs.csv")
                 .stream()
                 .map(u -> u.prenom + " " + u.nom)
                 .collect(Collectors.toList());
     }
-    
+
+    /**
+     * Charge les utilisateurs depuis le fichier CSV sous forme de tableau de chaînes.
+     *
+     * @return Un tableau contenant les noms complets des utilisateurs.
+     */
     public static String[] loadUsersFromCSV() {
         List<String> list = chargerUtilisateurs();
         return list.toArray(new String[0]);
     }
     
+    /**
+     * Supprime l'utilisateur sélectionné du fichier CSV.
+     * <p>
+     * La méthode lit le fichier CSV, exclut la ligne correspondant à l'utilisateur sélectionné, et réécrit le fichier.
+     * </p>
+     *
+     * @param selectedUser Le nom complet de l'utilisateur à supprimer.
+     */
     public static void deleteUserFromCSV(String selectedUser) {
         String filePath = "resources/Utilisateurs.csv";
         ArrayList<String> updatedLines = new ArrayList<>();
@@ -167,11 +213,18 @@ public class Manager extends Utilisateur {
         }
     }
     
-    // ---------------------- CALCUL DU SALAIRE ET FICHE DE PAIE -----------------------//
+    // ---------------------- CALCUL DU SALAIRE ET GÉNÉRATION DE FICHE DE PAIE -----------------------//
 
     /**
-     * Calcule les informations de paie pour un utilisateur sélectionné (basé sur nom complet).
-     * Retourne un objet Salaire contenant [salaireBrut, primes, cotisations, impots, salaireNet, mois, annee].
+     * Calcule les informations de paie pour un utilisateur sélectionné en fonction de son nom complet.
+     * <p>
+     * La méthode lit le fichier CSV de paie pour accumuler les valeurs de salaire brut, primes, cotisations et impôts.
+     * Si l'utilisateur est trouvé, elle retourne un objet Salaire contenant ces valeurs ainsi que la date de paie.
+     * </p>
+     *
+     * @param parent       La fenêtre parente pour l'affichage des messages.
+     * @param selectedUser Le nom complet de l'utilisateur.
+     * @return Un objet Salaire contenant les détails de paie ou null si aucune paie n'est trouvée.
      */
     public static Salaire calculer_salaire(JFrame parent, String selectedUser) {
         String path_paie = "resources/paie.csv";
@@ -209,6 +262,16 @@ public class Manager extends Utilisateur {
         return new Salaire(salaireBrut, primes, cotisations, impots, salaireNet, mois, annee);
     }
 
+    /**
+     * Génère la fiche de paie en format PDF pour l'utilisateur sélectionné.
+     * <p>
+     * La méthode récupère les détails de paie via {@code calculer_salaire}, construit le document PDF
+     * avec un tableau récapitulatif et l'enregistre dans le répertoire prévu. Un message de confirmation est affiché.
+     * </p>
+     *
+     * @param parent       La fenêtre parente pour l'affichage des messages.
+     * @param selectedUser Le nom complet de l'utilisateur.
+     */
     public static void genererFichePaie(JFrame parent, String selectedUser) {
         if (selectedUser == null || selectedUser.isEmpty()) {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -275,6 +338,14 @@ public class Manager extends Utilisateur {
     
     // ---------------- MÉTHODES UTILITAIRES POUR LA GÉNÉRATION DE PDF ---------------- //
 
+    /**
+     * Crée une cellule d'en-tête pour le tableau de la fiche de paie.
+     *
+     * @param text      Le texte de l'en-tête.
+     * @param bgColor   La couleur de fond.
+     * @param textColor La couleur du texte.
+     * @return Une cellule formatée pour l'en-tête.
+     */
     private static Cell createHeaderCell(String text, DeviceRgb bgColor, DeviceRgb textColor) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -286,6 +357,12 @@ public class Manager extends Utilisateur {
                 .setBorder(new SolidBorder(1));
     }
 
+    /**
+     * Crée une cellule de corps pour le tableau de la fiche de paie.
+     *
+     * @param text Le texte à afficher dans la cellule.
+     * @return Une cellule formatée pour le corps du tableau.
+     */
     private static Cell createBodyCell(String text) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -294,6 +371,12 @@ public class Manager extends Utilisateur {
                 .setBorder(new SolidBorder(1));
     }
 
+    /**
+     * Crée une cellule de pied de tableau pour le tableau de la fiche de paie.
+     *
+     * @param text Le texte à afficher dans la cellule.
+     * @return Une cellule formatée pour le pied du tableau.
+     */
     private static Cell createFooterCell(String text) {
         return new Cell()
                 .add(new Paragraph(text))
@@ -303,6 +386,12 @@ public class Manager extends Utilisateur {
                 .setBorder(new SolidBorder(1));
     }
 
+    /**
+     * Convertit une chaîne en double en gérant les valeurs nulles ou vides.
+     *
+     * @param value La chaîne à convertir.
+     * @return La valeur double correspondante, ou 0.0 si la chaîne est nulle ou vide.
+     */
     private static double safeParseDouble(String value) {
         try {
             return value == null || value.isEmpty() ? 0.0 : Double.parseDouble(value.replace(",", "."));
@@ -313,7 +402,14 @@ public class Manager extends Utilisateur {
     }
     
     // ---------------- MÉTHODES DE GESTION DES UTILISATEURS POUR L'INTERFACE ---------------- //
-    
+
+    /**
+     * Filtre la liste des utilisateurs en fonction d'une chaîne de recherche.
+     *
+     * @param utilisateurs La liste complète des utilisateurs.
+     * @param recherche    La chaîne à rechercher (non sensible à la casse).
+     * @return Une liste contenant jusqu'à 5 utilisateurs correspondant à la recherche.
+     */
     public static List<String> filtrerUtilisateurs(List<String> utilisateurs, String recherche) {
         return utilisateurs.stream()
                 .filter(nom -> nom.toLowerCase().contains(recherche.toLowerCase()))
@@ -321,11 +417,25 @@ public class Manager extends Utilisateur {
                 .collect(Collectors.toList());
     }
     
+    /**
+     * Met à jour le modèle de la JComboBox avec la liste filtrée d'utilisateurs.
+     *
+     * @param comboBoxModel         Le modèle de la JComboBox.
+     * @param utilisateursFiltrés   La liste des utilisateurs filtrés.
+     */
     public static void mettreAJourListe(DefaultComboBoxModel<String> comboBoxModel, List<String> utilisateursFiltrés) {
         comboBoxModel.removeAllElements();
         utilisateursFiltrés.forEach(comboBoxModel::addElement);
     }
     
+    /**
+     * Calcule le salaire net et met à jour l'interface utilisateur pour l'afficher.
+     *
+     * @param parent         La fenêtre parente pour l'affichage des messages.
+     * @param gestionnaire   L'instance Manager utilisée pour le calcul.
+     * @param selectedUser   Le nom complet de l'utilisateur sélectionné.
+     * @param salaireLabel   Le JLabel où le salaire net sera affiché.
+     */
     public static void calculerSalaireUI(JFrame parent, Manager gestionnaire, String selectedUser, JLabel salaireLabel) {
         if (selectedUser == null || selectedUser.isEmpty()) {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -341,7 +451,12 @@ public class Manager extends Utilisateur {
     }
     
     // ---------------------- GESTION DE LA PAIE ----------------------- //
-    
+
+    /**
+     * Récupère l'ID suivant pour la fiche de paie en parcourant le fichier CSV.
+     *
+     * @return L'ID suivant pour la fiche de paie.
+     */
     public static int getNextPaieId() {
         int maxId = 0;
         File file = new File("resources/paie.csv");
@@ -370,6 +485,17 @@ public class Manager extends Utilisateur {
         return maxId + 1;
     }
     
+    /**
+     * Enregistre une fiche de paie dans le fichier CSV en utilisant les paramètres fournis.
+     *
+     * @param heuresTravail Le nombre d'heures travaillées.
+     * @param primes        Le montant des primes.
+     * @param cotisations   Le montant des cotisations sociales.
+     * @param impots        Le montant des impôts.
+     * @param utilisateur   L'utilisateur concerné.
+     * @param tauxHoraire   Le taux horaire du poste de l'utilisateur.
+     * @param frame         La fenêtre parente pour l'affichage des messages.
+     */
     public static void enregistrerPaie(int heuresTravail, double primes, double cotisations, double impots,
                                        Utilisateur utilisateur, double tauxHoraire, JFrame frame) {
         try {
@@ -401,6 +527,12 @@ public class Manager extends Utilisateur {
         }
     }
     
+    /**
+     * Récupère le taux horaire pour un poste donné à partir du fichier CSV.
+     *
+     * @param poste Le poste pour lequel obtenir le taux horaire.
+     * @return Le taux horaire correspondant, ou 0.0 en cas d'erreur.
+     */
     public static double getTauxHoraire(String poste) {
         String path = "resources/taux_horraire_poste.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -418,6 +550,12 @@ public class Manager extends Utilisateur {
         return 0.0;
     }
     
+    /**
+     * Récupère les informations complètes d'un utilisateur à partir de son nom complet.
+     *
+     * @param selectedUser Le nom complet de l'utilisateur.
+     * @return L'objet Utilisateur correspondant, ou un utilisateur par défaut si non trouvé.
+     */
     public static Utilisateur getUtilisateurInfo(String selectedUser) {
         List<Utilisateur> users = Utilisateur.func_recup_data("resources/Utilisateurs.csv");
         return users.stream()
@@ -427,7 +565,13 @@ public class Manager extends Utilisateur {
     }
     
     // ---------------------- GESTION DES CONGÉS ---------------------- //
-    
+
+    /**
+     * Charge les données de congé à partir du fichier CSV et les ajoute dans le modèle de la JTable.
+     *
+     * @param tableModel Le modèle de la JTable dans lequel ajouter les données.
+     * @param parent     Le composant parent pour l'affichage des messages en cas d'erreur.
+     */
     public static void loadCongeData(DefaultTableModel tableModel, Component parent) {
         try (BufferedReader br = new BufferedReader(new FileReader("resources\\conge.csv"))) {
             String line;
@@ -456,6 +600,16 @@ public class Manager extends Utilisateur {
         }
     }
     
+    /**
+     * Crée un bouton d'action pour la gestion d'un congé.
+     * <p>
+     * Le bouton permet de choisir entre la validation ou le rejet d'une demande de congé.
+     * </p>
+     *
+     * @param idConge Le numéro d'identification du congé.
+     * @param parent  Le composant parent pour l'affichage des dialogues.
+     * @return Un JButton configuré pour l'action sur le congé.
+     */
     public static JButton createCongeActionButton(String idConge, Component parent) {
         JButton button = new JButton("Action");
         button.addActionListener(e -> {
@@ -481,6 +635,17 @@ public class Manager extends Utilisateur {
         return button;
     }
     
+    /**
+     * Met à jour le statut d'un congé dans le fichier CSV.
+     * <p>
+     * La méthode lit le fichier CSV, met à jour le statut pour le congé correspondant à l'identifiant fourni,
+     * et réécrit le fichier. En cas d'échec, un message d'erreur est affiché.
+     * </p>
+     *
+     * @param idConge Le numéro d'identification du congé.
+     * @param statut  Le nouveau statut à appliquer (par exemple "Validé" ou "Rejeté").
+     * @param parent  Le composant parent pour l'affichage des messages en cas d'erreur.
+     */
     public static void updateCongeStatus(String idConge, String statut, Component parent) {
         try {
             File inputFile = new File("resources\\conge.csv");

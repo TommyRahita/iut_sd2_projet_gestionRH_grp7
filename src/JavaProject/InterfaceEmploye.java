@@ -6,16 +6,31 @@ import java.awt.*;
 
 /**
  * Classe InterfaceEmploye.
- * Gère employeinterface dans le système.
+ * <p>
+ * Cette classe gère les fonctionnalités liées à l'interface employé dans le système.
+ * Elle affiche les informations de l'employé connecté ainsi que des options pour demander des congés,
+ * télécharger la fiche de paie, se déconnecter ou quitter l'application.
+ * </p>
+ *
+ * @author Groupe 7
+ * @version 1.0
  */
 public class InterfaceEmploye extends JFrame {
     private Employe employe;
 
+    /**
+     * Constructeur de l'interface employé.
+     *
+     * @param employe L'employé connecté dont les informations sont affichées.
+     */
     public InterfaceEmploye(Employe employe) {
         this.employe = employe;
         initialiserUI();
     }
 
+    /**
+     * Initialise l'interface utilisateur.
+     */
     private void initialiserUI() {
         try {
             ImageIcon icon = new ImageIcon("resources/icon.png");
@@ -30,7 +45,7 @@ public class InterfaceEmploye extends JFrame {
         setLayout(new BorderLayout());
         setResizable(false);
 
-        // Panel du haut avec nom de l'employé
+        // Panel du haut affichant le nom de l'employé
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
         JLabel nameLabel = new JLabel("Employé : " + employe.prenom + " " + employe.nom);
@@ -40,7 +55,7 @@ public class InterfaceEmploye extends JFrame {
         topPanel.add(nameLabel);
         add(topPanel, BorderLayout.NORTH);
 
-        // Panel central avec les boutons
+        // Panel central avec les boutons pour demander congés et télécharger la fiche de paie
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 20)); // 2 lignes
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 35, true));
@@ -79,6 +94,12 @@ public class InterfaceEmploye extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Crée un bouton avec un design arrondi.
+     *
+     * @param text Le texte à afficher sur le bouton.
+     * @return Un JButton stylisé.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
@@ -88,21 +109,27 @@ public class InterfaceEmploye extends JFrame {
         return button;
     }
 
+    /**
+     * Ouvre l'interface de demande de congés.
+     */
     private void openCongesRequestInterface() {
         new InterfaceDemandeConge(this, employe);
     }
 
     /**
-     * Ouvre une boîte de dialogue pour choisir le mois et l'année avant de télécharger la fiche de paie.
+     * Ouvre la boîte de dialogue pour sélectionner le mois et l'année de la fiche de paie à télécharger.
      */
     private void openDialogueSelectionFichePaie() {
         new InterfaceDialogueSelectionFichePaie(this, employe);
     }
 
+    /**
+     * Effectue l'action de déconnexion en fermant cette interface et en affichant l'écran de connexion.
+     */
     private void logoutAction() {
         dispose();
         SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
+            InterfaceConnexion loginFrame = new InterfaceConnexion();
             loginFrame.setVisible(true);
         });
     }

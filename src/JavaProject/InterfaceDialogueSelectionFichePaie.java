@@ -8,14 +8,30 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 /**
- * Classe pour afficher une boîte de dialogue permettant de choisir le mois et l'année d'une fiche de paie.
- * La boîte de dialogue utilise l'employé connecté pour récupérer la fiche de paie.
+ * Classe InterfaceDialogueSelectionFichePaie.
+ * <p>
+ * Cette classe affiche une boîte de dialogue permettant de choisir le mois et l'année d'une fiche de paie.
+ * Elle utilise l'employé connecté pour récupérer et télécharger la fiche de paie correspondante.
+ * </p>
+ * 
+ * @author Groupe 7
+ * @version 1.0
  */
 class InterfaceDialogueSelectionFichePaie extends JDialog {
     private JComboBox<Integer> monthComboBox, yearComboBox;
     private Employe employe;
     private JFrame parent;
 
+    /**
+     * Constructeur de la classe InterfaceDialogueSelectionFichePaie.
+     * <p>
+     * Crée une boîte de dialogue modale pour permettre à l'utilisateur de sélectionner le mois et l'année
+     * d'une fiche de paie, et de lancer le téléchargement de la fiche correspondante.
+     * </p>
+     *
+     * @param parent  La fenêtre parente à laquelle cette boîte de dialogue est rattachée.
+     * @param employe L'employé connecté dont la fiche de paie doit être récupérée.
+     */
     public InterfaceDialogueSelectionFichePaie(JFrame parent, Employe employe) {
         super(parent, "Sélectionner une fiche de paie", true);
         this.parent = parent;
@@ -48,7 +64,10 @@ class InterfaceDialogueSelectionFichePaie extends JDialog {
 
     /**
      * Télécharge la fiche de paie pour le mois et l'année sélectionnés.
-     * Cette méthode utilise directement la méthode downloadPaySlip() de l'employé connecté.
+     * <p>
+     * Cette méthode récupère les valeurs sélectionnées pour le mois et l'année,
+     * puis appelle la méthode downloadPaySlip() de l'employé connecté afin de procéder au téléchargement.
+     * </p>
      */
     private void downloadPaySlip() {
         int selectedMonth = (int) monthComboBox.getSelectedItem();

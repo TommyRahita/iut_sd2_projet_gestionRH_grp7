@@ -9,15 +9,23 @@ import java.awt.event.ActionListener;
  * Classe InterfaceLogin.
  * Gère l'interface de connexion dans le système.
  */
-public class LoginFrame extends JFrame {
+
+/**
+ * Classe InterfaceConnexion.
+ * Cette classe est le point d'entrée de l'application.
+ *
+ * @author Groupe 7
+ * @version 1.0
+ */
+public class InterfaceConnexion extends JFrame {
     private JTextField txtId;
     private JPasswordField txtPassword;
 
     /**
-     * Constructeur de la classe InterfaceLogin.
+     * Constructeur de la classe LoginFrame.
      * Initialise les composants de l'interface graphique.
      */
-    public LoginFrame() {
+    public InterfaceConnexion() {
         try {
             ImageIcon icon = new ImageIcon("resources/icon.png");
             setIconImage(icon.getImage());
@@ -56,6 +64,13 @@ public class LoginFrame extends JFrame {
 
         btnLogin.addActionListener(new ActionListener() {
             @Override
+
+/**
+ * Méthode actionPerformed.
+ * Décrit le rôle de cette méthode dans l'application.
+ *
+ * @param e Événement déclencheur.
+ */
             public void actionPerformed(ActionEvent e) {
                 String id = txtId.getText().trim();
                 String password = new String(txtPassword.getPassword()).trim();
@@ -65,7 +80,7 @@ public class LoginFrame extends JFrame {
                 
                 if (utilisateur != null) {
                     System.out.println("Statut utilisateur récupéré : " + utilisateur.statut);
-                    JOptionPane.showMessageDialog(LoginFrame.this, 
+                    JOptionPane.showMessageDialog(InterfaceConnexion.this, 
                         "Connexion réussie en tant que " + utilisateur.statut);
 
                     // Vérification du statut
@@ -80,12 +95,12 @@ public class LoginFrame extends JFrame {
                                                   utilisateur.mdp, utilisateur.statut);
                         SwingUtilities.invokeLater(() -> new InterfaceEmploye(emp));
                     } else {
-                        JOptionPane.showMessageDialog(LoginFrame.this, 
+                        JOptionPane.showMessageDialog(InterfaceConnexion.this, 
                             "Statut inconnu, connexion impossible.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(LoginFrame.this, 
+                    JOptionPane.showMessageDialog(InterfaceConnexion.this, 
                         "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -98,9 +113,16 @@ public class LoginFrame extends JFrame {
      * Méthode principale pour lancer l'application de connexion.
      * @param args Arguments de la ligne de commande (non utilisés).
      */
+
+/**
+ * Méthode main.
+ * Décrit le rôle de cette méthode dans l'application.
+ *
+ * @param e Événement déclencheur.
+ */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-        	LoginFrame loginFrame = new LoginFrame();
+        	InterfaceConnexion loginFrame = new InterfaceConnexion();
             loginFrame.setVisible(true);
         });
     }

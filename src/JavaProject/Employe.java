@@ -1,10 +1,3 @@
-/**
- * Classe Employe.
- * Cette classe est responsable de la gestion de employe.
- *
- * @author Équipe Projet Gestion RH
- * @version 1.0
- */
 package JavaProject;
 
 import javax.swing.*;
@@ -16,16 +9,48 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Classe Employe.
+ * <p>
+ * Cette classe gère les fonctionnalités liées aux employés dans le système.
+ * Elle étend la classe Utilisateur et fournit des méthodes pour télécharger la fiche de paie
+ * et enregistrer les demandes de congés.
+ * </p>
+ *
+ * @author Groupe 7
+ * @version 1.0
+ */
 public class Employe extends Utilisateur {
     
+    /**
+     * Constructeur complet de la classe Employe.
+     *
+     * @param id                  L'identifiant de l'employé.
+     * @param nom                 Le nom de l'employé.
+     * @param prenom              Le prénom de l'employé.
+     * @param poste               Le poste occupé par l'employé.
+     * @param jours_conge_restants Le nombre de jours de congé restants pour l'employé.
+     * @param mdp                 Le mot de passe de l'employé.
+     * @param statut              Le statut de l'employé.
+     */
     public Employe(int id, String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         super(id, nom, prenom, poste, jours_conge_restants, mdp, statut);
     }
 
+    /**
+     * Constructeur vide de la classe Employe.
+     */
     public Employe() {
         super();
     }
     
+    /**
+     * Recherche la fiche de paie correspondant à un mois et une année donnés.
+     *
+     * @param month Le mois recherché.
+     * @param year  L'année recherchée.
+     * @return Le fichier correspondant à la fiche de paie si trouvé, sinon null.
+     */
     public File findPaySlipFile(int month, int year) {
         File dir = new File("resources/fiches_paie");
         if (!dir.exists() || !dir.isDirectory()) {
@@ -37,6 +62,17 @@ public class Employe extends Utilisateur {
         return (matchingFiles != null && matchingFiles.length > 0) ? matchingFiles[0] : null;
     }
     
+    /**
+     * Télécharge la fiche de paie pour le mois et l'année spécifiés.
+     * <p>
+     * Cette méthode recherche la fiche de paie correspondante et, si elle est trouvée,
+     * ouvre un dialogue permettant à l'utilisateur de choisir l'emplacement de sauvegarde.
+     * </p>
+     *
+     * @param parent Le composant parent pour le dialogue.
+     * @param month  Le mois de la fiche de paie.
+     * @param year   L'année de la fiche de paie.
+     */
     public void downloadPaySlip(Component parent, int month, int year) {
         File fichePaieFile = findPaySlipFile(month, year);
         if (fichePaieFile == null) {
@@ -68,7 +104,18 @@ public class Employe extends Utilisateur {
         }
     }
     
-    // Nouvelle méthode enregistrerConge déplacée depuis InterfaceDemandeConge
+    /**
+     * Enregistre une demande de congé en ajoutant une nouvelle ligne dans le fichier "conge.csv".
+     * <p>
+     * La méthode convertit les dates de début et de fin à partir des chaînes fournies, calcule
+     * le nombre de jours ouvrés entre ces dates, et écrit la demande dans le fichier.
+     * </p>
+     *
+     * @param parent       Le composant parent pour afficher les messages.
+     * @param dateDebutStr La date de début du congé au format "dd/MM/yyyy".
+     * @param dateFinStr   La date de fin du congé au format "dd/MM/yyyy".
+     * @throws IOException Si une erreur d'entrée/sortie se produit lors de la lecture ou de l'écriture du fichier.
+     */
     public void enregistrerConge(Component parent, String dateDebutStr, String dateFinStr) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dateDebut = LocalDate.parse(dateDebutStr, formatter);
@@ -109,7 +156,16 @@ public class Employe extends Utilisateur {
         }
     }
     
-    // Méthode privée pour calculer les jours ouvrés entre deux dates
+    /**
+     * Calcule le nombre de jours ouvrés entre deux dates.
+     * <p>
+     * Les jours ouvrés sont considérés comme tous les jours sauf le samedi et le dimanche.
+     * </p>
+     *
+     * @param dateDebut La date de début.
+     * @param dateFin   La date de fin.
+     * @return Le nombre de jours ouvrés entre la date de début et la date de fin.
+     */
     private long calculerJoursOuvres(LocalDate dateDebut, LocalDate dateFin) {
         long nbJours = 0;
 

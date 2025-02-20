@@ -1,17 +1,26 @@
-/**
- * Classe InterfaceAjouterUtilisateur.
- * Cette classe est responsable de la gestion de ajouterutilisateurinterface.
- *
- * @author Équipe Projet Gestion RH
- * @version 1.0
- */
 package JavaProject;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Classe InterfaceAjouterUtilisateur.
+ * <p>
+ * Cette classe gère les fonctionnalités liées à l'interface d'ajout d'un utilisateur dans le système.
+ * Elle permet de saisir les informations d'un nouvel utilisateur et de les transmettre pour leur enregistrement.
+ * </p>
+ *
+ * @author Groupe 7
+ * @version 1.0
+ */
 public class InterfaceAjouterUtilisateur extends JFrame {
+    
+    /**
+     * Constructeur de l'interface d'ajout d'utilisateur.
+     *
+     * @param parent La fenêtre parente à masquer lors de l'affichage de cette interface.
+     */
     public InterfaceAjouterUtilisateur(JFrame parent) {
         setTitle("Ajouter un utilisateur");
         setSize(800, 500);
@@ -118,8 +127,12 @@ public class InterfaceAjouterUtilisateur extends JFrame {
         parent.setVisible(false);
     }
 
-    // Méthodes de stylisation
-
+    /**
+     * Crée un JLabel stylisé avec le texte spécifié.
+     *
+     * @param text Le texte à afficher.
+     * @return Un JLabel stylisé.
+     */
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 14));
@@ -127,6 +140,11 @@ public class InterfaceAjouterUtilisateur extends JFrame {
         return label;
     }
 
+    /**
+     * Crée un JTextField stylisé.
+     *
+     * @return Un JTextField stylisé.
+     */
     private JTextField createStyledTextField() {
         JTextField textField = new JTextField();
         textField.setBackground(Color.LIGHT_GRAY);
@@ -135,12 +153,23 @@ public class InterfaceAjouterUtilisateur extends JFrame {
         return textField;
     }
 
+    /**
+     * Applique un style spécifique à un JPasswordField.
+     *
+     * @param passwordField Le JPasswordField auquel appliquer le style.
+     */
     private void stylePasswordField(JPasswordField passwordField) {
         passwordField.setBackground(Color.LIGHT_GRAY);
         passwordField.setForeground(Color.BLACK);
         passwordField.setBorder(new LineBorder(Color.GRAY, 1, true));
     }
 
+    /**
+     * Crée un JButton avec un design arrondi et le texte spécifié.
+     *
+     * @param text Le texte à afficher sur le bouton.
+     * @return Un JButton stylisé.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));

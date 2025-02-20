@@ -1,10 +1,3 @@
-/**
- * Classe InterfaceDemandeConge.
- * Cette classe est responsable de la gestion de demandeconge.
- *
- * @author Équipe Projet Gestion RH
- * @version 1.0
- */
 package JavaProject;
 
 import javax.swing.*;
@@ -15,10 +8,27 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Classe InterfaceDemandeConge.
+ * <p>
+ * Cette classe gère les fonctionnalités liées à l'interface de demande de congés dans le système.
+ * Elle permet à un utilisateur de saisir une plage de dates pour sa demande de congé, de valider ces
+ * informations, et d'enregistrer la demande dans le fichier de données.
+ * </p>
+ * 
+ * @author Groupe 7
+ * @version 1.0
+ */
 public class InterfaceDemandeConge extends JFrame {
     private JFrame parent;
     private Utilisateur utilisateur;
     
+    /**
+     * Constructeur de l'interface de demande de congés.
+     *
+     * @param parent      La fenêtre parente à masquer lors de l'affichage de cette interface.
+     * @param utilisateur L'utilisateur effectuant la demande de congé.
+     */
     public InterfaceDemandeConge(JFrame parent, Utilisateur utilisateur) {
         this.parent = parent;
         this.utilisateur = utilisateur;
@@ -146,6 +156,12 @@ public class InterfaceDemandeConge extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Crée un bouton avec un design arrondi et le texte spécifié.
+     *
+     * @param text Le texte à afficher sur le bouton.
+     * @return Un JButton stylisé.
+     */
     private JButton createRoundedButton(String text) {
         JButton button = new JButton(text);
         button.setBackground(new Color(255, 204, 0));
@@ -155,6 +171,12 @@ public class InterfaceDemandeConge extends JFrame {
         return button;
     }
 
+    /**
+     * Vérifie si une chaîne représente une date valide au format JJ/MM/AAAA.
+     *
+     * @param dateStr La chaîne à vérifier.
+     * @return true si la date est valide, sinon false.
+     */
     private boolean isValidDate(String dateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);

@@ -4,10 +4,13 @@ import javax.swing.*;
 import java.awt.Component;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe Employe.
@@ -183,4 +186,113 @@ public class Employe extends Utilisateur {
 
         return nbJours;
     }
+    
+    public static void updateCongeCSV(String nomEmploye, String prenomEmploye) throws IOException {
+        File file = Paths.get("resources", "conge.csv").toFile();
+        List<String[]> lignes = new ArrayList<>();
+        String separateur = ";";
+
+        // Lecture du fichier
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                lignes.add(ligne.split(separateur));
+            }
+        }
+
+        // Vérifier chaque ligne pour trouver l'employé et vérifier les conditions
+        for (String[] ligne : lignes) {
+            // Vérifier toutes les conditions en une seule fois
+            if (ligne[1].equals(nomEmploye) && ligne[2].equals(prenomEmploye) && 
+                !ligne[6].equals("En attente") && ligne[8].equals("N")) {
+                
+                String statut = ligne[6]; // Colonne 7 : statut
+                String dateDebut = ligne[3]; // Colonne 4 : date de début
+                String dateFin = ligne[4]; // Colonne 5 : date de fin
+                String message = statut.equals("Validé") ? 
+                    "Votre congé du " + dateDebut + " au " + dateFin + " a été accepté." :
+                    "Votre congé du " + dateDebut + " au " + dateFin + " a été refusé.";
+
+                // Afficher la notification
+                JOptionPane.showMessageDialog(null, message, "Notification de Congé", JOptionPane.INFORMATION_MESSAGE);
+
+                // Modifier la colonne 9 (index 8) à "O"
+                ligne[8] = "O";
+                
+                break;    
+            }
+        }
+
+        // Réécrire le fichier Conge.csv avec la mise à jour
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (String[] ligne : lignes) {
+                writer.write(String.join(separateur, ligne));
+                writer.newLine();
+            }
+        }
+
+        // Mettre à jour les jours de congé restants dans Utilisateurs.csv
+        updateUtilisateursCSV(nomEmploye, prenomEmploye);
+    }
+
+    public static void updateUtilisateursCSV(String nomEmploye, String prenomEmploye) throws IOException {
+        File file = Paths.get("resources", "Utilisateurs.csv").toFile();
+        List<String[]> lignes = new ArrayList<>();
+        String separateur = ";";
+        boolean utilisateurTrouve = false;
+
+        // Lecture du fichier Utilisateurs.csv
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                lignes.add(ligne.split(separateur));
+            }    
+        }
+
+        // Rechercher l'utilisateur et mettre à jour le nombre de jours restants
+        for (String[] ligne : lignes) {
+            if (ligne[1].equals(nomEmploye) && ligne[2].equals(prenomEmploye)) {
+                utilisateurTrouve = true;
+
+                // Récupérer le nombre de jours de congé pris depuis Conge.csv
+                int nbPrisConge = getNbPrisConge(nomEmploye, prenomEmploye);
+                int joursRestants = Integer.parseInt(ligne[4]); // Colonne 5 : jours_conge_restants
+
+                // Mettre à jour la colonne 5 (jours_conge_restants)
+                ligne[4] = String.valueOf(joursRestants - nbPrisConge);
+                break;
+            }
+        }
+
+        if (!utilisateurTrouve) {
+            throw new IOException("Utilisateur introuvable dans le fichier Utilisateurs !");
+        }
+
+        // Réécrire le fichier Utilisateurs.csv avec les mises à jour
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (String[] ligne : lignes) {
+                writer.write(String.join(separateur, ligne));
+                writer.newLine();
+            }
+        }
+    }
+
+    private static int getNbPrisConge(String nomEmploye, String prenomEmploye) throws IOException {
+        File file = Paths.get("resources", "Conge.csv").toFile();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                String[] colonnes = ligne.split(";");
+                if (colonnes[1].equals(nomEmploye) && colonnes[2].equals(prenomEmploye)) {
+                    return Integer.parseInt(colonnes[5]); // Colonne 6 : nb_pris_conge
+                }
+            }
+        }
+        throw new IOException("Ligne correspondante introuvable dans Conge.csv !");
+    }
+
+	public void updateUtilisateurs() {
+		// TODO Auto-generated method stub
+		
+	}
 }

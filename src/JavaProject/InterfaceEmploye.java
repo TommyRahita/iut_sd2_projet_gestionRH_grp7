@@ -3,6 +3,7 @@ package JavaProject;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Classe InterfaceEmploye.
@@ -25,6 +26,14 @@ public class InterfaceEmploye extends JFrame {
      */
     public InterfaceEmploye(Employe employe) {
         this.employe = employe;
+        
+        try {
+            employe.updateCongeCSV(employe.nom, employe.prenom);  // Appel sur l'instance 'employee'
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'appel de updateCongeCSV: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
         initialiserUI();
     }
 

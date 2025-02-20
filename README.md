@@ -27,6 +27,11 @@ Les bibliothèques externes sont gérées directement dans Eclipse. Elles inclue
 3. Faire un clic droit sur la classe et sélectionner `Run As` > `Java Application`.
 4. L'application démarre et affiche l'interface de connexion.
 
+## 📖 Accéder à la documentation
+1. Aller dans le dossier `doc/` à la racine du projet.
+2. Ouvrir le fichier `index.html` dans un navigateur web.
+3. Naviguer à travers la documentation pour voir les descriptions des classes et méthodes.
+
 ## 👥 Contributeurs
 - **Tommy RAHITA**
 - **Yanis THOLLET**

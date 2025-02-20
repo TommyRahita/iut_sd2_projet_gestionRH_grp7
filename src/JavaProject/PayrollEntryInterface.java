@@ -3,11 +3,10 @@ package JavaProject;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.time.LocalDate;
 
 /**
  * Classe PayrollEntryInterface.
- * Gère payrollentryinterface dans le système.
+ * Gère l'interface de saisie de la paie dans le système.
  */
 public class PayrollEntryInterface extends JFrame {
     private JTextField heuresTravailField, primesField, cotisationsField, impotsField;
@@ -96,8 +95,21 @@ public class PayrollEntryInterface extends JFrame {
 
                 // Appel à la méthode de Manager pour enregistrer la paie
                 Manager.enregistrerPaie(heuresTravail, primes, cotisations, impots, utilisateur, tauxHoraire, this);
+
+                // Affichage du message de succès
+                JOptionPane.showMessageDialog(this, "La paie a été enregistrée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                
+                // Réinitialisation des champs du formulaire
+                heuresTravailField.setText("");
+                primesField.setText("");
+                cotisationsField.setText("");
+                impotsField.setText("");
+                salaireBrutLabel.setText("Salaire Brut : -");
+                salaireNetLabel.setText("Salaire Net : -");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Veuillez entrer des valeurs valides.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erreur lors de l'enregistrement de la paie : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         });
         topButtons.add(saveButton);

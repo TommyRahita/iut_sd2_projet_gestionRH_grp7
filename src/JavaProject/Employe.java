@@ -2,81 +2,23 @@ package JavaProject;
 
 import javax.swing.*;
 import java.awt.Component;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-/**
- * Classe représentant un employé, hérite de la classe Utilisateur.
- */
-/**
- * Classe Employe.
- * Gère employe dans le système.
- */
 public class Employe extends Utilisateur {
     
-    /**
-     * Constructeur de la classe Employe avec paramètres.
-     * @param id Identifiant de l'employé.
-     * @param nom Nom de l'employé.
-     * @param prenom Prénom de l'employé.
-     * @param poste Poste occupé par l'employé.
-     * @param jours_conge_restants Nombre de jours de congé restants.
-     * @param mdp Mot de passe de l'employé.
-     * @param statut Statut de l'employé.
-     */
     public Employe(int id, String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         super(id, nom, prenom, poste, jours_conge_restants, mdp, statut);
     }
 
-    /**
-     * Constructeur vide de la classe Employe.
-     */
     public Employe() {
         super();
     }
-
-    /**
-     * Vérifie si un employé peut se connecter en fonction de ses identifiants.
-     * @param id_saisi Identifiant saisi par l'utilisateur.
-     * @param mdp_saisi Mot de passe saisi par l'utilisateur.
-     * @param liste_employe Liste des employés existants.
-     * @return True si les identifiants sont corrects, sinon False.
-     */
-/**
- * Méthode se_connecter_employe.
- * Description de la méthode.
- * @param id_saisi Description du paramètre.
- * @param mdp_saisi Description du paramètre.
- * @param liste_employe Description du paramètre.
- * @return Boolean Description du retour.
- */
-    public Boolean se_connecter_employe(String id_saisi, String mdp_saisi, List<Employe> liste_employe) {
-        for (Employe employe : liste_employe) {
-            if (id_saisi.equals(employe.id)) {
-                return true;
-            }
-        }
-        return false;
-    }
     
-    // ---------------- Méthodes de téléchargement de fiche de paie ---------------- //
-    
-    /**
-     * Recherche une fiche de paie spécifique pour cet employé en fonction du mois et de l'année.
-     * @param month Mois de la fiche de paie.
-     * @param year Année de la fiche de paie.
-     * @return Un objet File correspondant à la fiche de paie si trouvé, sinon null.
-     */
-/**
- * Méthode findPaySlipFile.
- * Description de la méthode.
- * @param month Description du paramètre.
- * @param year Description du paramètre.
- * @return File Description du retour.
- */
     public File findPaySlipFile(int month, int year) {
         File dir = new File("resources/fiches_paie");
         if (!dir.exists() || !dir.isDirectory()) {
@@ -88,20 +30,6 @@ public class Employe extends Utilisateur {
         return (matchingFiles != null && matchingFiles.length > 0) ? matchingFiles[0] : null;
     }
     
-    /**
-     * Télécharge la fiche de paie de cet employé pour le mois et l'année spécifiés.
-     * Affiche une boîte de dialogue pour sélectionner l'emplacement de sauvegarde.
-     * @param parent Composant parent pour les boîtes de dialogue.
-     * @param month Mois de la fiche de paie.
-     * @param year Année de la fiche de paie.
-     */
-/**
- * Méthode downloadPaySlip.
- * Description de la méthode.
- * @param parent Description du paramètre.
- * @param month Description du paramètre.
- * @param year Description du paramètre.
- */
     public void downloadPaySlip(Component parent, int month, int year) {
         File paySlipFile = findPaySlipFile(month, year);
         if (paySlipFile == null) {
@@ -131,5 +59,65 @@ public class Employe extends Utilisateur {
                         "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+    
+    // Nouvelle méthode enregistrerConge déplacée depuis CongeRequest
+    public void enregistrerConge(Component parent, String dateDebutStr, String dateFinStr) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateDebut = LocalDate.parse(dateDebutStr, formatter);
+        LocalDate dateFin = LocalDate.parse(dateFinStr, formatter);
+
+        String nom = "";
+        String prenom = "";
+        String idUtilisateur = "";
+
+        String onrecupidici = this.nom + " " + this.prenom;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("resources\\Utilisateurs.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length > 2 && (parts[1] + " " + parts[2]).equals(onrecupidici)) {
+                    idUtilisateur = parts[0];
+                    nom = parts[1];
+                    prenom = parts[2];
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(parent, "Erreur lors de la lecture du fichier Utilisateurs.csv : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (idUtilisateur.isEmpty()) {
+            JOptionPane.showMessageDialog(parent, "Utilisateur non trouvé dans le fichier Utilisateurs.csv.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        long nbJoursOuvres = calculerJoursOuvres(dateDebut, dateFin);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("resources\\conge.csv", true))) {
+            writer.write(String.format("%s;%s;%s;%s;%s;%d;%s;%s;%s;\n",
+                    idUtilisateur, nom, prenom, dateDebutStr, dateFinStr, nbJoursOuvres, "En attente", "", "N"));
+        }
+    }
+    
+    // Méthode privée pour calculer les jours ouvrés entre deux dates
+    private long calculerJoursOuvres(LocalDate dateDebut, LocalDate dateFin) {
+        long nbJours = 0;
+
+        if (dateDebut.isEqual(dateFin)) {
+            return 1;
+        }
+
+        LocalDate dateCourante = dateDebut;
+        while (dateCourante.isBefore(dateFin.plusDays(1))) {
+            if (dateCourante.getDayOfWeek() != DayOfWeek.SATURDAY && dateCourante.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                nbJours++;
+            }
+            dateCourante = dateCourante.plusDays(1);
+        }
+
+        return nbJours;
     }
 }

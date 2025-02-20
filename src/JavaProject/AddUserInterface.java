@@ -1,11 +1,10 @@
 package JavaProject;
 
-import java.awt.*;
-import java.io.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.awt.*;
 
-class AddUserInterface extends JFrame {
+public class AddUserInterface extends JFrame {
     public AddUserInterface(JFrame parent) {
         setTitle("Ajouter un utilisateur");
         setSize(800, 500);
@@ -14,20 +13,18 @@ class AddUserInterface extends JFrame {
         setResizable(false);
 
         try {
-            // Charger l'image depuis le dossier 'resources' dans le projet
+            // Charger l'image depuis le dossier 'resources'
             ImageIcon icon = new ImageIcon("resources\\icon.png");
-            setIconImage(icon.getImage()); // Définir l'icône de la fenêtre
+            setIconImage(icon.getImage());
         } catch (Exception e) {
             System.out.println("Erreur lors du chargement de l'icône: " + e.getMessage());
         }
 
-        // ---- Panneau principal ----
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(7, 2, 10, 10));
+        // Panneau principal pour les champs de saisie
+        JPanel formPanel = new JPanel(new GridLayout(7, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         formPanel.setBackground(new Color(43, 60, 70));
 
-        // Champs pour les informations utilisateur
         JLabel nameLabel = createStyledLabel("Nom :");
         JTextField nameField = createStyledTextField();
         formPanel.add(nameLabel);
@@ -59,33 +56,32 @@ class AddUserInterface extends JFrame {
         formPanel.add(statusLabel);
         formPanel.add(statusComboBox);
 
-        // ---- Panneau des boutons ----
+        // Panneau des boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(43, 60, 70));
 
         JButton addButton = createRoundedButton("Ajouter");
         addButton.addActionListener(e -> {
-            String name = nameField.getText();
-            String firstName = firstNameField.getText();
-            String job = jobField.getText();
-            String leaveDaysText = leaveDaysField.getText();
-            String password = new String(passwordField.getPassword());
+            String name = nameField.getText().trim();
+            String firstName = firstNameField.getText().trim();
+            String job = jobField.getText().trim();
+            String leaveDaysText = leaveDaysField.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
             String status = (String) statusComboBox.getSelectedItem();
 
+            // Vérification des champs
+            if (name.isEmpty() || firstName.isEmpty() || job.isEmpty() ||
+                leaveDaysText.isEmpty() || password.isEmpty() || status.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             try {
-                // Validation des champs
-                if (name.isEmpty() || firstName.isEmpty() || job.isEmpty() || leaveDaysText.isEmpty() || password.isEmpty() || status.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
                 int leaveDays = Integer.parseInt(leaveDaysText);
-
-                // Appeler la méthode ajouter_utilisateur
-                Utilisateur new_user = new Utilisateur(name, firstName, job, leaveDays, password, status);
-                Utilisateur.ajouter_utilisateur(new_user);
+                // Créer un nouvel utilisateur et l'ajouter via Manager
+                Utilisateur newUser = new Utilisateur(name, firstName, job, leaveDays, password, status);
+                Manager.ajouter_utilisateur(newUser.nom, newUser.prenom, newUser.poste, newUser.jours_conge_restants, newUser.mdp, newUser.statut);
                 JOptionPane.showMessageDialog(this, "Utilisateur ajouté avec succès !");
-
                 // Réinitialiser les champs
                 nameField.setText("");
                 firstNameField.setText("");
@@ -93,7 +89,6 @@ class AddUserInterface extends JFrame {
                 leaveDaysField.setText("");
                 passwordField.setText("");
                 statusComboBox.setSelectedIndex(0);
-
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Le champ 'Jours de congés restants' doit être un nombre.", "Erreur", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
@@ -116,7 +111,8 @@ class AddUserInterface extends JFrame {
         parent.setVisible(false);
     }
 
-    // Méthodes pour styliser les composants
+    // Méthodes de stylisation
+
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 14));
@@ -146,6 +142,4 @@ class AddUserInterface extends JFrame {
         button.setBorder(new RoundBorder(15));
         return button;
     }
-
-
 }

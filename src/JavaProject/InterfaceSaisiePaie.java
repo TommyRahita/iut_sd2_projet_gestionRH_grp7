@@ -5,10 +5,10 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
- * Classe PayrollEntryInterface.
+ * Classe InterfaceSaisiePaie.
  * Gère l'interface de saisie de la paie dans le système.
  */
-public class PayrollEntryInterface extends JFrame {
+public class InterfaceSaisiePaie extends JFrame {
     private JTextField heuresTravailField, primesField, cotisationsField, impotsField;
     private JLabel userInfoLabel, salaireBrutLabel, salaireNetLabel;
     private String selectedUser;
@@ -21,7 +21,7 @@ public class PayrollEntryInterface extends JFrame {
      * @param parent La fenêtre précédente.
      * @param selectedUser L'utilisateur sélectionné pour la saisie de la paie.
      */
-    public PayrollEntryInterface(JFrame parent, String selectedUser) {
+    public InterfaceSaisiePaie(JFrame parent, String selectedUser) {
         this.parent = parent;
         this.selectedUser = selectedUser;
         // Récupération des informations de l'utilisateur et du taux horaire via Manager

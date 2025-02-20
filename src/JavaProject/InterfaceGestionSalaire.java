@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
  * Permet de sélectionner un utilisateur, calculer son salaire et gérer la paie.
  */
 /**
- * Classe SalaryManagementInterface.
- * Gère salarymanagementinterface dans le système.
+ * Classe InterfaceGestionSalaire.
+ * Gère salairemanagementinterface dans le système.
  */
-public class SalaryManagementInterface extends JFrame {
-    private Manager manager;
+public class InterfaceGestionSalaire extends JFrame {
+    private Manager gestionnaire;
     private JComboBox<String> choiceBox1;
     private DefaultComboBoxModel<String> comboBoxModel;
     private JTextField searchField;
-    private JLabel salaryLabel;
+    private JLabel salaireLabel;
     private List<String> utilisateurs;
 
     /**
      * Constructeur de l'interface de gestion des salaires.
      * @param parent La fenêtre parente qui a ouvert cette interface.
      */
-    public SalaryManagementInterface(JFrame parent) {
-        this.manager = new Manager();
+    public InterfaceGestionSalaire(JFrame parent) {
+        this.gestionnaire = new Manager();
         setTitle("Menu de Management des Salaires");
         setSize(800, 500);
         setLayout(new BorderLayout());
@@ -84,30 +84,30 @@ public class SalaryManagementInterface extends JFrame {
         });
 
         gbc.gridy++;
-        JPanel salaryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        salaryPanel.setBackground(new Color(43, 60, 70));
+        JPanel salairePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        salairePanel.setBackground(new Color(43, 60, 70));
 
-        salaryLabel = new JLabel("Salaire: Non calculé");
-        salaryLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        salaryLabel.setForeground(Color.WHITE);
-        salaryLabel.setOpaque(true);
-        salaryLabel.setBackground(new Color(29, 46, 56));
-        salaryLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        salaryLabel.setPreferredSize(new Dimension(300, 40));
-        salaryPanel.add(salaryLabel);
-        formPanel.add(salaryPanel, gbc);
+        salaireLabel = new JLabel("Salaire: Non calculé");
+        salaireLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        salaireLabel.setForeground(Color.WHITE);
+        salaireLabel.setOpaque(true);
+        salaireLabel.setBackground(new Color(29, 46, 56));
+        salaireLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        salaireLabel.setPreferredSize(new Dimension(300, 40));
+        salairePanel.add(salaireLabel);
+        formPanel.add(salairePanel, gbc);
 
         gbc.gridy++;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setBackground(new Color(43, 60, 70));
 
-        JButton calculateSalaryButton = createStyledButton("Calculer le salaire");
-        calculateSalaryButton.addActionListener(e -> 
-                Manager.calculerSalaireUI(this, manager, (String) choiceBox1.getSelectedItem(), salaryLabel));
+        JButton calculerSalaireButton = createStyledButton("Calculer le salaire");
+        calculerSalaireButton.addActionListener(e -> 
+                Manager.calculerSalaireUI(this, gestionnaire, (String) choiceBox1.getSelectedItem(), salaireLabel));
         JButton generatePayslipButton = createStyledButton("Gérer la paie");
         generatePayslipButton.addActionListener(e -> ouvrirInterfaceSaisie());
 
-        buttonPanel.add(calculateSalaryButton);
+        buttonPanel.add(calculerSalaireButton);
         buttonPanel.add(generatePayslipButton);
         formPanel.add(buttonPanel, gbc);
 
@@ -135,7 +135,7 @@ public class SalaryManagementInterface extends JFrame {
             JOptionPane.showMessageDialog(this, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        new PayrollEntryInterface(this, selectedUser);
+        new InterfaceSaisiePaie(this, selectedUser);
     }
 
     /**

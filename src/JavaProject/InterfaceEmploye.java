@@ -5,18 +5,18 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
- * Classe EmployeeInterface.
- * Gère employeeinterface dans le système.
+ * Classe InterfaceEmploye.
+ * Gère employeinterface dans le système.
  */
-public class EmployeeInterface extends JFrame {
-    private Employe employee;
+public class InterfaceEmploye extends JFrame {
+    private Employe employe;
 
-    public EmployeeInterface(Employe employee) {
-        this.employee = employee;
-        initUI();
+    public InterfaceEmploye(Employe employe) {
+        this.employe = employe;
+        initialiserUI();
     }
 
-    private void initUI() {
+    private void initialiserUI() {
         try {
             ImageIcon icon = new ImageIcon("resources/icon.png");
             setIconImage(icon.getImage());
@@ -33,7 +33,7 @@ public class EmployeeInterface extends JFrame {
         // Panel du haut avec nom de l'employé
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.setBackground(new Color(43, 60, 70));
-        JLabel nameLabel = new JLabel("Employé : " + employee.prenom + " " + employee.nom);
+        JLabel nameLabel = new JLabel("Employé : " + employe.prenom + " " + employe.nom);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -50,7 +50,7 @@ public class EmployeeInterface extends JFrame {
         buttonPanel.add(congeRequestButton);
 
         JButton downloadPaySlipButton = createRoundedButton("Télécharger votre fiche de paie");
-        downloadPaySlipButton.addActionListener(e -> openPaySlipSelectionDialog());
+        downloadPaySlipButton.addActionListener(e -> openDialogueSelectionFichePaie());
         buttonPanel.add(downloadPaySlipButton);
 
         UIManager.put("ComboBox.selectionBackground", new Color(255, 255, 255));
@@ -84,19 +84,19 @@ public class EmployeeInterface extends JFrame {
         button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        button.setBorder(new RoundBorder(15));
+        button.setBorder(new BordureArrondie(15));
         return button;
     }
 
     private void openCongesRequestInterface() {
-        new CongeRequest(this, employee);
+        new InterfaceDemandeConge(this, employe);
     }
 
     /**
      * Ouvre une boîte de dialogue pour choisir le mois et l'année avant de télécharger la fiche de paie.
      */
-    private void openPaySlipSelectionDialog() {
-        new PaySlipSelectionDialog(this, employee);
+    private void openDialogueSelectionFichePaie() {
+        new InterfaceDialogueSelectionFichePaie(this, employe);
     }
 
     private void logoutAction() {

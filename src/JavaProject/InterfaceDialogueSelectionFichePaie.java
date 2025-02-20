@@ -11,15 +11,15 @@ import java.nio.file.StandardCopyOption;
  * Classe pour afficher une boîte de dialogue permettant de choisir le mois et l'année d'une fiche de paie.
  * La boîte de dialogue utilise l'employé connecté pour récupérer la fiche de paie.
  */
-class PaySlipSelectionDialog extends JDialog {
+class InterfaceDialogueSelectionFichePaie extends JDialog {
     private JComboBox<Integer> monthComboBox, yearComboBox;
-    private Employe employee;
+    private Employe employe;
     private JFrame parent;
 
-    public PaySlipSelectionDialog(JFrame parent, Employe employee) {
+    public InterfaceDialogueSelectionFichePaie(JFrame parent, Employe employe) {
         super(parent, "Sélectionner une fiche de paie", true);
         this.parent = parent;
-        this.employee = employee;
+        this.employe = employe;
 
         setSize(300, 200);
         setLayout(new GridLayout(3, 2, 10, 10));
@@ -54,6 +54,6 @@ class PaySlipSelectionDialog extends JDialog {
         int selectedMonth = (int) monthComboBox.getSelectedItem();
         int selectedYear = (int) yearComboBox.getSelectedItem();
         // Appelle la méthode downloadPaySlip() de la classe Employe
-        employee.downloadPaySlip(this, selectedMonth, selectedYear);
+        employe.downloadPaySlip(this, selectedMonth, selectedYear);
     }
 }

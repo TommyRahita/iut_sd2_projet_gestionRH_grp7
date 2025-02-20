@@ -1,11 +1,18 @@
+/**
+ * Classe InterfaceAjouterUtilisateur.
+ * Cette classe est responsable de la gestion de ajouterutilisateurinterface.
+ *
+ * @author Équipe Projet Gestion RH
+ * @version 1.0
+ */
 package JavaProject;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class AddUserInterface extends JFrame {
-    public AddUserInterface(JFrame parent) {
+public class InterfaceAjouterUtilisateur extends JFrame {
+    public InterfaceAjouterUtilisateur(JFrame parent) {
         setTitle("Ajouter un utilisateur");
         setSize(800, 500);
         setLayout(new BorderLayout());
@@ -52,7 +59,7 @@ public class AddUserInterface extends JFrame {
         formPanel.add(passwordField);
 
         JLabel statusLabel = createStyledLabel("Statut :");
-        JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"Manager", "Employe"});
+        JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"manager", "employe"});
         formPanel.add(statusLabel);
         formPanel.add(statusComboBox);
 
@@ -139,7 +146,7 @@ public class AddUserInterface extends JFrame {
         button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        button.setBorder(new RoundBorder(15));
+        button.setBorder(new BordureArrondie(15));
         return button;
     }
 }

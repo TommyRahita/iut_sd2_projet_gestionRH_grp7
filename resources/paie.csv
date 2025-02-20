@@ -10,3 +10,4 @@ idPaie;moisPaie;anneePaie;idUtilisateur;nom;prenom;poste;taux_horaire;nb_heure_t
 9;2;2025;6;Robert;Sophie;Data Scientist;11,70;120;25;1404,00;120,00;90,00;120,00
 10;2;2025;1;Dupont;Jean;Manager;12,00;2;24;24,00;0,00;0,00;0,00
 11;2;2025;1;Dupont;Jean;Manager;12,00;0;24;0,00;0,00;0,00;0,00
+12;2;2025;1;Dupont;Jean;Manager;12,00;0;24;0,00;0,00;0,00;0,00

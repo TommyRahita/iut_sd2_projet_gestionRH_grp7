@@ -1,3 +1,10 @@
+/**
+ * Classe Employe.
+ * Cette classe est responsable de la gestion de employe.
+ *
+ * @author Équipe Projet Gestion RH
+ * @version 1.0
+ */
 package JavaProject;
 
 import javax.swing.*;
@@ -31,8 +38,8 @@ public class Employe extends Utilisateur {
     }
     
     public void downloadPaySlip(Component parent, int month, int year) {
-        File paySlipFile = findPaySlipFile(month, year);
-        if (paySlipFile == null) {
+        File fichePaieFile = findPaySlipFile(month, year);
+        if (fichePaieFile == null) {
             JOptionPane.showMessageDialog(parent,
                     "Aucune fiche de paie trouvée pour " + this.prenom + " " + this.nom +
                             " en " + month + "/" + year,
@@ -48,7 +55,7 @@ public class Employe extends Utilisateur {
         if (userChoice == JFileChooser.APPROVE_OPTION) {
             File destinationFile = fileChooser.getSelectedFile();
             try {
-                Files.copy(paySlipFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(fichePaieFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 JOptionPane.showMessageDialog(parent,
                         "Fiche de paie téléchargée avec succès.\n" + destinationFile.getAbsolutePath(),
                         "Succès", JOptionPane.INFORMATION_MESSAGE);
@@ -61,7 +68,7 @@ public class Employe extends Utilisateur {
         }
     }
     
-    // Nouvelle méthode enregistrerConge déplacée depuis CongeRequest
+    // Nouvelle méthode enregistrerConge déplacée depuis InterfaceDemandeConge
     public void enregistrerConge(Component parent, String dateDebutStr, String dateFinStr) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dateDebut = LocalDate.parse(dateDebutStr, formatter);

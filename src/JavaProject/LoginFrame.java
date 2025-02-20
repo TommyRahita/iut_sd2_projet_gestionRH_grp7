@@ -6,15 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Classe LoginFrame.
- * Gère loginframe dans le système.
+ * Classe InterfaceLogin.
+ * Gère l'interface de connexion dans le système.
  */
 public class LoginFrame extends JFrame {
     private JTextField txtId;
     private JPasswordField txtPassword;
 
     /**
-     * Constructeur de la classe LoginFrame.
+     * Constructeur de la classe InterfaceLogin.
      * Initialise les composants de l'interface graphique.
      */
     public LoginFrame() {
@@ -56,30 +56,37 @@ public class LoginFrame extends JFrame {
 
         btnLogin.addActionListener(new ActionListener() {
             @Override
-/**
- * Méthode actionPerformed.
- * Description de la méthode.
- * @param e Description du paramètre.
- */
             public void actionPerformed(ActionEvent e) {
                 String id = txtId.getText().trim();
                 String password = new String(txtPassword.getPassword()).trim();
-                // Utilisation de la méthode validerIdentifiant de la classe Utilisateur
+                
+                // Vérifier les identifiants avec la classe Utilisateur
                 Utilisateur utilisateur = Utilisateur.validerIdentifiant(id, password);
+                
                 if (utilisateur != null) {
-                    JOptionPane.showMessageDialog(LoginFrame.this, "Connexion réussie en tant que " + utilisateur.statut);
-                    if (utilisateur.statut.equalsIgnoreCase("manager")) {
-                        SwingUtilities.invokeLater(() -> new ManagerInterface(utilisateur));
-                    } else {
+                    System.out.println("Statut utilisateur récupéré : " + utilisateur.statut);
+                    JOptionPane.showMessageDialog(LoginFrame.this, 
+                        "Connexion réussie en tant que " + utilisateur.statut);
+
+                    // Vérification du statut
+                    if (utilisateur.statut.equalsIgnoreCase("manager") || 
+                        utilisateur.statut.equalsIgnoreCase("gestionnaire")) {
+                        SwingUtilities.invokeLater(() -> new InterfaceManager(utilisateur));
+                    } else if (utilisateur.statut.equalsIgnoreCase("employe") || 
+                               utilisateur.statut.equalsIgnoreCase("Employé")) {
                         // Créer une instance d'Employe à partir de l'objet Utilisateur
                         Employe emp = new Employe(utilisateur.id, utilisateur.nom, utilisateur.prenom,
                                                   utilisateur.poste, utilisateur.jours_conge_restants,
                                                   utilisateur.mdp, utilisateur.statut);
-                        SwingUtilities.invokeLater(() -> new EmployeeInterface(emp));
+                        SwingUtilities.invokeLater(() -> new InterfaceEmploye(emp));
+                    } else {
+                        JOptionPane.showMessageDialog(LoginFrame.this, 
+                            "Statut inconnu, connexion impossible.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(LoginFrame.this, "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoginFrame.this, 
+                        "ID ou mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -91,14 +98,9 @@ public class LoginFrame extends JFrame {
      * Méthode principale pour lancer l'application de connexion.
      * @param args Arguments de la ligne de commande (non utilisés).
      */
-/**
- * Méthode main.
- * Description de la méthode.
- * @param args Description du paramètre.
- */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            LoginFrame loginFrame = new LoginFrame();
+        	LoginFrame loginFrame = new LoginFrame();
             loginFrame.setVisible(true);
         });
     }

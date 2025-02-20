@@ -8,14 +8,14 @@ import java.awt.*;
 /**
  * Classe permettant de dessiner une bordure arrondie pour les boutons.
  */
-class RoundBorder implements Border {
+class BordureArrondie implements Border {
     private int radius;
 
     /**
      * Constructeur de la bordure arrondie.
      * @param radius Rayon d'arrondi des coins.
      */
-    public RoundBorder(int radius) {
+    public BordureArrondie(int radius) {
         this.radius = radius;
     }
 

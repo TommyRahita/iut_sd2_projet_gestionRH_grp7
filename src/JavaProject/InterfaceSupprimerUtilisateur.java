@@ -1,11 +1,18 @@
+/**
+ * Classe extends.
+ * Cette classe est responsable de la gestion de extends.
+ *
+ * @author Équipe Projet Gestion RH
+ * @version 1.0
+ */
 package JavaProject;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-class DeleteUserInterface extends JFrame {
-    public DeleteUserInterface(JFrame parent) {
+class SupprimerUtilisateurInterface extends JFrame {
+    public SupprimerUtilisateurInterface(JFrame parent) {
         setTitle("Supprimer un utilisateur");
         setSize(800, 500);
         setLayout(new BorderLayout());

@@ -1,3 +1,10 @@
+/**
+ * Classe InterfaceDemandeConge.
+ * Cette classe est responsable de la gestion de demandeconge.
+ *
+ * @author Équipe Projet Gestion RH
+ * @version 1.0
+ */
 package JavaProject;
 
 import javax.swing.*;
@@ -8,11 +15,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class CongeRequest extends JFrame {
+public class InterfaceDemandeConge extends JFrame {
     private JFrame parent;
     private Utilisateur utilisateur;
     
-    public CongeRequest(JFrame parent, Utilisateur utilisateur) {
+    public InterfaceDemandeConge(JFrame parent, Utilisateur utilisateur) {
         this.parent = parent;
         this.utilisateur = utilisateur;
 
@@ -144,7 +151,7 @@ public class CongeRequest extends JFrame {
         button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        button.setBorder(new RoundBorder(15));
+        button.setBorder(new BordureArrondie(15));
         return button;
     }
 

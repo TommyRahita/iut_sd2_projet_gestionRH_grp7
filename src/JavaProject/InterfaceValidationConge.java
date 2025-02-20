@@ -1,13 +1,20 @@
+/**
+ * Classe InterfaceValidationConge.
+ * Cette classe est responsable de la gestion de interfacevalidationconge.
+ *
+ * @author Équipe Projet Gestion RH
+ * @version 1.0
+ */
 package JavaProject;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class ValidateLeaveInterface extends JFrame {
+public class InterfaceValidationConge extends JFrame {
     private JFrame parent;
 
-    public ValidateLeaveInterface(JFrame parent) {
+    public InterfaceValidationConge(JFrame parent) {
         this.parent = parent;
         if (this.parent != null) {
             this.parent.setVisible(false);
@@ -100,8 +107,8 @@ public class ValidateLeaveInterface extends JFrame {
         button.setBackground(new Color(255, 204, 0));
         button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
-        // Supposons que RoundBorder est une classe personnalisée pour une bordure arrondie
-        button.setBorder(new RoundBorder(15));
+        // Supposons que BordureArrondie est une classe personnalisée pour une bordure arrondie
+        button.setBorder(new BordureArrondie(15));
         return button;
     }
 }

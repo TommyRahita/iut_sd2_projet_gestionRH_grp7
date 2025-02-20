@@ -49,7 +49,7 @@ public class Manager extends Utilisateur {
      * @param poste Poste de l'utilisateur.
      * @param jours_conge_restants Nombre de jours de congé restants.
      * @param mdp Mot de passe.
-     * @param statut Statut (par exemple "manager" ou "employé").
+     * @param statut Statut (par exemple "gestionnaire" ou "employé").
      */
     public static void ajouter_utilisateur(String nom, String prenom, String poste, int jours_conge_restants, String mdp, String statut) {
         String path_csv = "resources/Utilisateurs.csv";
@@ -326,18 +326,18 @@ public class Manager extends Utilisateur {
         utilisateursFiltrés.forEach(comboBoxModel::addElement);
     }
     
-    public static void calculerSalaireUI(JFrame parent, Manager manager, String selectedUser, JLabel salaryLabel) {
+    public static void calculerSalaireUI(JFrame parent, Manager gestionnaire, String selectedUser, JLabel salaireLabel) {
         if (selectedUser == null || selectedUser.isEmpty()) {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        double[] salaireDetails = manager.calculer_salaire(parent, selectedUser);
+        double[] salaireDetails = gestionnaire.calculer_salaire(parent, selectedUser);
         if (salaireDetails == null) {
             return;
         }
-        salaryLabel.setText("Salaire Net : " + String.format("%.2f €", salaireDetails[4]));
-        salaryLabel.repaint();
-        salaryLabel.revalidate();
+        salaireLabel.setText("Salaire Net : " + String.format("%.2f €", salaireDetails[4]));
+        salaireLabel.repaint();
+        salaireLabel.revalidate();
     }
     
     // ---------------------- GESTION DE LA PAIE ----------------------- //

@@ -171,9 +171,9 @@ public class Manager extends Utilisateur {
 
     /**
      * Calcule les informations de paie pour un utilisateur sélectionné (basé sur nom complet).
-     * Retourne un tableau de doubles contenant [salaireBrut, primes, cotisations, impots, salaireNet, mois, annee].
+     * Retourne un objet Salaire contenant [salaireBrut, primes, cotisations, impots, salaireNet, mois, annee].
      */
-    public static double[] calculer_salaire(JFrame parent, String selectedUser) {
+    public static Salaire calculer_salaire(JFrame parent, String selectedUser) {
         String path_paie = "resources/paie.csv";
         double salaireBrut = 0, primes = 0, cotisations = 0, impots = 0;
         String moisPaie = "0", anneePaie = "0";
@@ -204,9 +204,9 @@ public class Manager extends Utilisateur {
             return null;
         }
         double salaireNet = salaireBrut + primes - cotisations - impots;
-        double mois = safeParseDouble(moisPaie);
-        double annee = safeParseDouble(anneePaie);
-        return new double[]{salaireBrut, primes, cotisations, impots, salaireNet, mois, annee};
+        int mois = (int) safeParseDouble(moisPaie);
+        int annee = (int) safeParseDouble(anneePaie);
+        return new Salaire(salaireBrut, primes, cotisations, impots, salaireNet, mois, annee);
     }
 
     public static void genererFichePaie(JFrame parent, String selectedUser) {
@@ -214,17 +214,17 @@ public class Manager extends Utilisateur {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        double[] salaireDetails = calculer_salaire(parent, selectedUser);
+        Salaire salaireDetails = calculer_salaire(parent, selectedUser);
         if (salaireDetails == null) {
             return;
         }
-        double salaireBrut = salaireDetails[0];
-        double primes = salaireDetails[1];
-        double cotisations = salaireDetails[2];
-        double impots = salaireDetails[3];
-        double salaireNet = salaireDetails[4];
-        int moisPaie = (int) salaireDetails[5];
-        int anneePaie = (int) salaireDetails[6];
+        double salaireBrut = salaireDetails.getSalaireBrut();
+        double primes = salaireDetails.getPrimes();
+        double cotisations = salaireDetails.getCotisations();
+        double impots = salaireDetails.getImpots();
+        double salaireNet = salaireDetails.getSalaireNet();
+        int moisPaie = salaireDetails.getMois();
+        int anneePaie = salaireDetails.getAnnee();
         String nomFichier = String.format("resources/fiches_paie/%s_%02d-%d_fiche_paie.pdf", 
                 selectedUser.replace(" ", "_"), moisPaie, anneePaie);
         try {
@@ -331,11 +331,11 @@ public class Manager extends Utilisateur {
             JOptionPane.showMessageDialog(parent, "Veuillez sélectionner un utilisateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        double[] salaireDetails = gestionnaire.calculer_salaire(parent, selectedUser);
+        Salaire salaireDetails = gestionnaire.calculer_salaire(parent, selectedUser);
         if (salaireDetails == null) {
             return;
         }
-        salaireLabel.setText("Salaire Net : " + String.format("%.2f €", salaireDetails[4]));
+        salaireLabel.setText("Salaire Net : " + String.format("%.2f €", salaireDetails.getSalaireNet()));
         salaireLabel.repaint();
         salaireLabel.revalidate();
     }
